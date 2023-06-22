@@ -50,7 +50,7 @@ scikit-learn==1.0
 scipy==1.10.0
 setuptools-scm==7.1.0
 six==1.16.0
-somef==0.9.1
+somef==0.9.3
 soupsieve==2.3.2.post1
 sql-metadata==2.6.0
 SQLAlchemy==1.4.46

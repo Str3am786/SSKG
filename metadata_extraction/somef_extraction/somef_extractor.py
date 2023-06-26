@@ -190,6 +190,20 @@ def find_arxiv_citation(somef_data: dict):
                 return False
     return False
 
+
+def get_related_paper(somef_data: dict):
+    """Returns a list of all the related papers within the repo"""
+    list_ids = []
+    related_papers = safe_dic(somef_data, 'related_papers')
+    if not related_papers:
+        return None
+    for paper in related_papers:
+        url = safe_dic(safe_dic(paper,"result"),"value")
+        if url:
+            arxivID = description_arxiv_finder(url)
+            list_ids.append(arxivID)
+    return list_ids if len(list_ids) > 0 else None
+
 def description_finder(somef_data: dict):
     description = safe_dic(somef_data, 'description')
     desc = {'doi': set(), 'arxiv': set()}

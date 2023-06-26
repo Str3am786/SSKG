@@ -34,7 +34,6 @@ class test_download_pdf(TestCase):
         filepath2 = pdf_download_pipeline(doi1, "./test/pdfs")
 
         self.assertIsNone(filepath2)
-
     #TODO
     def test_arvix_download(self):
         pass
@@ -163,7 +162,12 @@ class test_pipeline(TestCase):
         result = check_paper_bidir(doi, './test/pipeline_folder')
         expected_result = 'https://github.com/THUDM/SelfKG'
         self.assertEquals(result[doi][0], expected_result)
-
+    def test_arxiv_related(self):
+        wipe_directory("./test/pipeline_folder")
+        doi = "10.1109/itsc.2019.8917177"
+        result = check_paper_bidir(doi, './test/pipeline_folder')
+        expected_result = 'https://github.com/lukasliebel/MultiDepth'
+        self.assertEquals(result[doi][0], expected_result)
 
     # def test_dois_pipeline(self):
     #     wipe_directory("./test/pipeline_folder")

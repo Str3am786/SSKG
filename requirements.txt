@@ -1,5 +1,6 @@
 anyascii==0.3.1
 attrs==22.2.0
+arxiv==1.4.7
 beautifulsoup4==4.11.1
 bs4==0.0.1
 certifi==2022.9.24
@@ -23,6 +24,7 @@ importlib-metadata==6.0.0
 inflect==6.0.2
 iniconfig==2.0.0
 isodate==0.6.1
+jaro-winkler==2.0.3
 joblib==1.2.0
 jsonpath-python==1.0.6
 kiwisolver==1.4.4

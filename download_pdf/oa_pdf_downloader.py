@@ -46,7 +46,7 @@ def download_pdf(url,name_of_pdf, output_dir, dir_txt_downloaded_pdfs):
             idk = idk.split('\'')[1]
             json_idk = json.loads(idk)
             pdf = requests.get(json_idk['best_oa_location']['url'])
-            with open(pdf_filepath, 'wb+') as f: #here download the pdf
+            with open(pdf_filepath, 'wb') as f: #here download the pdf
                 f.write(pdf.content)
             # make a file for downloading trace
             with open(filepath_downloaded, 'a') as f:

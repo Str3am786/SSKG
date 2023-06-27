@@ -2,11 +2,15 @@ import os
 import json
 import jaro
 import arxiv
-from metadata_extraction.somef_extraction.somef_extractor import find_doi_citation
-from metadata_extraction.somef_extraction.somef_extractor import description_finder
-from metadata_extraction.somef_extraction.somef_extractor import find_arxiv_citation
 import requests
 from bs4 import BeautifulSoup
+from metadata_extraction.somef_extraction.somef_extractor import (
+    find_doi_citation,
+    description_finder,
+    find_arxiv_citation,
+    get_related_paper
+)
+
 def load_json(path):
     with open(path, 'r') as f:
         return json.load(f)
@@ -47,7 +51,7 @@ def is_arxiv_bidir(pdfObj, repo_json):
     except Exception as e:
         print("Error while trying to open the repository JSON")
         print(str(e))
-    if (arxivID_list := find_arxiv_citation(repo_data)):
+    if (arxivID_list := get_related_paper(repo_data)):
         if arxivID_list is not None:
             if pdfObj.arxiv in arxivID_list:
                 return True

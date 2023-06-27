@@ -200,7 +200,8 @@ def get_related_paper(somef_data: dict):
     for paper in related_papers:
         url = safe_dic(safe_dic(paper,"result"),"value")
         if url:
-            arxivID = description_arxiv_finder(url)
+            # TODO once regex.py is created update so that the code is cleaner
+            arxivID = description_arxiv_finder(url)[0]
             list_ids.append(arxivID)
     return list_ids if len(list_ids) > 0 else None
 

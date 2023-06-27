@@ -19,19 +19,19 @@ def wipe_directory(directory_path):
 class test_download_pdf(TestCase):
 
     def test_download_oa_pdf(self):
-        wipe_directory("./test/pdfs")
+        wipe_directory("./pdfs")
         #DOI should be Association of genomic subtypes of lower-grade gliomas ....
         doi = "10.1016/j.compbiomed.2019.05.002"
-        file_path = pdf_download_pipeline(doi, "./test/pdfs")
+        file_path = pdf_download_pipeline(doi, "./pdfs")
 
-        self.assertEquals(file_path, "./test/pdfs/10-DOT-1016_j-DOT-compbiomed-DOT-2019-DOT-05-DOT-002.pdf")
+        self.assertEquals(file_path, "./pdfs/10-DOT-1016_j-DOT-compbiomed-DOT-2019-DOT-05-DOT-002.pdf")
 
     def test_already_downloaded_oa_pdf(self):
-        wipe_directory("./test/pdfs")
+        wipe_directory("./pdfs")
         doi = "10.1016/j.compbiomed.2019.05.002"
         doi1 = "https://doi.org/10.1016/j.compbiomed.2019.05.002"
-        pdf_download_pipeline(doi, "./test/pdfs")
-        filepath2 = pdf_download_pipeline(doi1, "./test/pdfs")
+        pdf_download_pipeline(doi, "./pdfs")
+        filepath2 = pdf_download_pipeline(doi1, "./pdfs")
 
         self.assertIsNone(filepath2)
     #TODO
@@ -53,7 +53,7 @@ class test_bidir(TestCase):
         urls = None
         arxiv = None
         pdfObj = PaperObj(title, urls, doi, arxiv, file_name=None, file_path=None)
-        self.assertTrue(is_doi_bidir(pdfObj, "./test/json/doi_in_citation.json"))
+        self.assertTrue(is_doi_bidir(pdfObj, "./json/doi_in_citation.json"))
 
     def test_doi_citation_url(self):
         title = "On Sampling Collaborative Filtering Datasets"
@@ -61,7 +61,7 @@ class test_bidir(TestCase):
         urls = None
         arxiv = None
         pdfObj = PaperObj(title, urls, doi, arxiv, file_name=None, file_path=None)
-        self.assertTrue(is_doi_bidir(pdfObj,"./test/json/doi_in_citation_url.json"))
+        self.assertTrue(is_doi_bidir(pdfObj,"./json/doi_in_citation_url.json"))
 
     def test_doi_description(self):
         title = "On Sampling Collaborative Filtering Datasets"
@@ -69,7 +69,7 @@ class test_bidir(TestCase):
         urls = None
         arxiv = None
         pdfObj = PaperObj(title, urls, doi, arxiv, file_name=None, file_path=None)
-        self.assertTrue(is_doi_bidir(pdfObj,"./test/json/doi_in_description.json"))
+        self.assertTrue(is_doi_bidir(pdfObj,"./json/doi_in_description.json"))
 
     def test_arxiv_url_desc(self):
         #arxiv ID in url
@@ -78,7 +78,7 @@ class test_bidir(TestCase):
         urls = None
         arxiv = "1902.03110v2"
         pdfObj = PaperObj(title,urls,doi,arxiv,file_name=None,file_path=None)
-        self.assertTrue(is_arxiv_bidir(pdfObj, "./test/json/url_arxiv_description.json"))
+        self.assertTrue(is_arxiv_bidir(pdfObj, "./json/url_arxiv_description.json"))
 
     def test_arxiv_text_citation(self):
         #arxiv ID in url
@@ -87,7 +87,7 @@ class test_bidir(TestCase):
         urls = None
         arxiv = "1902.03110v2"
         pdfObj = PaperObj(title,urls,doi,arxiv,file_name=None,file_path=None)
-        self.assertTrue(is_arxiv_bidir(pdfObj, "./test/json/url_arxiv_text_citation.json"))
+        self.assertTrue(is_arxiv_bidir(pdfObj, "./json/url_arxiv_text_citation.json"))
 
     def test_arxiv_url_desc(self):
         #arxiv ID in url
@@ -96,7 +96,7 @@ class test_bidir(TestCase):
         urls = None
         arxiv = "1902.03110v2"
         pdfObj = PaperObj(title,urls,doi,arxiv,file_name=None,file_path=None)
-        self.assertTrue(is_arxiv_bidir(pdfObj, "./test/json/url_arxiv_description.json"))
+        self.assertTrue(is_arxiv_bidir(pdfObj, "./json/url_arxiv_description.json"))
 
     def test_arxiv_desc2(self):
         #TODO test fails due to somef issue
@@ -106,7 +106,7 @@ class test_bidir(TestCase):
         urls = None
         arxiv = "1907.11111"
         pdfObj = PaperObj(title, urls, doi, arxiv, file_name=None, file_path=None)
-        #self.assertTrue(is_arxiv_bidir(pdfObj, "./test/json/arxiv_desc_2.json"))
+        #self.assertTrue(is_arxiv_bidir(pdfObj, "./json/arxiv_desc_2.json"))
 
 
 
@@ -117,61 +117,61 @@ from pipeline import check_paper_bidir, pipeline_bidir, bidir_to_json
 class test_pipeline(TestCase):
 
     def test_doi_pipeline(self):
-        wipe_directory("./test/pipeline_folder")
+        wipe_directory("./pipeline_folder")
         doi = "10.1016/j.compbiomed.2019.05.002"
-        result = check_paper_bidir(doi,'./test/pipeline_folder')['10.1016/j.compbiomed.2019.05.002'][0]
+        result = check_paper_bidir(doi,'./pipeline_folder')['10.1016/j.compbiomed.2019.05.002'][0]
         expected_result = 'https://github.com/mateuszbuda/brain-segmentation'
         self.assertEquals(result, expected_result)
 
     def test_doi_pipeline1(self):
-        wipe_directory("./test/pipeline_folder")
+        wipe_directory("./pipeline_folder")
         doi = "10.18653/v1/2021.findings-emnlp.116"
-        result = check_paper_bidir(doi,'./test/pipeline_folder')
+        result = check_paper_bidir(doi,'./pipeline_folder')
         expected_result = 'https://github.com/YunqiuXu/H-KGA'
         self.assertEquals(result[doi][0], expected_result)
 
     def test_doi_pipeline2(self):
-        wipe_directory("./test/pipeline_folder")
+        wipe_directory("./pipeline_folder")
         doi = "10.1051/0004-6361/201935695"
-        result = check_paper_bidir(doi,'./test/pipeline_folder')
+        result = check_paper_bidir(doi,'./pipeline_folder')
         expected_result = 'https://github.com/astro-alexis/magnotron-tts'
         self.assertEquals(result[doi][0], expected_result)
 
     def test_doi_pipeline3(self):
-        wipe_directory("./test/pipeline_folder")
+        wipe_directory("./pipeline_folder")
         doi = "10.1109/itsc.2019.8917177"
-        result = check_paper_bidir(doi,'./test/pipeline_folder')
+        result = check_paper_bidir(doi,'./pipeline_folder')
         expected_result = 'https://github.com/lukasliebel/MultiDepth'
         self.assertEquals(result[doi][0], expected_result)
 
     def test_doi_pipeline4(self):
-        wipe_directory("./test/pipeline_folder")
+        wipe_directory("./pipeline_folder")
         doi = "10.1109/iwis56333.2022.9920762"
-        result = check_paper_bidir(doi,'./test/pipeline_folder')
+        result = check_paper_bidir(doi,'./pipeline_folder')
         self.assertIsNone(result)
     def test_doi_pipeline5(self):
-        wipe_directory("./test/pipeline_folder")
+        wipe_directory("./pipeline_folder")
         doi = "10.1145/3485447.3511945"
-        result = check_paper_bidir(doi, './test/pipeline_folder')
+        result = check_paper_bidir(doi, './pipeline_folder')
         expected_result = 'https://github.com/THUDM/SelfKG'
         self.assertEquals(result[doi][0], expected_result)
 
     def test_doi_pipeline5(self):
-        wipe_directory("./test/pipeline_folder")
+        wipe_directory("./pipeline_folder")
         doi = "10.1145/3485447.3511945"
-        result = check_paper_bidir(doi, './test/pipeline_folder')
+        result = check_paper_bidir(doi, './pipeline_folder')
         expected_result = 'https://github.com/THUDM/SelfKG'
         self.assertEquals(result[doi][0], expected_result)
     def test_arxiv_related(self):
-        wipe_directory("./test/pipeline_folder")
+        wipe_directory("./pipeline_folder")
         doi = "10.1109/itsc.2019.8917177"
-        result = check_paper_bidir(doi, './test/pipeline_folder')
+        result = check_paper_bidir(doi, './pipeline_folder')
         expected_result = 'https://github.com/lukasliebel/MultiDepth'
         self.assertEquals(result[doi][0], expected_result)
 
     # def test_dois_pipeline(self):
-    #     wipe_directory("./test/pipeline_folder")
-    #     dois_txt = "./test/dois.txt"
-    #     print(bidir_to_json(dois_txt,'./test/pipeline_folder'))
+    #     wipe_directory("./pipeline_folder")
+    #     dois_txt = "./dois.txt"
+    #     print(bidir_to_json(dois_txt,'./pipeline_folder'))
 
 

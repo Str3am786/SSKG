@@ -169,9 +169,9 @@ class test_pipeline(TestCase):
         expected_result = 'https://github.com/lukasliebel/MultiDepth'
         self.assertEquals(result[doi][0], expected_result)
 
-    # def test_dois_pipeline(self):
-    #     wipe_directory("./pipeline_folder")
-    #     dois_txt = "./dois.txt"
-    #     print(bidir_to_json(dois_txt,'./pipeline_folder'))
+    def test_dois_pipeline(self):
+        wipe_directory("./pipeline_folder")
+        dois_txt = "./dois.txt"
+        print(bidir_to_json(dois_txt,'./pipeline_folder'))
 
 

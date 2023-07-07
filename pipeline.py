@@ -1,33 +1,28 @@
 #from metadata_extraction.pdf_extraction.github_extractor_tika import pdf_to_git_url
-from metadata_extraction.somef_extraction.somef_extractor import download_repo_metadata
-from modelling.bidirectionality import is_doi_bidirectional, is_doi_bidir, is_arxiv_bidir
-from modelling.unidirectionality import is_repo_unidir
-from metadata_extraction.pdf_extraction.github_extractor_tika import make_Pdf_Obj, is_filename_doi, read_pdf, \
-    ranked_git_url
 from download_pdf.openalex.api_queries import query_openalex_api
-from metadata_extraction.paper_obj import PaperObj
 from download_pdf.pipeline import pdf_download_pipeline
 import json
 import os
-import re
+from metadata_extraction.paper_obj import PaperObj
+from metadata_extraction.somef_extraction.somef_extractor import download_repo_metadata
+from metadata_extraction.regex import (
+    str_to_arxivID as url_to_arxivID,
+    str_to_doiID as url_to_doiID
+)
+from metadata_extraction.pdf_extraction.github_extractor_tika import (
+    make_Pdf_Obj,
+    is_filename_doi,
+    read_pdf,
+    ranked_git_url
+)
+from modelling.unidirectionality import is_repo_unidir
+from modelling.bidirectionality import (
+    is_doi_bidirectional,
+    is_doi_bidir,
+    is_arxiv_bidir
+)
 
 #AUX====================
-#TODO cleanup
-def url_to_doiID(doi_url):
-    pattern = r'\b(10[.][0-9]{4,}(?:[.][0-9]+)*/(?:(?!["&\'<>])\S)+)\b'
-    match = re.search(pattern, doi_url)
-    if match:
-        doi = match.group(1)
-        return doi
-    return None
-
-def url_to_arxivID(arxiv_url):
-    pattern = r'.*(\d{4}\.\d{4,5}).*'
-    match = re.search(pattern, arxiv_url)
-    if match:
-        arxiv = match.group(1)
-        return arxiv
-    return None
 def extract_arxivID (openAlexJson):
     location = safe_dic(openAlexJson, "locations")
     for locat in location:
@@ -98,14 +93,19 @@ def check_paper_directionality(doi, directionality, output_folder):
     -------
     """
     result = {}
+    is_unidir = False
+    is_bidir = False
     try:
         paper = create_paper_obj(doi,output_folder)
         github_urls = paper.urls
         #runs through the list of extracted github urls, starting with the most frequently mentioned
+        firstTime = True
         for pair in github_urls:
             url = pair[0]
             #Download repository from SOMEF
             repo_file = download_repo_metadata(url, output_folder)
+            if not repo_file:
+                continue
             #assessment of bidirectionality
             if directionality:
                 is_bidir = (is_doi_bidir(paper, repo_file) or is_arxiv_bidir(paper, repo_file))
@@ -190,6 +190,11 @@ def pipeline_to_json(list_dois_txt,bidir_o_unidir, output_folder):
     with open(output_path, 'w+') as out_file:
         json.dump(dict, out_file, sort_keys=True, indent=4,
                   ensure_ascii=False)
+
+def bidir_to_json(list_dois_txt, output_folder):
+    pipeline_to_json(list_dois_txt, True, output_folder)
+def unidir_to_json(list_dois_txt, output_folder):
+    pipeline_to_json(list_dois_txt, False, output_folder)
 
 
 

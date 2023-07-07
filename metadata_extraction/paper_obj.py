@@ -1,29 +1,13 @@
 
 import re
+from metadata_extraction.regex import str_to_doiID, str_to_arxivID
 
-
-#TODO put this into a regex.py and remove all the instances of this
-def arxiv_cleaner(value):
-    pattern = r'.*(\d{4}\.\d{4,5}).*'
-    matches = re.findall(pattern, value)
-    return matches
-
-def doi_cleaner(value):
-    pattern = r'\b(10[.][0-9]{4,}(?:[.][0-9]+)*/(?:(?!["&\'<>])\S)+)\b'
-    matches = re.findall(pattern, value)
-    return matches
 class PaperObj:
     def __init__(self, title, urls, doi, arxiv, file_name, file_path):
         self._title = title
         self._urls = urls
-        try:
-            self._doi = doi_cleaner(doi)[0]
-        except:
-            self._doi = None
-        try:
-            self._arxiv = arxiv_cleaner(arxiv)[0]
-        except:
-            self._arxiv = None
+        self._doi = str_to_doiID(doi)
+        self._arxiv = str_to_arxivID(arxiv)
         self._file_name = file_name
         self._file_path = file_path
 

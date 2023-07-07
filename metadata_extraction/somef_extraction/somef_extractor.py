@@ -6,7 +6,7 @@ import bibtexparser
 #downloads repo metadata creating a json as the github project name.json
 
 def is_github_url(url):
-    pattern = r'^https://github\.com/[\w-]+/[\w-]+$'
+    pattern = r'^https://github\.com/[\w-]+/[\w-]+/?$'
     match = re.match(pattern, url)
     return match is not None
 def download_repo_metadata(url, output_folder_path):

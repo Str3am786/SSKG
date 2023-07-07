@@ -91,6 +91,6 @@ def corpus_uni_result_json(output_folder):
     with open(output_folder + "/" + "corpus_eval_uni.json", 'w+') as out_file:
         json.dump(result, out_file, sort_keys=True, indent=4,
                       ensure_ascii=False)
-corpus_uni_result_json('./')
+#corpus_uni_result_json('./')
 
-#corpus_result_json('./')
+corpus_result_json('./')

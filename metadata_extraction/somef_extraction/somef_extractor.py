@@ -6,12 +6,12 @@ import bibtexparser
 #downloads repo metadata creating a json as the github project name.json
 
 def is_github_url(url):
-    pattern = r'^https://github\.com/[\w-]+/[\w-]+/?$'
+    pattern = r'^http(s)?://github\.com/[\w-]+/[\w-]+/?$'
     match = re.match(pattern, url)
     return match is not None
 def download_repo_metadata(url, output_folder_path):
     if not is_github_url(url):
-        return False
+        return None
     pattern = r'(?:http|https)://(?:gitlab\.com|github\.com)/'
     replacement = ''
     file = re.sub(pattern, replacement, url)
@@ -123,7 +123,7 @@ def find_doi_citation(somef_data: dict):
     try:
         data = somef_data['citation']
     except KeyError:
-        return False
+        return None
 
     for cite in data:
         try:
@@ -150,8 +150,8 @@ def find_doi_citation(somef_data: dict):
                     doi_find = description_doi_finder((cite['result']['value']))
                     return doi_find
             except:
-                return False
-    return False
+                return None
+    return None
 
 def find_arxiv_citation(somef_data: dict):
     '''
@@ -160,7 +160,7 @@ def find_arxiv_citation(somef_data: dict):
     try:
         data = somef_data['citation']
     except KeyError:
-        return False
+        return None
 
     for cite in data:
         try:
@@ -187,8 +187,8 @@ def find_arxiv_citation(somef_data: dict):
                     arxiv_find = description_arxiv_finder((cite['result']['value']))
                     return arxiv_find
             except:
-                return False
-    return False
+                return None
+    return None
 
 
 def get_related_paper(somef_data: dict):

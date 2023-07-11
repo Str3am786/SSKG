@@ -234,7 +234,7 @@ class test_pipeline(TestCase):
         doi = "10.24963/ijcai.2022/208"
         result = check_paper_directionality(doi,True,'./pipeline_folder')
         expected_result = "https://github.com/Robbie-Xu/CPSD"
-        #self.assertEquals(result[doi][0], expected_result)
+        self.assertEquals(result[doi][0], expected_result)
 
     def test_arxiv_4(self):
         '''Issue Due to SOMEF'''
@@ -263,6 +263,13 @@ class test_pipeline(TestCase):
         result = check_paper_directionality(doi, True, './pipeline_folder')
         expected_result = "https://github.com/aklamun/Stablecoin_Deleveraging"
         self.assertTrue(expected_result in result[doi])
+    def test_arxiv_7(self):
+        '''Test should pass, readme is an absolute mess'''
+        wipe_directory("./pipeline_folder")
+        doi = "10.1051/0004-6361/202039603"
+        result = check_paper_directionality(doi, True, './pipeline_folder')
+        expected_result = "http://github.com/mianbreton/RR_code"
+        self.assertTrue(expected_result in result[doi])
     def test_arxiv_8(self):
         wipe_directory("./pipeline_folder")
         doi = "10.18653/v1/2020.emnlp-main.495"
@@ -275,6 +282,15 @@ class test_pipeline(TestCase):
         result = check_paper_directionality(doi, True, './pipeline_folder')
         expected_result = "https://github.com/momalab/e3"
         self.assertTrue(expected_result in result[doi])
+
+    def test_doi_3(self):
+        wipe_directory("./pipeline_folder")
+        doi = "10.1145/3318170.3318183"
+        result = check_paper_directionality(doi, True, './pipeline_folder')
+        expected_result = "https://github.com/CodeplaySoftware/SYCL-DNN"
+        self.assertTrue(expected_result in result[doi])
+
+
     def test_unidir_doi(self):
         wipe_directory("./pipeline_folder")
         doi = "10.1007/978-3-030-01240-3_10"
@@ -287,7 +303,14 @@ class test_pipeline(TestCase):
         wipe_directory("./pipeline_folder")
         doi = "10.1109/iccv48922.2021.00338"
         result = check_paper_directionality(doi, False, './pipeline_folder')
-        expected_result = 'https://github.com/ryosuke-akashi/AtomREM'
+        expected_result = 'https://github.com/uncbiag/ICON'
+        self.assertEquals(result[doi][0], expected_result)
+
+    def test_unidir_doi3(self):
+        wipe_directory("./pipeline_folder")
+        doi = "10.18653/v1/2020.emnlp-main.495"
+        result = check_paper_directionality(doi, False, './pipeline_folder')
+        expected_result = 'https://github.com/AI-secure/T3'
         self.assertEquals(result[doi][0], expected_result)
 
 
@@ -298,9 +321,9 @@ class test_pipeline(TestCase):
 
 
 
-    # def test_dois_pipeline(self):
-    #     wipe_directory("./pipeline_folder")
-    #     dois_txt = "./dois.txt"
-    #     print(pipeline_to_json(dois_txt, False,'./pipeline_folder'))
+    def test_dois_pipeline(self):
+        wipe_directory("./pipeline_folder")
+        dois_txt = "./dois.txt"
+        print(pipeline_to_json(dois_txt, True,'./pipeline_folder'))
 
 

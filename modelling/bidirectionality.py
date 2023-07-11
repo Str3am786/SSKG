@@ -55,6 +55,9 @@ def is_arxiv_bidir(pdfObj, repo_json):
         if arxivID_list is not None:
             if pdfObj.arxiv in arxivID_list:
                 return True
+            ls_papers = get_paper_from_arxiv_id(arxivID_list)
+            if pdfObj.title in get_title_from_arxiv_id(ls_papers):
+                return True
     if (arxivID_list := find_arxiv_citation(repo_data)):
         if arxivID_list is not None:
             if pdfObj.arxiv in arxivID_list:
@@ -62,6 +65,13 @@ def is_arxiv_bidir(pdfObj, repo_json):
     arxiv_list = safe_dic(description_finder(repo_data), 'arxiv')
     if arxiv_list is not None and pdfObj.arxiv in arxiv_list:
         return True
+
+def is_title_bidir(repo_json):
+    try:
+        repo_data = load_json(repo_json)
+    except Exception as e:
+        print("Error while trying to open the repository JSON")
+        print(str(e))
 
 def get_paper_from_arxiv_id(arxiv_id_list):
     ls_papers = []

@@ -21,6 +21,7 @@ from modelling.bidirectionality import (
     is_doi_bidir,
     is_arxiv_bidir
 )
+from download_pdf.oa_pdf_downloader import check_downloaded_list
 
 #AUX====================
 def extract_arxivID (openAlexJson):
@@ -48,6 +49,40 @@ def load_json(path):
 #TODO
 def _iter_urls():
     return
+
+def check_down_already(doi,downloaded_dir):
+    name = doi.replace('http://doi.org/', '').replace('https://doi.org/', '').replace('/', '_').replace('.',
+                                                                                                        '-DOT-') + '.pdf'
+    filepath_downloaded = downloaded_dir + '/download_trace.txt'
+    if (check_downloaded_list(name, downloaded_dir)):
+        return downloaded_dir + "/" + name
+
+def create_paper_obj_downloaded(doi,downloaded_dir):
+    try:
+        pdf_path = check_down_already(doi,downloaded_dir)
+        if not pdf_path:
+            return None
+        try:
+            pdf_meta = query_openalex_api(doi)
+        except Exception as e:
+            print(str(e))
+        #TODO
+        if pdf_meta is None:
+            print("No meta")
+        titL = safe_dic(pdf_meta,"title")
+        doi = url_to_doiID(safe_dic(pdf_meta, "doi"))
+        arxiv = extract_arxivID(pdf_meta)
+        pdf_data = read_pdf(pdf_path)
+        github_urls = ranked_git_url(pdf_data)
+        if github_urls is None or len(github_urls) == 0:
+            return None
+        directory, filename = get_directory_and_filename(pdf_path)
+        paper = PaperObj(titL, github_urls, doi, arxiv, filename, pdf_path)
+        return paper
+    except Exception as e:
+        print(str(e))
+
+
 
 def create_paper_obj(doi,output_folder):
     """
@@ -83,6 +118,41 @@ def create_paper_obj(doi,output_folder):
     except Exception as e:
         print(str(e))
         return None
+
+def check_ppr_dir_downloaded(doi, directionality, downloaded_dir, output_folder):
+    result = {}
+    is_unidir = False
+    is_bidir = False
+    try:
+        paper = create_paper_obj_downloaded(doi,downloaded_dir)
+        github_urls = paper.urls
+        # runs through the list of extracted github urls, starting with the most frequently mentioned
+        firstTime = True
+        for pair in github_urls:
+            url = pair[0]
+            # Download repository from SOMEF
+            repo_file = download_repo_metadata(url, output_folder)
+            if not repo_file:
+                continue
+            # assessment of bidirectionality
+            if directionality:
+                is_bidir = (is_doi_bidir(paper, repo_file) or is_arxiv_bidir(paper, repo_file))
+            if not directionality:
+                is_unidir = is_repo_unidir(paper, repo_file)
+            if is_bidir or is_unidir:
+                if firstTime:
+                    result[doi] = []
+                    firstTime = False
+                result[doi].append(url)
+    except Exception as e:
+        print("error while trying to extract metadata")
+        print(str(e))
+        pass
+
+    if len(result.keys()) > 0:
+        return result
+    else:
+        None
 
 def check_paper_directionality(doi, directionality, output_folder):
     """
@@ -197,4 +267,25 @@ def unidir_to_json(list_dois_txt, output_folder):
     pipeline_to_json(list_dois_txt, False, output_folder)
 
 
+def pipeline_down_bidir(list_dois_txt, output_folder):
+    """
+    Takes list of dois, as a TXT and output folder to download the somef JSON
+    :returns
+    list of dictionaries
+    dictionary K: doi, V: List of urls that link back to the paper
+    -------
+    """
+    result = {}
+    try:
+        with open(list_dois_txt, 'r') as file:
+            dois = file.read().splitlines()
+    except:
+        print("Error while opening the txt")
+
+    for doi in dois:
+        data = check_ppr_dir_downloaded(doi, True,"./test/pipeline_folder", output_folder)
+        if data:
+            result.update(data)
+
+    return result
 

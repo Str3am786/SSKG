@@ -17,8 +17,11 @@ def download_repo_metadata(url, output_folder_path):
     file = re.sub(pattern, replacement, url)
     file = file.replace('/', '_') + '.json'
 
-    output_file_path = os.path.join(output_folder_path, file)
+    output_folder_path = os.path.join(output_folder_path,"JSONs")
+    if not os.path.exists(output_folder_path):
+        os.mkdir(output_folder_path)
 
+    output_file_path = os.path.join(output_folder_path, file)
     if os.path.exists(output_file_path):
         print('Already created a file: ' + output_file_path)
         return output_file_path

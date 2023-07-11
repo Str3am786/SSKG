@@ -5,11 +5,17 @@
     "10.1016/j.compbiomed.2019.05.002": [
         "https://github.com/mateuszbuda/brain-segmentation"
     ],
+    "10.1016/j.cpc.2020.107260": [
+        "https://github.com/ryosuke-akashi/AtomREM"
+    ],
     "10.1016/j.tcs.2019.03.012": [
         "https://github.com/felipelouza/bwsd"
     ],
     "10.1051/0004-6361/201935695": [
         "https://github.com/astro-alexis/magnotron-tts"
+    ],
+    "10.1051/0004-6361/202039603": [
+        "http://github.com/mianbreton/RR_code"
     ],
     "10.1101/2020.04.12.038158": [
         "https://github.com/ml-jku/DeepRC"
@@ -45,6 +51,9 @@
     ],
     "10.1145/3503161.3548035": [
         "https://github.com/yl3800/EIGV"
+    ],
+    "10.1145/3508352.3549415": [
+        "https://github.com/momalab/e3"
     ],
     "10.18653/v1/2020.acl-main.55": [
         "https://github.com/cl-tohoku/eval-via-selection"

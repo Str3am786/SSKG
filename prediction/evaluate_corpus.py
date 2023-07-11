@@ -129,6 +129,6 @@ def corpus_uni_result_json(output_folder):
                       ensure_ascii=False)
 
 
-corpus_uni_result_json('./')
+#corpus_uni_result_json('./')
 
-#corpus_result_json('./')
+corpus_result_json('./')

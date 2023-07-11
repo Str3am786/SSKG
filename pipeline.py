@@ -50,6 +50,14 @@ def load_json(path):
 def _iter_urls():
     return
 
+
+
+
+
+
+
+
+
 def check_down_already(doi,downloaded_dir):
     name = doi.replace('http://doi.org/', '').replace('https://doi.org/', '').replace('/', '_').replace('.',
                                                                                                         '-DOT-') + '.pdf'

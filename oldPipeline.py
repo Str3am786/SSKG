@@ -90,11 +90,29 @@ def create_paper_obj_downloaded(doi,downloaded_dir):
     except Exception as e:
         print(str(e))
 
-
-
+def doi_in_filename(pdf_file_path):
+    return None
+def arxiv_in_filename(pdf_file_path):
+    return None
+def pdf_to_identifier(pdf_file_path):
+    """
+    Takes a pdf filepath and tries to find its identifer
+    :returns
+    doi
+    """
+    if doi_in_filename(pdf_file_path):
+        return id
+    elif arxiv_in_filename(pdf_file_path):
+        return id
+    else:
+        return None
 def create_paper_obj(doi,output_folder):
     """
-    Takes doi and output folder to download the pdf
+    Input
+    Takes doi
+    Takes output folder to download the pdf
+    -------------
+    Output
     :returns
     paperObj with the metadata and link the pdf file
     -------
@@ -164,8 +182,12 @@ def check_ppr_dir_downloaded(doi, directionality, downloaded_dir, output_folder)
 
 def check_paper_directionality(doi, directionality, output_folder):
     """
-    @param directionality True: assess bidirectionality False: assess Unidirectionality
-    Takes doi and output folder to download the somef JSON
+    Input
+    @param directionality True: to assess bidirectionality False: to assess Unidirectionality
+    Takes doi
+    Takes output folder to download the somef JSON and pdf
+    -------
+    Output
     :returns
     dictionary K: doi, V: List of urls that link back to the paper
     -------
@@ -207,9 +229,11 @@ def check_paper_directionality(doi, directionality, output_folder):
 
 def pipeline_bidir(list_dois_txt, output_folder):
     """
-    Takes list of dois, as a TXT and output folder to download the somef JSON
+    Input
+    Takes list of dois, as a TXT and output folder to download PDF and SOMEF Outputs
+    --------
+    Output
     :returns
-    list of dictionaries
     dictionary K: doi, V: List of urls that link back to the paper
     -------
     """

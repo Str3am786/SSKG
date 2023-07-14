@@ -120,6 +120,7 @@ def text_excerpt_parser(cite_list: list):
 
 #WARNING returns the doi's with the / replaced by the "_"
 def find_doi_citation(somef_data: dict):
+    #TODO fix and change to a list of results
     '''
     Find the doi in somef data
     '''

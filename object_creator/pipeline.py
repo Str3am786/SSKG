@@ -19,8 +19,11 @@ def pipeline_multiple_bidir(list_dois, output_dir):
     result = {}
     try:
         for doi in list_dois:
-            paper = doi_to_paper(doi)
-            result.update(check_bidir(paper,output_dir))
+            paper = doi_to_paper(doi,output_dir)
+            if not paper:
+                continue
+            if (bidir:=(check_bidir(paper,output_dir))):
+                result.update(bidir)
         return result
     except Exception as e:
         print(str(e))

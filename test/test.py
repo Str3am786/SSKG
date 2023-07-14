@@ -76,7 +76,9 @@ class test_pdf_to_downloaded(TestCase):
         assert(output_path)
 
 from object_creator.paper_to_directionality import check_paper_directionality
-from object_creator.pipeline import doi_to_paper
+from object_creator.pipeline import doi_to_paper, pipeline_multiple_bidir, pipeline_single_bidir
+
+
 class test_bidir(TestCase):
     def test_doi_pipeline(self):
         wipe_directory("./pipeline_folder")
@@ -269,3 +271,17 @@ class test_bidir(TestCase):
     #     result = check_paper_directionality(doi, False, './pipeline_folder')
     #     expected_result = 'https://github.com/AI-secure/T3'
     #     self.assertEquals(result[doi][0], expected_result)
+class test_pipeline(TestCase):
+    def test_one_doi(self):
+        wipe_directory("./pipeline_folder")
+        doi = '10.1007/978-3-030-16350-1_1'
+        output_dir = "./pipeline_folder"
+        pipeline_single_bidir(doi, output_dir)
+    def test_short_list_doi(self):
+        wipe_directory("./pipeline_folder")
+        list_dois_txt = "./dois.txt"
+        output_dir = "./pipeline_folder"
+        with open(list_dois_txt, 'r') as file:
+            dois = file.read().splitlines()
+        result = pipeline_multiple_bidir(dois, output_dir)
+        print(result)

@@ -63,6 +63,7 @@ def adrian_pdfs_2dictionary(directory):
         dwnldd = adrian_to_downloaded(file_path)
         if dwnldd:
             result.update(dwnldd_dictionary(dwnldd))
+            num_pdfs += 1
         print("Number of pdfs/downloaded Objects made = " + str(num_pdfs))
     return result
 

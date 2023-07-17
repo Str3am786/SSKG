@@ -1,8 +1,6 @@
 from tika import parser
 import re
 import os
-import datetime
-import json
 import collections
 from .paper_obj import PaperObj
 

@@ -2,7 +2,6 @@ import os
 
 import requests
 import json
-import xmltodict
 
 
 BASE_URL = 'https://api.openalex.org/works/'

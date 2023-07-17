@@ -274,9 +274,10 @@ class test_bidir(TestCase):
 class test_pipeline(TestCase):
     def test_one_doi(self):
         wipe_directory("./pipeline_folder")
-        doi = '10.1007/978-3-030-16350-1_1'
+        doi = '10.1016/j.compbiomed.2019.05.002'
         output_dir = "./pipeline_folder"
-        pipeline_single_bidir(doi, output_dir)
+        result = pipeline_single_bidir(doi, output_dir)
+        assert(result)
     def test_short_list_doi(self):
         wipe_directory("./pipeline_folder")
         list_dois_txt = "./dois.txt"

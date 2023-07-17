@@ -1,6 +1,6 @@
 from metadata_extraction.github_extractor_tika import ranked_git_url, read_pdf
 from metadata_extraction.paper_obj import PaperObj
-from .create_downloadedObj import downloadedDic_to_downloadedObj
+from object_creator.create_downloadedObj import downloadedDic_to_downloadedObj
 import json
 
 
@@ -29,12 +29,12 @@ def dwnlddJson_to_paper_dic(meta_json, output_dir):
         print(str(e) + "Error while opening metadata json")
     for doi in metas_dict:
         dwnldd_dict = safe_dic(metas_dict,doi)
-        dwnObj = downloadedDic_to_downloadedObj(meta_dict=dwnldd_dict)
+        dwnObj = downloadedDic_to_downloadedObj(dwnldd_dict=dwnldd_dict)
         paper = downloaded_to_paperObj(dwnObj)
         result.update({paper.doi: paper.to_dict()})
     return result
 
-def dwnlddJson_to_downloadedJson(meta_json, output_dir):
+def dwnlddJson_to_paperJson(meta_json, output_dir):
     dict = dwnlddJson_to_paper_dic(meta_json, output_dir)
     output_path = output_dir + "/" + "paper_metadata.json"
     with open(output_path, 'w+') as out_file:
@@ -47,3 +47,5 @@ def safe_dic(dic, key):
         return dic[key]
     except:
         return None
+
+dwnlddJson_to_paperJson("../test/pdfs/pdf_metadata.json", "../test/pdfs")

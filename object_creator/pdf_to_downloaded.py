@@ -52,6 +52,7 @@ def adrian_to_downloaded(file_path):
 
 def adrian_pdfs_2dictionary(directory):
     result = {}
+    num_pdfs = 0
     try:
         list = os.listdir(directory)
     except Exception as e:
@@ -62,7 +63,7 @@ def adrian_pdfs_2dictionary(directory):
         dwnldd = adrian_to_downloaded(file_path)
         if dwnldd:
             result.update(dwnldd_dictionary(dwnldd))
-            print(result)
+        print("Number of pdfs/downloaded Objects made = " + str(num_pdfs))
     return result
 
 def adrian_pdfs_2Json(directory):
@@ -81,4 +82,3 @@ def safe_dic(dic, key):
         return None
 
 
-adrian_pdfs_2Json("/Users/pingamax2/Documents/work/pdfs")

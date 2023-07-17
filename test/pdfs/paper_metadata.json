@@ -4,20 +4,28 @@
         "doi": "10.1016/j.compbiomed.2019.05.002",
         "file_name": "10-DOT-1016_j-DOT-compbiomed-DOT-2019-DOT-05-DOT-002.pdf",
         "file_path": "./pdfs/10-DOT-1016_j-DOT-compbiomed-DOT-2019-DOT-05-DOT-002.pdf",
-        "title": "Association of genomic subtypes of lower-grade gliomas with shape features automatically extracted by a deep learning algorithm"
+        "title": "Association of genomic subtypes of lower-grade gliomas with shape features automatically extracted by a deep learning algorithm",
+        "urls": [
+            [
+                "https://github.com/mateuszbuda/brain-segmentation",
+                2
+            ]
+        ]
     },
     "10.1109/jstsp.2016.2617302": {
         "arxiv": null,
         "doi": "10.1109/jstsp.2016.2617302",
         "file_name": "10.1109_jstsp.2016.2617302.pdf",
         "file_path": "./pdfs/10.1109_jstsp.2016.2617302.pdf",
-        "title": "MultiView Perceptual Disparity Model for Super MultiView Video"
+        "title": "MultiView Perceptual Disparity Model for Super MultiView Video",
+        "urls": null
     },
     "10.3389/fnmol.2019.00267": {
         "arxiv": null,
         "doi": "10.3389/fnmol.2019.00267",
         "file_name": "10.3389_fnmol.2019.00267.pdf",
         "file_path": "./pdfs/10.3389_fnmol.2019.00267.pdf",
-        "title": "Diverse Neuron Properties and Complex Network Dynamics in the Cerebellar Cortical Inhibitory Circuit"
+        "title": "Diverse Neuron Properties and Complex Network Dynamics in the Cerebellar Cortical Inhibitory Circuit",
+        "urls": null
     }
 }

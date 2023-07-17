@@ -1,4 +1,3 @@
-import pandas as pd
 import requests
 
 def create_unpaywall_url(data):

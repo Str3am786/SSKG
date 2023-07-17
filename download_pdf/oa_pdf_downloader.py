@@ -1,7 +1,5 @@
 import pandas as pd
-import numpy as np
 import requests
-import os
 import json
 import logging
 def get_pdf_url_and_doi(data_path):
@@ -34,10 +32,16 @@ def download_pdf(url,name_of_pdf, output_dir):
             idk = str(r.content)
             idk = idk.split('\'')[1]
             json_idk = json.loads(idk)
-            pdf = requests.get(json_idk['best_oa_location']['url'])
-            if pdf.status_code != 200:
-                print("Request Rejected with code" + str(pdf.status_code))
+            try:
+                pdf = requests.get(json_idk['best_oa_location']['url'])
+                if pdf.status_code != 200:
+                    print("Request Rejected with code" + str(pdf.status_code))
+                    pdf = backup(json_idk)
+            except:
+                print("Error while trying to get the best_oa_location")
                 pdf = backup(json_idk)
+            if not pdf:
+                return None
             with open(pdf_filepath, 'wb') as f: #here download the pdf
                 f.write(pdf.content)
                 logging.info('written pdf successfully')

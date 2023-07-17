@@ -4,10 +4,10 @@ from modelling.unidirectionality import is_repo_unidir
 
 
 def check_bidir(paper,output_dir):
-    check_paper_directionality(paper,True,output_dir)
+    return check_paper_directionality(paper,True,output_dir)
 
 def check_unidir(paper,output_dir):
-    check_paper_directionality(paper,False,output_dir)
+    return check_paper_directionality(paper,False,output_dir)
 
 def check_paper_directionality(paper,directionality, output_dir):
     """
@@ -44,6 +44,7 @@ def check_paper_directionality(paper,directionality, output_dir):
                     result[doi] = []
                     firstTime = False
                 result[doi].append(url)
+                print(result)
     except Exception as e:
         print("error while trying to extract metadata")
         print(str(e))

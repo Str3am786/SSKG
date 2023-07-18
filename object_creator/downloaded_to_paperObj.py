@@ -34,8 +34,8 @@ def dwnlddJson_to_paper_dic(meta_json, output_dir):
         result.update({paper.doi: paper.to_dict()})
     return result
 
-def dwnlddJson_to_paperJson(meta_json, output_dir):
-    dict = dwnlddJson_to_paper_dic(meta_json, output_dir)
+def dwnlddJson_to_paperJson(dwnldd_json, output_dir):
+    dict = dwnlddJson_to_paper_dic(dwnldd_json, output_dir)
     output_path = output_dir + "/" + "paper_metadata.json"
     with open(output_path, 'w+') as out_file:
         json.dump(dict, out_file, sort_keys=True, indent=4,
@@ -48,4 +48,3 @@ def safe_dic(dic, key):
     except:
         return None
 
-dwnlddJson_to_paperJson("../test/pdfs/pdf_metadata.json", "../test/pdfs")

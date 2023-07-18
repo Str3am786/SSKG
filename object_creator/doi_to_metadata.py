@@ -86,6 +86,8 @@ def create_meta_json(meta_dict,output_folder):
                   ensure_ascii=False)
     return output_path
 
+def metadataObj_to_metadataDict(metaObj):
+    return {metaObj.doi: metaObj.to_dict()}
 
 def metaDict_to_metaObj(meta_dict):
     title = safe_dic(meta_dict, "title")

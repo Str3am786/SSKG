@@ -80,6 +80,14 @@ from object_creator.paper_to_directionality import check_paper_directionality
 from object_creator.pipeline import doi_to_paper, pipeline_multiple_bidir, pipeline_single_bidir, \
     pipeline_txt_dois_bidir
 
+class test_downloaded_to_paper_obj(TestCase):
+
+    def test_downloadedJson_to_pp_Json(self):
+        dwn_json = "./pdfs/pdf_metadata.json"
+        output_path = "./pdfs/"
+        dwnlddJson_to_paperJson(dwn_json,output_path)
+
+
 
 class test_bidir(TestCase):
     def test_doi_pipeline(self):

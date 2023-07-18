@@ -143,3 +143,4 @@ pdf_info_extractor/data_somef/*
 
 #Idea file
 .idea
+.DS_Store

@@ -27,11 +27,15 @@ def dwnlddJson_to_paper_dic(meta_json, output_dir):
             metas_dict = json.load(f)
     except Exception as e:
         print(str(e) + "Error while opening metadata json")
+    count = 0
     for doi in metas_dict:
         dwnldd_dict = safe_dic(metas_dict,doi)
         dwnObj = downloadedDic_to_downloadedObj(dwnldd_dict=dwnldd_dict)
         paper = downloaded_to_paperObj(dwnObj)
         result.update({paper.doi: paper.to_dict()})
+        print(doi)
+        count += 1
+        print("Processed %s, \n Total Processed: %s Papers" %(doi,count))
     return result
 
 def dwnlddJson_to_paperJson(dwnldd_json, output_dir):

@@ -6,11 +6,14 @@ DOI_REGEX= r'\b(10[.][0-9]{4,}(?:[.][0-9]+)*/(?:(?!["&\'<>])\S)+)\b'
 ARXIV_REGEX = r'.*(\d{4}\.\d{4,5}).*'
 
 def str_to_doiID(string):
-    match = re.search(DOI_REGEX, string)
-    if match:
-        doi = match.group(1)
-        return doi
-    return None
+    try:
+        match = re.search(DOI_REGEX, string)
+        if match:
+            doi = match.group(1)
+            return doi
+        return None
+    except:
+        None
 
 def str_to_arxivID(string):
     try:

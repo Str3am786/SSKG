@@ -46,9 +46,10 @@ def from_papers_json_to_bidir(papers_json, output_dir):
     except Exception as e:
         print("Error while trying to load the Papers JSON")
         print(str(e))
-    for paperDict in paper_dicts:
+    for doi in paper_dicts:
+        paperDict = safe_dic(paper_dicts, doi)
         paper = paperDict_to_paperObj(paperDict)
-        bidir = pipeline_single_bidir(paper,output_dir)
+        bidir = check_bidir(paper,output_dir)
         if bidir:
             result.extend(bidir)
     return dict_to_json(dict,output_path=os.path.join(output_dir,"bidir.json"))
@@ -71,3 +72,10 @@ def dois_txt_to_bidir_json(dois_txt, output_dir):
     output_path = os.path.join(output_dir,"bidir.json")
     return dict_to_json(pipeline_txt_dois_bidir(dois_txt,output_dir),output_path)
 
+
+
+def safe_dic(dic, key):
+    try:
+        return dic[key]
+    except:
+        return None

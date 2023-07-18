@@ -9,6 +9,7 @@ from object_creator.doi_to_metadata import *
 from object_creator.create_downloadedObj import *
 from object_creator.downloaded_to_paperObj import dwnlddJson_to_paperJson
 from object_creator.pdf_to_downloaded import *
+from object_creator.pipeline import  *
 
 def wipe_directory(directory_path):
     for path in Path(directory_path).glob("**/*"):
@@ -78,7 +79,8 @@ class test_pdf_to_downloaded(TestCase):
 
 from object_creator.paper_to_directionality import check_paper_directionality
 from object_creator.pipeline import doi_to_paper, pipeline_multiple_bidir, pipeline_single_bidir, \
-    pipeline_txt_dois_bidir
+    pipeline_txt_dois_bidir, dois_txt_to_bidir_json
+
 
 class test_downloaded_to_paper_obj(TestCase):
 
@@ -86,7 +88,6 @@ class test_downloaded_to_paper_obj(TestCase):
         dwn_json = "./pdfs/pdf_metadata.json"
         output_path = "./pdfs/"
         dwnlddJson_to_paperJson(dwn_json,output_path)
-
 
 
 class test_bidir(TestCase):
@@ -305,3 +306,15 @@ class test_pipeline(TestCase):
         output_dir = "./pipeline_folder"
         result = pipeline_txt_dois_bidir(list_dois_txt,output_dir)
         assert(result)
+    # def test_txts_to_bidir(self):
+    #     wipe_directory("./pipeline_folder")
+    #     list_dois_txt = "./dois.txt"
+    #     output_dir = "./pipeline_folder"
+    #     result = dois_txt_to_bidir_json(list_dois_txt,output_dir)
+    #     assert(result)
+
+class test_paperJson_to_bidir(TestCase):
+
+    def test_ppJson_to_bidir(self):
+        wipe_directory("./pipeline_folder")
+        from_papers_json_to_bidir("./json/paperTest.json","./pipeline_folder")

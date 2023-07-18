@@ -1,0 +1,72 @@
+{    
+	"10.1002/int.21556": {
+        "arxiv": null,
+        "doi": "10.1002/int.21556",
+        "file_name": "10.1002_int.21556.pdf",
+        "file_path": "/home/kg/SSKG/pdf_info_extractor/data_pdf/10.1002_int.21556.pdf",
+        "title": "A balanced memory-based collaborative filtering similarity measure",
+        "urls": null
+    },
+    "10.1002/int.21697": {
+        "arxiv": null,
+        "doi": "10.1002/int.21697",
+        "file_name": "10.1002_int.21697.pdf",
+        "file_path": "/home/kg/SSKG/pdf_info_extractor/data_pdf/10.1002_int.21697.pdf",
+        "title": "Recent Advances in Probabilistic Graphical Models",
+        "urls": null
+    },
+    "10.1002/int.21699": {
+        "arxiv": null,
+        "doi": "10.1002/int.21699",
+        "file_name": "10.1002_int.21699.pdf",
+        "file_path": "/home/kg/SSKG/pdf_info_extractor/data_pdf/10.1002_int.21699.pdf",
+        "title": "Conditional Density Approximations with Mixtures of Polynomials",
+        "urls": null
+    },
+    "10.1002/int.21834": {
+        "arxiv": null,
+        "doi": "10.1002/int.21834",
+        "file_name": "10.1002_int.21834.pdf",
+        "file_path": "/home/kg/SSKG/pdf_info_extractor/data_pdf/10.1002_int.21834.pdf",
+        "title": "Frobenius Norm Regularization for the Multivariate Von Mises Distribution",
+        "urls": [
+            [
+                "https://github.com/lrodriguezlujan/mvcircular",
+                2
+            ]
+        ]
+    },
+    "10.1007/s11042-016-3729-z": {
+        "arxiv": null,
+        "doi": "10.1007/s11042-016-3729-z",
+        "file_name": "10.1007_s11042-016-3729-z.pdf",
+        "file_path": "/home/kg/SSKG/pdf_info_extractor/data_pdf/10.1007_s11042-016-3729-z.pdf",
+        "title": "Designing and evaluating the usability of an API for real-time multimedia services in the Internet",
+        "urls": [
+            [
+                "https://github.com/kurento)",
+                1
+            ],
+            [
+                "https://github.com/Kurento/kms-platedetector/tree/master/src/server/interface",
+                1
+            ],
+            [
+                "https://github.com/Kurento/kms-filters/tree/master/src/server/interface",
+                1
+            ],
+            [
+                "https://github.com/Kurento/kms-elements/tree/master/src/server/interface",
+                1
+            ],
+            [
+                "https://github.com/Kurento/kms-crowddetector/tree/master/src/server/interface",
+                1
+            ],
+            [
+                "https://github.com/Kurento/kms-core/blob/master/src/server/interface",
+                1
+            ]
+        ]
+    }
+}

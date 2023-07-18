@@ -67,3 +67,7 @@ def load_json(path):
     with open(path, 'r') as f:
         return json.load(f)
 
+def dois_txt_to_bidir_json(dois_txt, output_dir):
+    output_path = os.path.join(output_dir,"bidir.json")
+    return dict_to_json(pipeline_txt_dois_bidir(dois_txt,output_dir),output_path)
+

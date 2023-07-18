@@ -292,6 +292,13 @@ class test_pipeline(TestCase):
         output_dir = "./pipeline_folder"
         result = pipeline_single_bidir(doi, output_dir)
         assert(result)
+    def test_one_doi2(self):
+        wipe_directory("./pipeline_folder")
+        doi = '10.3233/SW-223135'
+        output_dir = "./pipeline_folder"
+        result = pipeline_single_bidir(doi, output_dir)
+        assert(result)
+
     def test_short_list_doi(self):
         wipe_directory("./pipeline_folder")
         list_dois_txt = "./short.txt"

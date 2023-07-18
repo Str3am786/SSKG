@@ -7,3 +7,4 @@ pandas==1.3.4
 Requests==2.31.0
 tika==1.24
 somef==0.9.4
+bs4==4.12.0

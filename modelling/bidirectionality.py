@@ -29,20 +29,24 @@ def is_doi_bidirectional(repo_file, pdf_file_name):
         return False
 
 def is_doi_bidir(pdfObj, repo_json):
-    is_bidir = False
     try:
         repo_data = load_json(repo_json)
     except Exception as e:
         print("Error while trying to open the repository JSON")
         print(str(e))
         return False
-    doi = find_doi_citation(repo_data)
-    if doi and pdfObj.doi in doi:
-        return True
+    doi_list = find_doi_citation(repo_data)
+    if doi_list:
+        for doi in doi_list:
+            if doi.lower() == pdfObj.doi.lower():
+                return True
     #run through description, if doi is found, will be within dictionary of lists
     doi_list = safe_dic(description_finder(repo_data),'doi')
-    if doi_list is not None and pdfObj.doi in doi_list:
-        return True
+    if doi_list:
+        for doi in doi_list:
+            if doi.lower() == pdfObj.doi.lower():
+                return True
+    return False
 
 def is_arxiv_bidir(pdfObj, repo_json):
     try:

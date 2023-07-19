@@ -52,12 +52,12 @@ def from_papers_json_to_bidir(papers_json, output_dir):
         bidir = check_bidir(paper,output_dir)
         if bidir:
             result.update(bidir)
-    return dict_to_json(dict,output_path=os.path.join(output_dir,"bidir.json"))
+    return dict_to_json(result,output_path=os.path.join(output_dir,"bidir.json"))
 
-def dict_to_json(dict, output_path):
+def dict_to_json(dictionary, output_path):
     try:
         with open(output_path, 'w+') as out_file:
-            json.dump(dict, out_file, sort_keys=True, indent=4,
+            json.dump(dictionary, out_file, sort_keys=True, indent=4,
                     ensure_ascii=False)
         return output_path
     except Exception as e:

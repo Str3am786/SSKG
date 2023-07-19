@@ -19,8 +19,9 @@ def backup(jayson):
         print(str(e))
         return None
 #downloads pdf and returns file directory if correctly downloaded
+#TODO change the "/" to "!" instead of _ to avoid doi conversion confusion
 def download_pdf(url,name_of_pdf, output_dir):
-
+    #characters within doi that is allowed -._;()/
     # replace dois_id / with _
     name = name_of_pdf.replace('http://doi.org/','').replace('https://doi.org/', '').replace('/','_').replace('.','-DOT-') + '.pdf'
     try:

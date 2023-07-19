@@ -24,6 +24,7 @@ def str_to_arxivID(string):
         return None
     except:
         return None
+#TODO change the _ for ! in the filename doi. Alsolook at oa_pdf_downloader
 def is_filename_doi(file_name):
     """
     Regex on the file name and return it if it is of DOI ID format.

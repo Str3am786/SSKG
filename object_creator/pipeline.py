@@ -51,7 +51,7 @@ def from_papers_json_to_bidir(papers_json, output_dir):
         paper = paperDict_to_paperObj(paperDict)
         bidir = check_bidir(paper,output_dir)
         if bidir:
-            result.extend(bidir)
+            result.update(bidir)
     return dict_to_json(dict,output_path=os.path.join(output_dir,"bidir.json"))
 
 def dict_to_json(dict, output_path):

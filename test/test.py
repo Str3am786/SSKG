@@ -64,7 +64,7 @@ class test_create_DownloadedObj(TestCase):
 
 class test_pdf_to_downloaded(TestCase):
     def test_adrian_to_dict(self):
-        directory = "./pdfs     "
+        directory = "./pdfs"
         result = adrian_pdfs_2dictionary(directory)
         assert(result["10.1109/jstsp.2016.2617302"])
     def test_null_adrian_to_dict(self):

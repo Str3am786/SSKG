@@ -14,7 +14,7 @@ def filter_arxiv(file_path):
     # Create new column with the arxiv id
     df_arxiv['arxiv_id'] = df_arxiv['doi'] \
         .str.split('/arxiv.').str[-1]
-    # lets create new urls for the arxiv, in the form of https://arxiv.org/pdf/{arxiv_id}.pdf
+    # lets create new code_urls for the arxiv, in the form of https://arxiv.org/pdf/{arxiv_id}.pdf
     df_arxiv['arxiv_url'] = 'https://arxiv.org/pdf/' + df_arxiv['arxiv_id'] + '.pdf'
 
     return df_arxiv['arxiv_url']

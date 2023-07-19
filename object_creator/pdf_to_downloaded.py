@@ -64,7 +64,7 @@ def adrian_pdfs_2dictionary(directory):
         if dwnldd:
             result.update(dwnldd_dictionary(dwnldd))
             num_pdfs += 1
-        print("Number of pdfs/downloaded Objects made = " + str(num_pdfs))
+            print("Number of pdfs/downloaded Objects made = " + str(num_pdfs))
     return result
 
 def adrian_pdfs_2Json(directory):

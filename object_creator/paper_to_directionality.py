@@ -18,7 +18,7 @@ def check_paper_directionality(paper,directionality, output_dir):
      -------
      Output
      :returns
-     dictionary K: doi, V: List of urls that link back to the paper
+     dictionary K: doi, V: List of code_urls that link back to the paper
      -------
      """
     result = {}
@@ -26,9 +26,9 @@ def check_paper_directionality(paper,directionality, output_dir):
     is_bidir = False
     doi = paper.doi
     try:
-        # runs through the list of extracted github urls, starting with the most frequently mentioned
+        # runs through the list of extracted github code_urls, starting with the most frequently mentioned
         firstTime = True
-        for pair in paper.urls:
+        for pair in paper.code_urls:
             url = pair[0]
             # Download repository from SOMEF
             repo_file = download_repo_metadata(url, output_dir)

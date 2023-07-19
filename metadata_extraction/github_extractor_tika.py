@@ -15,12 +15,12 @@ def read_pdf(pdf_path):
     except Exception as e:
         return []
 
-#regular expression to get all the urls, returned as a list
+#regular expression to get all the code_urls, returned as a list
 def get_git_urls(text):
     """
     Returns
     -------
-    List Strings (urls)
+    List Strings (code_urls)
 
     """
     urls_github = re.findall(r'(https?://github.com/\S+)', text)
@@ -28,7 +28,7 @@ def get_git_urls(text):
     # urls_zenodo = re.findall(r'(https?://zenodo.org/\S+)', text)
     # urls_bitbucket = re.findall(r'(https?://bitbucket.org/\S+)', text)
     # urls_sourceforge = re.findall(r'(https?://sourceforge.net/\S+)', text)
-    # create a list with all the urls found
+    # create a list with all the code_urls found
     urls = urls_github + urls_gitlab
     return urls
 
@@ -65,10 +65,10 @@ def rank_elements(url_list):
 
 def ranked_git_url(pdf_data):
     """
-    Creates  ranked list of github urls and count pairs or false if none are available
+    Creates  ranked list of github code_urls and count pairs or false if none are available
     Returns
     -------
-    List Strings (urls)
+    List Strings (code_urls)
     --
     Else (none are found)
         False
@@ -111,7 +111,7 @@ def make_Pdf_Obj(pdf_path):
     Takes pdf path, opens pdf, and
     Creates a paper_obj:
         Title: First extracted line (has fail rate)
-        github_urls = extracted and ranked github urls from pdf as list
+        github_urls = extracted and ranked github code_urls from pdf as list
         doi = filename converted to doi formated, it is checked before if it is correct
     Returns
     -------
@@ -124,7 +124,7 @@ def make_Pdf_Obj(pdf_path):
         pdf_file_name = get_file_name(pdf_path)
         doi = is_filename_doi(pdf_file_name)
         arxiv = None
-        pdf = PaperObj(pdf_title,github_urls,doi,arxiv,pdf_file_name,pdf_path)
+        pdf = PaperObj(pdf_title, github_urls, doi, arxiv, pdf_file_name, pdf_path)
         return pdf
     except Exception as e:
         print(str(e))

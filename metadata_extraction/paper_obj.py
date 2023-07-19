@@ -3,9 +3,9 @@ import re
 from utils.regex import str_to_doiID, str_to_arxivID
 
 class PaperObj:
-    def __init__(self, title, urls, doi, arxiv, file_name, file_path):
+    def __init__(self, title, code_urls, doi, arxiv, file_name, file_path):
         self._title = title
-        self._urls = urls
+        self._code_urls = code_urls
         self._doi = str_to_doiID(doi)
         self._arxiv = str_to_arxivID(arxiv)
         self._file_name = file_name
@@ -20,12 +20,12 @@ class PaperObj:
         self._title = value
 
     @property
-    def urls(self):
-        return self._urls
+    def code_urls(self):
+        return self._code_urls
 
-    @urls.setter
-    def urls(self, value):
-        self._urls = value
+    @code_urls.setter
+    def code_urls(self, value):
+        self._code_urls = value
 
     @property
     def doi(self):
@@ -62,7 +62,7 @@ class PaperObj:
     def to_dict(self):
         return {
             'title': self._title,
-            'urls': self._urls,
+            'code_urls': self._code_urls,
             'doi': self._doi,
             'arxiv': self.arxiv,
             'file_name': self._file_name,

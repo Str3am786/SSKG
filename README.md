@@ -55,7 +55,7 @@ To execute the pipeline, make sure you are in the ``pdf_info_extractor`` directo
 
 ### Modelado (Modelling)
 
-Once the urls have been extracted and the repositories downloaded.  We can the proceed to check whether or not the pdf/software repository is "Bi-directional". This is done by using bidireccional.py 
+Once the code_urls have been extracted and the repositories downloaded.  We can the proceed to check whether or not the pdf/software repository is "Bi-directional". This is done by using bidireccional.py 
 
 
 

@@ -118,7 +118,7 @@ def evalutate_corpus_uni():
     return result
 def corpus_result_json(output_folder):
     result = evalutate_corpus()
-    with open(output_folder + "/" + "corpus_eval.json", 'w+') as out_file:
+    with open(output_folder + "/" + "corpus_eval_bidir.json", 'w+') as out_file:
         json.dump(result, out_file, sort_keys=True, indent=4,
                       ensure_ascii=False)
 

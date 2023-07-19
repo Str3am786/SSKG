@@ -1,0 +1,15 @@
+{
+    "10.1016/j.compbiomed.2019.05.002": {
+        "arxiv": "1906.03720",
+        "code_urls": [
+            [
+                "https://github.com/mateuszbuda/brain-segmentation",
+                2
+            ]
+        ],
+        "doi": "10.1016/j.compbiomed.2019.05.002",
+        "file_name": "10-DOT-1016_j-DOT-compbiomed-DOT-2019-DOT-05-DOT-002.pdf",
+        "file_path": "./PDFs/10-DOT-1016_j-DOT-compbiomed-DOT-2019-DOT-05-DOT-002.pdf",
+        "title": "Association of genomic subtypes of lower-grade gliomas with shape features automatically extracted by a deep learning algorithm"
+    }
+}

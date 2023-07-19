@@ -26,6 +26,13 @@ def meta_to_dwnldd(metadataObj, output_dir):
 
 
 def dwnldd_dictionary(dwnldd_obj):
+    """
+    @Param dwnldd_obj
+    ----
+    :returns 
+    Dictionary of Downloaded Dictionary
+    K: is the DOI V: Dictionary of downloaded Object
+    """
     return {dwnldd_obj.doi: dwnldd_obj.to_dict()}
 
 
@@ -39,11 +46,25 @@ def downloadedDic_to_downloadedObj(dwnldd_dict):
 
 
 def metaDict_to_downloaded(meta_dict, output_dir):
+    '''
+    @Param meta_dict metaObj as a dictionary
+    @Param output_dir where the pdf will be downloaded
+    ----
+    :return
+    downloadedObj
+    '''
     meta = metaDict_to_metaObj(meta_dict)
     return meta_to_dwnldd(metadataObj=meta, output_dir=output_dir)
 
 
 def metaJson_to_downloaded_dic(meta_json, output_dir):
+    '''
+    @Param meta_json takes json of metadata objects,
+    @Param output_dir where the pdfs will be downloaded
+    -----
+    :returns
+    Dictionary of downloaded dictionaries
+    '''
     result = {}
     try:
         with open(meta_json, 'r') as f:
@@ -57,6 +78,13 @@ def metaJson_to_downloaded_dic(meta_json, output_dir):
     return result
 
 def metaJson_to_downloadedJson(meta_json, output_dir):
+    '''
+    @Param meta_json takes json of metadata objects,
+    @Param output_dir where the pdfs will be downloaded and the output JSON will be put
+    -----
+    :returns
+    path to JSON of downloaded dictionaries
+    '''
     dict = metaJson_to_downloaded_dic(meta_json, output_dir)
     output_path = output_dir + "/" + "downloaded_metadata.json"
     with open(output_path, 'w+') as out_file:

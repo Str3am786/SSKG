@@ -70,11 +70,27 @@ def dois_to_metaDicts(list_of_dois):
 
 
 def doi_to_metaJson(doi,output_folder):
+    """
+    Input
+    single doi
+    ------
+    output
+    :returns
+    path to JSON
+    """
     meta_dict = doi_to_metaDict(doi)
     return create_meta_json(meta_dict,output_folder)
 
 
 def dois_to_metaJson(doi,output_folder):
+    """
+    Input
+    multiple dois
+    ------
+    output
+    :returns
+    path to JSON
+    """
     meta_dict = dois_to_metaDicts(doi)
     return create_meta_json(meta_dict,output_folder)
 

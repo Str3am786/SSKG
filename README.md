@@ -52,7 +52,7 @@ Downloaded_obj is a representation of downloaded papers which have not been proc
 Encompasses petitions to OpenAlex for fetching the paper's metadata.
 MetadataObj contains the metadata from  OpenAlex: doi, arxiv and its title.
 Tika scripts to open a pdf and extract its urls are also found witin this module.
-PaperObj is created once the downloadedObj's pdf has been processed to locate all its urls. Contains: doi, arxiv, title, file_path, code_urls.
+PaperObj is created once the downloadedObj's pdf has been processed to locate all its urls. Contains: doi, arxiv, title, file_path, urls.
 Finally, the necessary functions dowloading a repository and extracting its metadata with SOMEF
 
 ### Modelling

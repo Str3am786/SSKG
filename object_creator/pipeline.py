@@ -1,7 +1,7 @@
 from object_creator.doi_to_metadata import doi_to_metadataObj
 from object_creator.create_downloadedObj import meta_to_dwnldd
 from object_creator.downloaded_to_paperObj import downloaded_to_paperObj
-from object_creator.paper_to_directionality import check_bidir
+from object_creator.paper_to_directionality import check_bidir, check_unidir
 from object_creator.paper_obj_utils import paperDict_to_paperObj
 import json
 import os
@@ -71,6 +71,22 @@ def load_json(path):
 def dois_txt_to_bidir_json(dois_txt, output_dir):
     output_path = os.path.join(output_dir,"bidir.json")
     return dict_to_json(pipeline_txt_dois_bidir(dois_txt,output_dir),output_path)
+
+
+def from_papers_json_to_unidir(papers_json, output_dir):
+    result = {}
+    try:
+        paper_dicts = load_json(papers_json)
+    except Exception as e:
+        print("Error while trying to load the Papers JSON")
+        print(str(e))
+    for doi in paper_dicts:
+        paperDict = safe_dic(paper_dicts, doi)
+        paper = paperDict_to_paperObj(paperDict)
+        unidir = check_unidir(paper, output_dir)
+        if unidir:
+            result.update(unidir)
+    return dict_to_json(result,output_path=os.path.join(output_dir,"unidir.json"))
 
 
 

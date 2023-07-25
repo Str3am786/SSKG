@@ -23,8 +23,8 @@ def get_git_urls(text):
     List Strings (urls)
 
     """
-    urls_github = re.findall(r'(https?://github.com/\S+)', text)
-    urls_gitlab = re.findall(r'(https?://gitlab.com/\S+)', text)
+    urls_github = re.findall(r'(https?://github.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)', text)
+    urls_gitlab = re.findall(r'(https?://gitlab.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)', text)
     # urls_zenodo = re.findall(r'(https?://zenodo.org/\S+)', text)
     # urls_bitbucket = re.findall(r'(https?://bitbucket.org/\S+)', text)
     # urls_sourceforge = re.findall(r'(https?://sourceforge.net/\S+)', text)

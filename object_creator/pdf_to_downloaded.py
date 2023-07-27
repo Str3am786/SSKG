@@ -100,7 +100,7 @@ def pdfs_to_downloaded_dics(directory):
         file_path = os.path.join(directory,file)
         dwnldd = pdf_to_downloaded_dic(file_path)
         if dwnldd:
-            result.update(downloaded_dictionary(dwnldd))
+            result.update(dwnldd)
             num_pdfs += 1
             print("Number of pdfs/downloaded Objects made = " + str(num_pdfs))
     return result

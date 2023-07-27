@@ -27,6 +27,23 @@ def downloaded_to_paperObj(downloadedObj):
         print(str(e))
         print("Error while trying to read from the pdf")
 
+def dwnlddDic_to_paper_dic(downloadeds_dic):
+    result = {}
+    count = 0
+    for doi in downloadeds_dic:
+        dwnldd_dict = safe_dic(downloadeds_dic, doi)
+        dwnObj = downloadedDic_to_downloadedObj(dwnldd_dict=dwnldd_dict)
+        paper = downloaded_to_paperObj(dwnObj)
+        result.update({doi: paper.to_dict()})
+        print(doi)
+        count += 1
+        print("Processed %s, \n Total Processed: %s Papers" %(doi,count))
+    return result
+
+def dwnlddDic_to_paperJson(downloadeds_dic,output_dir):
+    pp_dic = dwnlddDic_to_paper_dic(downloadeds_dic)
+    return pp_dic_to_json(pp_dic,output_dir)
+
 def dwnlddJson_to_paper_dic(dwnldd_json):
     """
     @Param dwnldd_json Json of the downloaded Objects
@@ -37,19 +54,10 @@ def dwnlddJson_to_paper_dic(dwnldd_json):
     result = {}
     try:
         with open(dwnldd_json, 'r') as f:
-            dwnldd_dict = json.load(f)
+            dwnldd_json = json.load(f)
     except Exception as e:
         print(str(e) + "Error while opening metadata json")
-    count = 0
-    for doi in dwnldd_dict:
-        dwnldd_dict = safe_dic(dwnldd_dict, doi)
-        dwnObj = downloadedDic_to_downloadedObj(dwnldd_dict=dwnldd_dict)
-        paper = downloaded_to_paperObj(dwnObj)
-        result.update({paper.doi: paper.to_dict()})
-        print(doi)
-        count += 1
-        print("Processed %s, \n Total Processed: %s Papers" %(doi,count))
-    return result
+    return dwnlddDic_to_paper_dic(downloadeds_dic=dwnldd_json)
 
 def dwnlddJson_to_paperJson(dwnldd_json, output_dir):
     """
@@ -69,7 +77,7 @@ def pp_dic_to_json(pp_dic, output_dir):
     :return
     Path to the json
     """
-    output_path = os.path.join(output_dir,"paper_metadata.json")
+    output_path = os.path.join(output_dir,"processed_metadata.json")
     with open(output_path, 'w+') as out_file:
         json.dump(pp_dic, out_file, sort_keys=True, indent=4,
                   ensure_ascii=False)

@@ -25,7 +25,7 @@ def meta_to_dwnldd(metadataObj, output_dir):
         return None
 
 
-def dwnldd_dictionary(dwnldd_obj):
+def downloaded_dictionary(dwnldd_obj):
     """
     @Param dwnldd_obj
     ----
@@ -35,6 +35,12 @@ def dwnldd_dictionary(dwnldd_obj):
     """
     return {dwnldd_obj.doi: dwnldd_obj.to_dict()}
 
+def create_downloaded_json(downloaded_dict,output_folder):
+    output_path = output_folder + "/" + "downloaded_metadata.json"
+    with open(output_path, 'w+') as out_file:
+        json.dump(downloaded_dict, out_file, sort_keys=True, indent=4,
+                  ensure_ascii=False)
+    return output_path
 
 def downloadedDic_to_downloadedObj(dwnldd_dict):
     title = safe_dic(dwnldd_dict, "title")

@@ -109,6 +109,8 @@ def pdf_to_downloaded_dic(file_path):
     file_name = os.path.basename(file_path)
     doi = filename_to_doi_convert(file_name)
     meta = doi_to_metadataObj(doi)
+    if not meta:
+        return None
     return {doi:{
     'title': meta.title,
     'doi': meta.doi,

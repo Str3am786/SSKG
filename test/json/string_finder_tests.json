@@ -1,0 +1,8 @@
+{
+  "vish": {
+    "test1": "ging/vish_editor",
+    "test2": "ViSH Editor is a HTML5 application to create web presentations in a simple and friendly way.",
+    "test3": "ViSH Editor is an open source e-Learning authoring tool to create web presentations in a simple and friendly way.  \\n   \\nThe client side has been developed using **HTML5**, **CSS** and **JavaScript**. The source code is available in this same repository.  \\nA server side implementation has been developed in **Ruby on Rails**. The source code of this implementation is available in the [ViSH repository](https://github.com/ging/vish/), and it is also open source.   \\n\n",
+    "test4": "\"Follow the ViSH Editor news on our [blog](http://vishub.wordpress.com).   \\n"
+  }
+}

@@ -3,13 +3,15 @@ import unittest
 from unittest import TestCase, mock
 import json
 from pathlib import Path
-from pathlib import Path
 from shutil import rmtree
+
+from metadata_extraction.paper_obj import PaperObj
 from object_creator.doi_to_metadata import *
 from object_creator.create_downloadedObj import *
 from object_creator.downloaded_to_paperObj import dwnlddJson_to_paperJson
 from object_creator.pdf_to_downloaded import *
 from object_creator.pipeline import  *
+from modelling.unidirectionality import *
 
 def wipe_directory(directory_path):
     for path in Path(directory_path).glob("**/*"):
@@ -325,3 +327,72 @@ class test_paperJson_to_bidir(TestCase):
     def test_ppJson_to_bidir(self):
         wipe_directory("./pipeline_folder")
         from_papers_json_to_bidir("./json/paperTest.json","./pipeline_folder")
+
+
+class test_unidir(TestCase):
+
+    #SubString finder set to 85
+    def test_substring_1(self):
+        to_find = ["vish_editor", "ViSH_Editor", "vish editor", "vishEdit", "vishEditor", "ViSh_EdItOR"]
+        testJson = "./json/string_finder_tests.json"
+        with open(testJson, 'r') as f:
+            jayson = json.load(f)
+        vish_test = jayson["vish"]
+        for subString in to_find:
+            for test in vish_test:
+                text = vish_test[test]
+                if not is_substring_found(subString, text):
+                    self.assertTrue(False)
+    def test_substring_2(self):
+        to_find = "vishesh_editor" #average score of 73 (71,71,77)
+        testJson = "./json/string_finder_tests.json"
+        with open(testJson, 'r') as f:
+            jayson = json.load(f)
+        vish_test = jayson["vish"]
+        for test in vish_test:
+            text = vish_test[test]
+            if not is_substring_found(to_find, text):
+                self.assertTrue(True)
+    def test_substring_3(self):
+        to_find = "HippoUnit_demo" #Score of 64 Will not find the String
+        text = "HippoUnit: A software tool for the automated testing and systematic comparison of detailed models of hippocampal neurons based on electrophysiological data"
+        result = is_substring_found(to_find, text)
+
+    def test_substring_4(self):
+        to_find = "Perturbation_in_dynamical_models" #Score of 88
+        text = "Perturbations in dynamical models of whole-brain activity dissociate between the level and stability of consciousness"
+        self.assertTrue(is_substring_found(to_find, text))
+
+    def test_substring_5(self):
+        to_find = "CovidH_TNG" #Score of 67
+        text = "Integrating psychosocial variables and societal diversity in epidemic models for predicting COVID-19 transmission dynamics"
+        self.assertFalse(is_substring_found(to_find, text))
+
+    def test_substring_6(self):
+        to_find = "DISORDER" #https://github.com/mriphysics/DISORDER 10.1101/2020.09.09.20190777
+        text = "Evaluation of DISORDER: retrospective image motion correction for volumetric brain MRI in a pediatric setting"
+        self.assertTrue(is_substring_found(to_find, text))
+
+    def test_substring_7(self):
+        to_find = "AtomREM" #Found directly
+        text = "AtomREM: Non-empirical seeker of the minimum energy escape paths on many-dimensional potential landscapes without coarse graining"
+        self.assertTrue(is_substring_found(to_find, text))
+
+    def test_substring_8(self):
+        to_find = "AtomREM - Atomistic Rare Event Manager" #Score 53
+        text = "AtomREM: Non-empirical seeker of the minimum energy escape paths on many-dimensional potential landscapes without coarse graining"
+        self.assertFalse(is_substring_found(to_find, text))
+
+    def test_unidir_1(self):
+        #Should return that it is Unidir
+        title = "AtomREM: Non-empirical seeker of the minimum energy escape paths on many-dimensional potential landscapes without coarse graining"
+        paper = PaperObj(title,urls=None,doi=None,arxiv=None,file_name=None,file_path=None)
+        repo_dir = "./json/atomrem.json"
+        self.assertTrue(is_repo_unidir(paperObj=paper, repo_json=repo_dir))
+
+    def test_unidir_2(self):
+        #Should return that it is Unidir (full title within the description
+        title = "Algorithms to compute the Burrows-Wheeler Similarity Distribution"
+        paper = PaperObj(title,urls=None,doi=None,arxiv=None,file_name=None,file_path=None)
+        repo_dir = "./json/bwsd.json"
+        self.assertTrue(is_repo_unidir(paperObj=paper, repo_json=repo_dir))

@@ -42,3 +42,11 @@ def is_filename_doi(file_name):
 
     matches = re.findall(pattern, file_name)
     return matches
+
+def filename_to_doi_convert(file_name):
+    possDOI = file_name.replace('_', '/').replace('.pdf', '').replace('-DOT-', '.')
+    pattern = r'\b(10[.][0-9]{4,}(?:[.][0-9]+)*/(?:(?!["&\'<>])\S)+)\b'
+    match = re.search(pattern,possDOI)
+    if match:
+        return match.group(1)
+    return None

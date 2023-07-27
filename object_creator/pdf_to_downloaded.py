@@ -1,11 +1,14 @@
 
-from utils.regex import is_filename_doi, str_to_arxivID
+from utils.regex import is_filename_doi, str_to_arxivID, is_filename_doi, filename_to_doi_convert
 from metadata_extraction.api.openAlex_api_queries import query_openalex_api
 from utils.regex import str_to_arxivID,str_to_doiID
 from download_pdf.downloaded_obj import DownloadedObj
-from .create_downloadedObj import dwnldd_dictionary
+from .create_downloadedObj import downloaded_dictionary
 import os.path
 import json
+
+from .doi_to_metadata import doi_to_metadataObj
+
 
 #WARNING this is for adrians pdfs
 #if you dont know who adrian is this script is not of interest
@@ -62,7 +65,7 @@ def adrian_pdfs_2dictionary(directory):
         file_path = os.path.join(directory,file)
         dwnldd = adrian_to_downloaded(file_path)
         if dwnldd:
-            result.update(dwnldd_dictionary(dwnldd))
+            result.update(downloaded_dictionary(dwnldd))
             num_pdfs += 1
             print("Number of pdfs/downloaded Objects made = " + str(num_pdfs))
     return result
@@ -76,6 +79,44 @@ def adrian_pdfs_2Json(directory):
         json.dump(dictJson, out_file, sort_keys=True, indent=4,
                   ensure_ascii=False)
     return output_path
+def pdfs_to_downloaded_Json(directory):
+    dictJson = pdfs_to_downloaded_dics(directory)
+    if not dictJson:
+        return None
+    output_path = directory + "/" + "pdf_metadata.json"
+    with open(output_path, 'w+') as out_file:
+        json.dump(dictJson, out_file, sort_keys=True, indent=4,
+                  ensure_ascii=False)
+    return output_path
+def pdfs_to_downloaded_dics(directory):
+    result = {}
+    num_pdfs = 0
+    try:
+        list = os.listdir(directory)
+    except Exception as e:
+        print(str(e))
+        return None
+    for file in list:
+        file_path = os.path.join(directory,file)
+        dwnldd = pdf_to_downloaded_dic(file_path)
+        if dwnldd:
+            result.update(downloaded_dictionary(dwnldd))
+            num_pdfs += 1
+            print("Number of pdfs/downloaded Objects made = " + str(num_pdfs))
+    return result
+
+def pdf_to_downloaded_dic(file_path):
+    file_name = os.path.basename(file_path)
+    doi = filename_to_doi_convert(file_name)
+    meta = doi_to_metadataObj(doi)
+    return {doi:{
+    'title': meta.title,
+    'doi': meta.doi,
+    'arxiv': meta.arxiv,
+    'file_name': file_name,
+    'file_path': file_path
+    }}
+
 def safe_dic(dic, key):
     try:
         return dic[key]

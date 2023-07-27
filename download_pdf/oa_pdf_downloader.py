@@ -36,7 +36,7 @@ def download_pdf(url,name_of_pdf, output_dir):
             try:
                 pdf = requests.get(json_idk['best_oa_location']['url'])
                 if pdf.status_code != 200:
-                    print("Request Rejected with code" + str(pdf.status_code))
+                    print("Request Rejected with code " + str(pdf.status_code))
                     pdf = backup(json_idk)
             except:
                 print("Error while trying to get the best_oa_location")

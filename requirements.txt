@@ -1,7 +1,8 @@
-arxiv==1.4.7
+arxiv==1.4.8
 bibtexparser==1.4.0
 fuzzywuzzy==0.18.0
 jaro_winkler==2.0.3
-Requests==2.31.0
-tika==1.24
+tika==2.6.0
 somef==0.9.4
+beautifulsoup4==4.12.2
+python-Levenshtein==0.21.1

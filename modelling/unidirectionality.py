@@ -1,17 +1,34 @@
-import os
 import json
-import jaro
-import arxiv
-import requests
-from bs4 import BeautifulSoup
-from metadata_extraction.somef_extraction.somef_extractor import (
-    find_doi_citation,
-    description_finder
-)
+from fuzzywuzzy import fuzz
+
 
 def load_json(path):
     with open(path, 'r') as f:
         return json.load(f)
+def is_substring_found(substring, larger_string):
+    """
+    @Param substring: The string you want to find
+    @Param larger_string: The string where you will look for the substring
+    :returns
+    True or False depending if its been found or not
+    """
+    index = larger_string.lower().find(substring.lower())
+    if index != -1:
+        return True
+    # If the exact substring is not found, try fuzzy matching
+    max_ratio = 0
+    for i in range(len(larger_string) - len(substring) + 1):
+        ratio = fuzz.partial_ratio(substring.lower(), larger_string[i:i+len(substring)].lower())
+        if ratio > max_ratio:
+            max_ratio = ratio
+    print(max_ratio)
+    if max_ratio > 85:  # Adjust the threshold based on your requirement
+        return True
+    else:
+        return False
+
+def find_substring(substring, larger_string):
+    return
 
 def _iterate_results(results, string_2_find):
     if not results:
@@ -19,26 +36,28 @@ def _iterate_results(results, string_2_find):
     for result in results:
         value = safe_dic(safe_dic(result,"result"),'value')
         if value:
-            score = jaro.jaro_winkler_metric(value,string_2_find)
-            if score > 0.8 or string_2_find in value:
-                return True
+            return is_substring_found(string_2_find,value) or is_substring_found(value,string_2_find)
     return False
-def is_repo_unidir(pdfObj, repo_json):
+def is_repo_unidir(paperObj, repo_json):
     try:
         repo_data = load_json(repo_json)
     except:
         print("Error while opening the repository file")
         return False
-    #Test if the titles match.
-    results = safe_dic(repo_data,'full_title')
-    unidir = _iterate_results(results,pdfObj.title)
-    # test if within the description
+    #Is short title in paperTitle?
+    results = safe_dic(repo_data,'name')
+    unidir = _iterate_results(results, paperObj.title)
+    if not unidir:
+        #Repo title is close to the repo full title
+        results = safe_dic(repo_data,'full_title')
+        unidir = _iterate_results(results, paperObj.title)
+    # See if paper title is within the description
     if not unidir:
         results = safe_dic(repo_data,'description')
-        unidir = _iterate_results(results,pdfObj.title)
+        unidir = _iterate_results(results, paperObj.title)
     if not unidir:
         results = safe_dic(repo_data,'citation')
-        unidir = _iterate_results(results, pdfObj.title)
+        unidir = _iterate_results(results, paperObj.title)
     return unidir
 
 def safe_dic(dic, key):

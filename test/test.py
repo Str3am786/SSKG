@@ -243,7 +243,7 @@ class test_bidir(TestCase):
         doi = "10.18653/v1/2020.emnlp-main.495"
         paper = doi_to_paper(doi, "./pipeline_folder")
         result = check_paper_directionality(paper, True, './pipeline_folder')
-        expected_result = "https://github.com/AI-secure/T3/"
+        expected_result = "https://github.com/AI-secure/T3"
         self.assertTrue(expected_result in result[doi])
     def test_doi_2(self):
         wipe_directory("./pipeline_folder")
@@ -386,13 +386,13 @@ class test_unidir(TestCase):
     def test_unidir_1(self):
         #Should return that it is Unidir
         title = "AtomREM: Non-empirical seeker of the minimum energy escape paths on many-dimensional potential landscapes without coarse graining"
-        paper = PaperObj(title,urls=None,doi=None,arxiv=None,file_name=None,file_path=None)
+        paper = PaperObj(title,urls=None,doi=None,arxiv=None,file_name=None,file_path=None,abstract=None)
         repo_dir = "./json/atomrem.json"
         self.assertTrue(is_repo_unidir(paperObj=paper, repo_json=repo_dir))
 
     def test_unidir_2(self):
         #Should return that it is Unidir (full title within the description
         title = "Algorithms to compute the Burrows-Wheeler Similarity Distribution"
-        paper = PaperObj(title,urls=None,doi=None,arxiv=None,file_name=None,file_path=None)
+        paper = PaperObj(title,urls=None,doi=None,arxiv=None,file_name=None,file_path=None,abstract=None)
         repo_dir = "./json/bwsd.json"
         self.assertTrue(is_repo_unidir(paperObj=paper, repo_json=repo_dir))

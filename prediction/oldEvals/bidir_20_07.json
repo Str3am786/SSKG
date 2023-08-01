@@ -36,9 +36,6 @@
     "10.1109/iceccme55909.2022.9988605": [
         "https://github.com/ika-rwth-aachen/DEviLOG"
     ],
-    "10.1109/icse43902.2021.00072": [
-        "https://github.com/vasumv/bonsai-fuzzing"
-    ],
     "10.1109/itsc.2019.8917177": [
         "https://github.com/lukasliebel/MultiDepth"
     ],
@@ -62,7 +59,7 @@
         "https://github.com/cl-tohoku/eval-via-selection"
     ],
     "10.18653/v1/2020.emnlp-main.495": [
-        "https://github.com/AI-secure/T3"
+        "https://github.com/AI-secure/T3/"
     ],
     "10.18653/v1/2021.findings-emnlp.116": [
         "https://github.com/YunqiuXu/H-KGA"

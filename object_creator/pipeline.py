@@ -28,6 +28,16 @@ def pipeline_single_bidir(doi,output_dir):
     paper = doi_to_paper(doi,output_dir)
     result = check_bidir(paper,output_dir)
     return result
+def pipeline_single_unidir(doi,output_dir):
+    '''
+    @Param doi: doi
+    @Param output_dir: where the pdf will be downloaded to
+    :returns
+    dictionary with doi and the urls found that are unidirectional for that doi
+    '''
+    paper = doi_to_paper(doi,output_dir)
+    result = check_unidir(paper,output_dir)
+    return result
 
 def pipeline_multiple_bidir(list_dois, output_dir):
     '''
@@ -48,6 +58,25 @@ def pipeline_multiple_bidir(list_dois, output_dir):
     except Exception as e:
         print(str(e))
         return None
+def pipeline_multiple_unidir(list_dois, output_dir):
+    '''
+    @Param list_dois: list of dois
+    @Param output_dir: where the pdf will be downloaded to
+    :returns
+    dictionary with dois and the urls found that are unidirectional for that doi
+    '''
+    result = {}
+    try:
+        for doi in list_dois:
+            paper = doi_to_paper(doi,output_dir)
+            if not paper:
+                continue
+            if (unidir:=(check_unidir(paper,output_dir))):
+                result.update(unidir)
+        return result
+    except Exception as e:
+        print(str(e))
+        return None
 
 def pipeline_txt_dois_bidir(dois_txt, output_dir):
     '''
@@ -62,6 +91,20 @@ def pipeline_txt_dois_bidir(dois_txt, output_dir):
     except:
         print("Error while opening the txt")
     return pipeline_multiple_bidir(dois,output_dir)
+
+def pipeline_txt_dois_unidir(dois_txt, output_dir):
+    '''
+    @Param dois_txt: dois seperated by \n within a txt
+    @Param output_dir: where the pdf will be downloaded to
+    :returns
+    dictionary with dois and the urls found that are bidirectional for that doi
+    '''
+    try:
+        with open(dois_txt, 'r') as file:
+            dois = file.read().splitlines()
+    except:
+        print("Error while opening the txt")
+    return pipeline_multiple_unidir(dois,output_dir)
 
 def from_papers_json_to_bidir(papers_json, output_dir):
     '''
@@ -112,6 +155,15 @@ def dois_txt_to_bidir_json(dois_txt, output_dir):
     '''
     output_path = os.path.join(output_dir,"bidir.json")
     return dict_to_json(pipeline_txt_dois_bidir(dois_txt,output_dir),output_path)
+def dois_txt_to_unidir_json(dois_txt, output_dir):
+    '''
+    @Param dois_txt: dois seperated by \n within a txt
+    @Param output_dir: where the pdf will be downloaded to
+    :returns
+    path to output JSON
+    '''
+    output_path = os.path.join(output_dir,"unidir_20_07.json")
+    return dict_to_json(pipeline_txt_dois_unidir(dois_txt,output_dir),output_path)
 
 
 def from_papers_json_to_unidir(papers_json, output_dir):
@@ -133,7 +185,7 @@ def from_papers_json_to_unidir(papers_json, output_dir):
         unidir = check_unidir(paper, output_dir)
         if unidir:
             result.update(unidir)
-    return dict_to_json(result,output_path=os.path.join(output_dir,"unidir.json"))
+    return dict_to_json(result,output_path=os.path.join(output_dir,"unidir_20_07.json"))
 
 
 

@@ -1,0 +1,20 @@
+{
+    "10.1109/jstsp.2016.2617302": {
+        "abstract": null,
+        "arxiv": null,
+        "doi": "10.1109/jstsp.2016.2617302",
+        "file_name": "10.1109_jstsp.2016.2617302.pdf",
+        "file_path": "./pdfs/10.1109_jstsp.2016.2617302.pdf",
+        "title": "MultiView Perceptual Disparity Model for Super MultiView Video",
+        "urls": "Abstract—Super MultiView (SMV) video display is the most promising technology for 3-D glasses-free visualization. Although only a few prototypes are currently available, the research on tech-nical and perceptual factors related to this approach is crucial. This paper presents a novel model to capture the subjective per-ception of SMV, called the MultiView Perceptual Disparity Model (MVPDM), by means of a parametrization of the relation between: 1) capture and scene settings, and 2) perception of speed comfort and smoothness in the viewpoint transition. The MVPDM is based on a novel parameter: the perceptual disparity, that captures ap-propriately the perceptual cues specific to SMV visualization. The model has been validated using the results of subjective tests on re-alistic SMV content as benchmark. On the one hand, the subjective results show a high correlation with the MVPDM parametrization, outperforming previous approaches. On the other hand, this test provides useful information about the parameters of the SMV se-quences that should be used to guarantee satisfactory visual expe-rience. Thus, the MVPDM constitutes a valuable tool for the design of subjective evaluation and content creation of SMV. Index Terms—Perceptual model, quality of experience, subjective evaluation, Super MultiView video. I. INTRODUCTION S EEKING the creation of immersive video displays with depth perception, a great development of 3D display tech-nology has taken place in the last years. First, mainly leading to the arrival of stereoscopic displays to the consumer market. However, stereoscopic systems have not achieved total accep-tance of consumers, due to reasons including: the lack of high quality 3D video content, the need of wearing specific glasses, and the absence of motion parallax cues entailing a deficient immersive experience. Although the next generation of mul-tiview auto-stereoscopic displays solves the glasses-free and motion parallax issues up to a certain extent, it can be argued that auto-stereoscopic display technology does not provide a satisfactory Quality of Experience (QoE) for its price [1]. In particular, in addition to the loss of resolution needed to provide multiple views, other critical factors affect the user experience and thus limit the acceptance of auto-stereoscopic monitors. For example: the limited extension of the comfortable viewing cone, the discontinuous transition through viewpoints caused by a low view density, and the accommodation-vergence conflict (the viewer's eyes focus on the screen while they converge in the plane where the objects are projected, which may cause visual discomfort) [2]. Therefore, an intense research work towards advanced immersive, and glasses-free, display technologies has continued over these years [3]. Holographic, integral imaging, and Super MultiView (SMV) displays are being studied and developed seeking the possibility of offering a high 3D QoE. SMV displays seem to be the most promising glasses-free 3D visualization technology. They fulfill the so-called SMV condition [4], in which the viewing zone pitch (distance be-"
+    },
+    "10.3389/fnmol.2019.00267": {
+        "abstract": null,
+        "arxiv": null,
+        "doi": "10.3389/fnmol.2019.00267",
+        "file_name": "10.3389_fnmol.2019.00267.pdf",
+        "file_path": "./pdfs/10.3389_fnmol.2019.00267.pdf",
+        "title": "Diverse Neuron Properties and Complex Network Dynamics in the Cerebellar Cortical Inhibitory Circuit",
+        "urls": null
+    }
+}

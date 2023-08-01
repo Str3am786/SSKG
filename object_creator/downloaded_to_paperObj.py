@@ -1,4 +1,4 @@
-from metadata_extraction.github_extractor_tika import ranked_git_url, read_pdf
+from metadata_extraction.github_extractor_tika import ranked_git_url, read_pdf, get_possible_abstract
 from metadata_extraction.paper_obj import PaperObj
 from object_creator.create_downloadedObj import downloadedDic_to_downloadedObj
 import json
@@ -17,12 +17,13 @@ def downloaded_to_paperObj(downloadedObj):
     try:
         pdf_data = read_pdf(downloadedObj.file_path)
         urls = ranked_git_url(pdf_data)
+        abstract = get_possible_abstract(pdf_data)
         title = downloadedObj.title
         doi = downloadedObj.doi
         arxiv = downloadedObj.arxiv
         file_name = downloadedObj.file_name
         file_path = downloadedObj.file_path
-        return PaperObj(title, urls, doi, arxiv, file_name, file_path)
+        return PaperObj(title, urls, doi, arxiv, abstract, file_name, file_path)
     except Exception as e:
         print(str(e))
         print("Error while trying to read from the pdf")

@@ -14,8 +14,11 @@
     "10.1051/0004-6361/201935695": [
         "https://github.com/astro-alexis/magnotron-tts"
     ],
-    "10.1051/0004-6361/202039603": [
-        "http://github.com/mianbreton/RR_code"
+    "10.1063/5.0015950": [
+        "https://github.com/SilviaAmAm/squalane_paper_si"
+    ],
+    "10.1093/gigascience/giab055": [
+        "https://github.com/neurodatascience/dataset_shift_biomarkers"
     ],
     "10.1101/2020.04.12.038158": [
         "https://github.com/ml-jku/DeepRC"
@@ -26,6 +29,9 @@
     ],
     "10.1109/cvpr52688.2022.00822": [
         "https://github.com/Nik-V9/AirObject"
+    ],
+    "10.1109/iccv48922.2021.00150": [
+        "https://github.com/gistvision/PSVL"
     ],
     "10.1109/iccv48922.2021.00276": [
         "https://github.com/GangmingZhao/GraphFPN-Graph-Feature-Pyramid-Network-for-Object-Detection"
@@ -39,11 +45,42 @@
     "10.1109/icse43902.2021.00072": [
         "https://github.com/vasumv/bonsai-fuzzing"
     ],
+    "10.1109/ijcnn52387.2021.9533521": [
+        "https://github.com/MouradElHamri/OTP"
+    ],
     "10.1109/itsc.2019.8917177": [
         "https://github.com/lukasliebel/MultiDepth"
     ],
+    "10.1109/iwis56333.2022.9920762": [
+        "https://github.com/tranleanh/pocs-based-clustering"
+    ],
+    "10.1109/pacificvis48177.2020.3756": [
+        "https://github.com/khaled-rahman/BatchLayout"
+    ],
+    "10.1109/tit.2022.3222046": [
+        "https://github.com/Zhang-Fengzhuo/Active-LATHE"
+    ],
+    "10.1109/tkde.2022.3152585": [
+        "https://github.com/hpclab/efficient_nn_for_ltr"
+    ],
+    "10.1109/tsp.2022.3229948": [
+        "https://github.com/navid-naderi/StateAugmented_RRM_GNN"
+    ],
+    "10.1109/twc.2023.3244868": [
+        "https://github.com/ethanlq/SCMA-codebook"
+    ],
+    "10.1109/wacv56688.2023.00531": [
+        "https://github.com/btsmart/bootstrapping-label-noise"
+    ],
+    "10.1145/3318170.3318183": [
+        "https://github.com/illuhad/hipSYCL",
+        "https://github.com/CodeplaySoftware/SYCL-DNN"
+    ],
     "10.1145/3442381.3449934": [
         "https://github.com/Vvrep/MASTER-electric_vehicle_charging_recommendation"
+    ],
+    "10.1145/3485447.3511945": [
+        "https://github.com/THUDM/SelfKG"
     ],
     "10.1145/3488560.3498439": [
         "https://github.com/noveens/sampling_cf"
@@ -58,11 +95,17 @@
     "10.1145/3508352.3549415": [
         "https://github.com/momalab/e3"
     ],
+    "10.1145/3555552": [
+        "https://github.com/StanfordHCI/ContentModAudit_CodeRelease"
+    ],
     "10.18653/v1/2020.acl-main.55": [
         "https://github.com/cl-tohoku/eval-via-selection"
     ],
     "10.18653/v1/2020.emnlp-main.495": [
         "https://github.com/AI-secure/T3"
+    ],
+    "10.18653/v1/2021.emnlp-main.185": [
+        "https://github.com/wangruicn/DialogueCSE"
     ],
     "10.18653/v1/2021.findings-emnlp.116": [
         "https://github.com/YunqiuXu/H-KGA"
@@ -70,17 +113,22 @@
     "10.18653/v1/2021.findings-emnlp.60": [
         "https://github.com/ZurichNLP/segtest"
     ],
+    "10.18653/v1/2022.naacl-main.131": [
+        "https://github.com/iamoscar1/Multi_Encoder_Model_for_Political_Parody_Prediction"
+    ],
     "10.18653/v1/2022.naacl-main.207": [
         "https://github.com/aviclu/long-context-qa-contrast"
     ],
-    "10.21428/58320208.e46b7b81": [
-        "https://github.com/makerdao/awesome-makerdao",
-        "https://github.com/aklamun/Stablecoin_Deleveraging"
+    "10.2140/agt.2022.22.3577": [
+        "https://github.com/alice-mark/LatticePresentations"
     ],
-    "10.2478/pralin-2018-0002": [
-        "https://github.com/tensorflow/tensor2tensor"
+    "10.21428/58320208.e46b7b81": [
+        "https://github.com/aklamun/Stablecoin_Deleveraging"
     ],
     "10.31219/osf.io/dqz89": [
         "https://github.com/Mehrnoom/Cryptocurrency-Pump-Dump"
+    ],
+    "10.4204/eptcs.325.25": [
+        "https://github.com/wulfdewolf/lp2pb"
     ]
 }

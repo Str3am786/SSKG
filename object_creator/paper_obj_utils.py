@@ -7,7 +7,8 @@ def paperDict_to_paperObj(paper_dict):
     file_name = safe_dic(paper_dict,"file_name")
     file_path = safe_dic(paper_dict,"file_path")
     urls = safe_dic(paper_dict,"urls")
-    return PaperObj(title=title, urls=urls, doi=doi, arxiv=arxiv, file_name=file_name, file_path=file_path)
+    abstract = safe_dic(paper_dict,"abstract")
+    return PaperObj(title=title, urls=urls, doi=doi, arxiv=arxiv, file_name=file_name, file_path=file_path, abstract=abstract)
 
 
 def safe_dic(dic, key):

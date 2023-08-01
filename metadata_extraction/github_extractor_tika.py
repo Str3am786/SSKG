@@ -15,6 +15,26 @@ def read_pdf(pdf_path):
     except Exception as e:
         return []
 
+def find_abstract_index(pdf_data):
+    index = 0
+    for line in pdf_data:
+        if "abstract" in line.lower():
+            if index < len(pdf_data):
+                return index
+        index +=1
+def get_possible_abstract(pdf_data):
+    try:
+        index = find_abstract_index(pdf_data)
+        if index:
+            return ''.join(pdf_data[index:index+50])
+    except Exception as e:
+        print(e)
+
+def find_github_in_abstract(pdf_data):
+    abstract = get_possible_abstract(pdf_data)
+    if abstract:
+        return look_for_github_urls(abstract)
+
 #regular expression to get all the urls, returned as a list
 def get_git_urls(text):
     """

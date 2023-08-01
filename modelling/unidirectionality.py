@@ -31,7 +31,7 @@ def find_substring(substring, larger_string):
     return
 
 def _iterate_results(results, string_2_find):
-    if not results:
+    if (not results) or (not string_2_find):
         return False
     for result in results:
         value = safe_dic(safe_dic(result,"result"),'value')
@@ -51,6 +51,14 @@ def is_repo_unidir(paperObj, repo_json):
         #Repo title is close to the repo full title
         results = safe_dic(repo_data,'full_title')
         unidir = _iterate_results(results, paperObj.title)
+    if not unidir:
+        #Repo title is close to the repo full title
+        results = safe_dic(repo_data,'name')
+        unidir = _iterate_results(results, paperObj.abstract)
+    if not unidir:
+        #Repo title is close to the repo full title
+        results = safe_dic(repo_data,'full_title')
+        unidir = _iterate_results(results, paperObj.abstract)
     # See if paper title is within the description
     if not unidir:
         results = safe_dic(repo_data,'description')

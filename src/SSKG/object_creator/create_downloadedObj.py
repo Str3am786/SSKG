@@ -1,5 +1,5 @@
-from download_pdf.download_pipeline import pdf_download_pipeline
-from download_pdf.downloaded_obj import DownloadedObj
+from ..download_pdf.download_pipeline import pdf_download_pipeline
+from ..download_pdf.downloaded_obj import DownloadedObj
 import os
 import json
 from .doi_to_metadata import metaDict_to_metaObj, doi_to_metadataObj

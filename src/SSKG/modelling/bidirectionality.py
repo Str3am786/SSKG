@@ -3,7 +3,7 @@ import jaro
 import arxiv
 import requests
 from bs4 import BeautifulSoup
-from metadata_extraction.somef_extraction.somef_extractor import (
+from ..metadata_extraction.somef_extraction.somef_extractor import (
     find_doi_citation,
     description_finder,
     find_arxiv_citation,

@@ -1,6 +1,6 @@
-from metadata_extraction.api.openAlex_api_queries import query_openalex_api
-from metadata_extraction.metadata_obj import MetadataObj
-from utils.regex import (
+from ..metadata_extraction.api.openAlex_api_queries import query_openalex_api
+from ..metadata_extraction.metadata_obj import MetadataObj
+from ..utils.regex import (
     str_to_arxivID,
     str_to_doiID
 )

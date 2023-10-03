@@ -1,4 +1,4 @@
-from metadata_extraction.paper_obj import PaperObj
+from ..metadata_extraction.paper_obj import PaperObj
 
 def paperDict_to_paperObj(paper_dict):
     title = safe_dic(paper_dict, "title")

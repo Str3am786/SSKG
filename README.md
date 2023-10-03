@@ -9,7 +9,7 @@ This tool verifies the link between a scientific paper and a software repository
 There is also a "unidirectional" metric, which finds a repository url and see's within the repository if the paper is named.
   
 ## Dependencies  
-- Python 3.9
+- Python 3.10
 - Java 8 or above (please see [Tika requirements](https://tika.apache.org))  
   
 ## Installation  

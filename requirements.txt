@@ -1,0 +1,8 @@
+somef==0.9.4
+arxiv
+bibtexparser
+fuzzywuzzy
+jaro_winkler
+tika
+beautifulsoup4
+python-Levenshtein

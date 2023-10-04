@@ -1,8 +1,8 @@
-from ..download_pdf.download_pipeline import pdf_download_pipeline
-from ..download_pdf.downloaded_obj import DownloadedObj
+from src.SSKG.download_pdf.download_pipeline import pdf_download_pipeline
+from src.SSKG.download_pdf.downloaded_obj import DownloadedObj
 import os
 import json
-from .doi_to_metadata import metaDict_to_metaObj, doi_to_metadataObj
+from src.SSKG.object_creator.doi_to_metadata import metaDict_to_metaObj, doi_to_metadataObj
 
 
 def meta_to_dwnldd(metadataObj, output_dir):

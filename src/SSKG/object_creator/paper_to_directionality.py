@@ -1,6 +1,6 @@
-from ..metadata_extraction.somef_extraction.somef_extractor import download_repo_metadata
-from ..modelling.bidirectionality import is_doi_bidir, is_arxiv_bidir
-from ..modelling.unidirectionality import is_repo_unidir
+from src.SSKG.metadata_extraction.somef_extraction.somef_extractor import download_repo_metadata
+from src.SSKG.modelling.bidirectionality import is_doi_bidir, is_arxiv_bidir
+from src.SSKG.modelling.unidirectionality import is_repo_unidir
 
 
 def check_bidir(paper,output_dir):

@@ -5,13 +5,14 @@ import json
 from pathlib import Path
 from shutil import rmtree
 
-from metadata_extraction.paper_obj import PaperObj
-from object_creator.doi_to_metadata import *
-from object_creator.create_downloadedObj import *
-from object_creator.downloaded_to_paperObj import dwnlddJson_to_paperJson
-from object_creator.pdf_to_downloaded import *
-from object_creator.pipeline import  *
-from modelling.unidirectionality import *
+from src.SSKG.metadata_extraction.paper_obj import PaperObj
+from src.SSKG.object_creator.doi_to_metadata import *
+from src.SSKG.object_creator.create_downloadedObj import *
+from src.SSKG.object_creator.downloaded_to_paperObj import dwnlddJson_to_paperJson
+from src.SSKG.object_creator.pdf_to_downloaded import *
+from src.SSKG.object_creator.pipeline import *
+from src.SSKG.modelling.unidirectionality import *
+from src.SSKG.download_pdf import *
 
 def wipe_directory(directory_path):
     for path in Path(directory_path).glob("**/*"):
@@ -79,8 +80,8 @@ class test_pdf_to_downloaded(TestCase):
         output_path = adrian_pdfs_2Json(directory)
         assert(output_path)
 
-from object_creator.paper_to_directionality import check_paper_directionality
-from object_creator.pipeline import doi_to_paper, pipeline_multiple_bidir, pipeline_single_bidir, \
+from src.SSKG.object_creator.paper_to_directionality import check_paper_directionality
+from src.SSKG.object_creator.pipeline import doi_to_paper, pipeline_multiple_bidir, pipeline_single_bidir, \
     pipeline_txt_dois_bidir, dois_txt_to_bidir_json
 
 

@@ -2,7 +2,7 @@ from tika import parser
 import re
 import os
 import collections
-from .paper_obj import PaperObj
+from src.SSKG.metadata_extraction.paper_obj import PaperObj
 
 def read_pdf(pdf_path):
     try:

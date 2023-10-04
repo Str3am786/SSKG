@@ -46,7 +46,17 @@ class test_doi_to_Obj(TestCase):
         result = dois_to_metaDicts(dois)
         assert(result)
 
+class test_download_pdf_pipeline(TestCase):
 
+    def test_normal_download(self):
+        assert()
+    def test_download_directory_doesnt_exist_prior(TestCase):
+        non_existent = "./not_exist"
+        doi = "10.3233/sw-223135"
+        result = pdf_download_pipeline(doi,non_existent)
+        wipe_directory("./not_exist")
+        os.rmdir("./not_exist")
+        assert(result)
 class test_create_DownloadedObj(TestCase):
 
     def test_normal_pipeline(self):

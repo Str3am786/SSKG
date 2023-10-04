@@ -40,10 +40,18 @@ def pdf_download_pipeline(doi, output_directory):
     path to downloaded pdf
 
     """
-    #creates a folder within the wanted output directory
-    pdf_output_directory = os.path.join(output_directory,"PDFs")
-    if not os.path.exists(pdf_output_directory):
-        os.mkdir(pdf_output_directory)
+    try:
+        #Creates Directory if it does not exist
+        if not os.path.exists(output_directory):
+            os.mkdir(output_directory)
+        # creates a folder within the wanted output directory
+        pdf_output_directory = os.path.join(output_directory,"PDFs")
+        if not os.path.exists(pdf_output_directory):
+            # Creates Directory if it does not exist
+            os.mkdir(pdf_output_directory)
+    except Exception as e:
+        print("Error while trying to create the directory  Err@ PDF download")
+        print(str(e))
 
     if(arxiv_url:=_is_arxiv(doi)):
         file_path = download_arxiv_pdf(arxiv_url,pdf_output_directory)

@@ -21,7 +21,7 @@ def is_substring_found(substring, larger_string):
         ratio = fuzz.partial_ratio(substring.lower(), larger_string[i:i+len(substring)].lower())
         if ratio > max_ratio:
             max_ratio = ratio
-    print(max_ratio)
+    #This is to print the highest scoring fuzzy string comp print(max_ratio)
     if max_ratio > 85:  # Adjust the threshold based on your requirement
         return True
     else:

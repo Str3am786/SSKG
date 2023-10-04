@@ -32,7 +32,7 @@ class PaperObj:
     def abstract(self):
         return self._abstract
 
-    @urls.setter
+    @abstract.setter
     def abstract(self, value):
         self._abstract = value
 

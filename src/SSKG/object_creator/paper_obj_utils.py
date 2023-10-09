@@ -1,5 +1,7 @@
 from SSKG.metadata_extraction.paper_obj import PaperObj
 
+#TODO get rid of (find a cleaner solution)
+
 def paperDict_to_paperObj(paper_dict):
     title = safe_dic(paper_dict, "title")
     doi = safe_dic(paper_dict, "doi")

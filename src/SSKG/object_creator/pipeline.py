@@ -36,6 +36,9 @@ def pipeline_single_unidir(doi,output_dir):
     dictionary with doi and the urls found that are unidirectional for that doi
     '''
     paper = doi_to_paper(doi,output_dir)
+    if not paper:
+        print("Error while creating paperObj")
+        return None
     result = check_unidir(paper,output_dir)
     return result
 

@@ -1,5 +1,3 @@
-
-import re
 from SSKG.utils.regex import str_to_doiID, str_to_arxivID
 
 class PaperObj:

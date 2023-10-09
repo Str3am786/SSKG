@@ -1,11 +1,11 @@
-
+import json
 from SSKG.metadata_extraction.api.openAlex_api_queries import query_openalex_api
 from SSKG.metadata_extraction.metadata_obj import MetadataObj
 from SSKG.utils.regex import (
     str_to_arxivID,
     str_to_doiID
 )
-import json
+
 
 
 def extract_arxivID (openAlexJson):
@@ -23,6 +23,9 @@ def doi_to_metadataObj(doi):
     :returns
     metadata Object
     """
+    if not (doi:=str_to_doiID(doi)):
+        print("Not a doi")
+        return None
     try:
         try:
             oa_meta = query_openalex_api(doi)
@@ -49,6 +52,9 @@ def doi_to_metaDict(doi):
         K: doi
         V: metadataObj.to_dict
     """
+    if not (doi:=str_to_doiID(doi)):
+        print("Not a doi")
+        return None
     mt_dict = doi_to_metadataObj(doi).to_dict()
     result = {mt_dict["doi"]: mt_dict}
     return result
@@ -107,6 +113,8 @@ def metadataObj_to_metadataDict(metaObj):
     return {metaObj.doi: metaObj.to_dict()}
 
 def metaDict_to_metaObj(meta_dict):
+    if not meta_dict:
+        return None
     title = safe_dic(meta_dict, "title")
     doi = safe_dic(meta_dict, "doi")
     arxiv = safe_dic(meta_dict, "arxiv")

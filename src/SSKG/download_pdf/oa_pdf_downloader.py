@@ -1,7 +1,7 @@
-import pandas as pd
-import requests
 import json
 import logging
+import pandas as pd
+import requests
 def get_pdf_url_and_doi(data_path):
     data = pd.read_csv(data_path)
     return data["pdf_url"], data["dois_id"]

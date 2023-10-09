@@ -1,7 +1,7 @@
-from SSKG.download_pdf.download_pipeline import pdf_download_pipeline
-from SSKG.download_pdf.downloaded_obj import DownloadedObj
 import os
 import json
+from SSKG.download_pdf.download_pipeline import pdf_download_pipeline
+from SSKG.download_pdf.downloaded_obj import DownloadedObj
 from SSKG.object_creator.doi_to_metadata import metaDict_to_metaObj, doi_to_metadataObj
 
 
@@ -34,6 +34,8 @@ def downloaded_dictionary(dwnldd_obj):
     Dictionary of Downloaded Dictionary
     K: is the DOI V: Dictionary of downloaded Object
     """
+    if not dwnldd_obj:
+        return None
     return {dwnldd_obj.doi: dwnldd_obj.to_dict()}
 
 def create_downloaded_json(downloaded_dict,output_folder):

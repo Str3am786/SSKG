@@ -9,6 +9,8 @@ from .object_creator.pipeline import dois_txt_to_unidir_json, dois_txt_to_bidir_
     pipeline_single_bidir
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
+VALID_EXTENSIONS = ['.txt', '.json']
+
 
 @click.group(context_settings=CONTEXT_SETTINGS)
 @click.version_option(__version__)
@@ -60,23 +62,21 @@ def cli():
 @click.option('--bidir', '-B', is_flag=True, default = False, help="Bidirectionality")
 def assess(input, output,unidir,bidir):
     if unidir:
-        if re.match(r".*\.[a-zA-Z0-9]+", input):
-            if os.path.isfile(input) and "txt" in input:
-                dois_txt_to_unidir_json(dois_txt=input,output_dir=output)
-            else:
-                print("SSKG only works with txt files")
-                return
+        if input.endswith(".txt") and os.path.exists(input):
+            print("test")
+            dois_txt_to_unidir_json(dois_txt=input,output_dir=output)
+        if input.endswith(".json") and os.path.exists(input):
+            return
         else:
             pipeline_single_unidir(doi=input,output_dir=output)
             return
 
     elif bidir:
-        if re.match(r".*\.[a-zA-Z0-9]+", input):
-            if os.path.isfile(input) and "txt" in input:
-                dois_txt_to_unidir_json(dois_txt=input,output_dir=output)
-            else:
-                print("SSKG only works with txt files")
-                return
+        if input.endswith(".txt") and os.path.exists(input):
+            print("test")
+            dois_txt_to_bidir_json(dois_txt=input,output_dir=output)
+        if input.endswith(".json") and os.path.exists(input):
+            return
         else:
             pipeline_single_bidir(doi=input,output_dir=output)
             return

@@ -1,6 +1,7 @@
 #TODO find appropiate names
 import click
 import os
+import re
 from pathlib import Path
 from . import __version__
 from .utils.regex import str_to_doiID, str_to_arxivID
@@ -59,15 +60,23 @@ def cli():
 @click.option('--bidir', '-B', is_flag=True, default = False, help="Bidirectionality")
 def assess(input, output,unidir,bidir):
     if unidir:
-        if os.path.isfile(input) and "txt" in input:
-            dois_txt_to_unidir_json(dois_txt=input,output_dir=output)
+        if re.match(r".*\.[a-zA-Z0-9]+", input):
+            if os.path.isfile(input) and "txt" in input:
+                dois_txt_to_unidir_json(dois_txt=input,output_dir=output)
+            else:
+                print("SSKG only works with txt files")
+                return
         else:
             pipeline_single_unidir(doi=input,output_dir=output)
             return
 
-    if bidir:
-        if os.path.isfile(input) and "txt" in input:
-            dois_txt_to_bidir_json(dois_txt=input,output_dir=output)
+    elif bidir:
+        if re.match(r".*\.[a-zA-Z0-9]+", input):
+            if os.path.isfile(input) and "txt" in input:
+                dois_txt_to_unidir_json(dois_txt=input,output_dir=output)
+            else:
+                print("SSKG only works with txt files")
+                return
         else:
             pipeline_single_bidir(doi=input,output_dir=output)
             return

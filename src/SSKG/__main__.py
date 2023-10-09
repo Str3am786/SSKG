@@ -4,6 +4,8 @@ import os
 import re
 from pathlib import Path
 from . import __version__
+from .object_creator.create_downloadedObj import doi_to_downloadedJson, dois_to_downloadedJson, \
+    dois_txt_to_downloadedJson
 from .utils.regex import str_to_doiID, str_to_arxivID
 from .object_creator.pipeline import dois_txt_to_unidir_json, dois_txt_to_bidir_json, pipeline_single_unidir, \
     pipeline_single_bidir
@@ -63,7 +65,6 @@ def cli():
 def assess(input, output,unidir,bidir):
     if unidir:
         if input.endswith(".txt") and os.path.exists(input):
-            print("test")
             dois_txt_to_unidir_json(dois_txt=input,output_dir=output)
         if input.endswith(".json") and os.path.exists(input):
             return
@@ -91,6 +92,15 @@ def assess(input, output,unidir,bidir):
 @cli.command()
 @click.option('--input','-i', required=True, help="DOI or path to .txt list of DOIs", metavar='<name>')
 @click.option('--output','-o', default="./", show_default=True, help="Output Directory ", metavar='<path>')
-def download(input, output_dir):
-    return
+def download(input, output):
+
+    if input.endswith(".txt") and os.path.exists(input):
+        dois_txt_to_downloadedJson(dois_txt=input, output_dir=output)
+    else:
+        try:
+            doi_to_downloadedJson(doi=input, output_dir=output)
+        except Exception as e:
+            print(e)
+        return
+
 

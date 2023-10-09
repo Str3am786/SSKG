@@ -69,6 +69,12 @@ class test_create_DownloadedObj(TestCase):
         meta = doi_to_metadataObj(doi)
         dwn_obj = meta_to_dwnldd(meta, "./pipeline_folder")
         self.assertEquals(dwn_obj.doi, doi)
+    def test_dois_txt_to_json(self):
+        wipe_directory("./pipeline_folder")
+        doi_txt = "./testOEG.txt"
+        output_dir = "./pipeline_folder"
+        result = dois_txt_to_downloadedJson(dois_txt=doi_txt,output_dir=output_dir)
+        assert(result)
     def test_metaJson_to_downloadedJson(self):
         meta_json = "./json/oa_metadata.json"
         dict_dwn = metaJson_to_downloaded_dic(meta_json,"./pipeline_folder")

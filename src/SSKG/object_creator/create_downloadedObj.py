@@ -21,6 +21,10 @@ def meta_to_dwnldd(metadataObj, output_dir):
         file_name = os.path.basename(file_path)
         return DownloadedObj(title=metadataObj.title,doi=metadataObj.doi,arxiv=metadataObj.arxiv,file_name=file_name,file_path=file_path)
     except Exception as e:
+        try:
+            print(metadataObj.doi)
+        except:
+            print("Error with metadataObj")
         print("Error while creating the downloaded object")
         print(str(e))
         return None
@@ -111,8 +115,12 @@ def doi_to_downloadedDic(doi,output_dir):
 
 def dois_to_downloadedDics(dois_list, output_dir):
     result = {}
+    if not dois_list:
+        return
     for doi in dois_list:
-        result.update(doi_to_downloadedDic(doi,output_dir))
+        if doi:
+            if(dwnldd := doi_to_downloadedDic(doi, output_dir)):
+                result.update(dwnldd)
     return result
 def dois_txt_to_downloadedDics(dois_txt,output_dir):
     try:

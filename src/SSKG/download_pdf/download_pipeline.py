@@ -1,10 +1,10 @@
 import logging
 import os
 
-from src.SSKG.download_pdf.oa_pdf_url_extractor import create_unpaywall_url_from_string as paywall_url
+from SSKG.download_pdf.oa_pdf_url_extractor import create_unpaywall_url_from_string as paywall_url
 #TODO fix naming scheme
-from src.SSKG.download_pdf.arxiv_downloader import download_pdf as download_arxiv_pdf
-from src.SSKG.download_pdf.oa_pdf_downloader import download_pdf
+from SSKG.download_pdf.arxiv_downloader import download_pdf as download_arxiv_pdf
+from SSKG.download_pdf.oa_pdf_downloader import download_pdf
 
 
 

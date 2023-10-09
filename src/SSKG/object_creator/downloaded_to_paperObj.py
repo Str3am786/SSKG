@@ -1,6 +1,6 @@
-from src.SSKG.metadata_extraction.github_extractor_tika import ranked_git_url, read_pdf, get_possible_abstract
-from src.SSKG.metadata_extraction.paper_obj import PaperObj
-from src.SSKG.object_creator.create_downloadedObj import downloadedDic_to_downloadedObj
+from SSKG.metadata_extraction.github_extractor_tika import ranked_git_url, read_pdf, get_possible_abstract
+from SSKG.metadata_extraction.paper_obj import PaperObj
+from SSKG.object_creator.create_downloadedObj import downloadedDic_to_downloadedObj
 import json
 import os
 

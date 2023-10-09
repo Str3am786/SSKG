@@ -1,12 +1,9 @@
 #TODO find appropiate names
 import click
 import os
-import re
-from pathlib import Path
 from . import __version__
-from .object_creator.create_downloadedObj import doi_to_downloadedJson, dois_to_downloadedJson, \
-    dois_txt_to_downloadedJson
-from .utils.regex import str_to_doiID, str_to_arxivID
+from .object_creator.create_downloadedObj import doi_to_downloadedJson, dois_txt_to_downloadedJson
+from .object_creator.downloaded_to_paperObj import dwnlddJson_to_paperJson
 from .object_creator.pipeline import dois_txt_to_unidir_json, dois_txt_to_bidir_json, pipeline_single_unidir, \
     pipeline_single_bidir
 
@@ -102,5 +99,14 @@ def download(input, output):
         except Exception as e:
             print(e)
         return
-
+@cli.command()
+@click.option('--input','-i', required=True, help="DOI or path to .txt list of DOIs", metavar='<name>')
+@click.option('--output','-o', default="./", show_default=True, help="Output Directory ", metavar='<path>')
+def process(input,output):
+    if input.endswith(".json") and os.path.exists(input):
+        dwnlddJson_to_paperJson(input,output)
+    else:
+        print("Error")
+        return
+    return
 

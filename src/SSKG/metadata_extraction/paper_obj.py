@@ -69,10 +69,10 @@ class PaperObj:
     def to_dict(self):
         return {
             'title': self._title,
-            'urls': self._abstract,
+            'urls': self._urls,
             'doi': self._doi,
-            'arxiv': self.arxiv,
-            'abstract': self.abstract,
+            'arxiv': self._arxiv,
+            'abstract': self._abstract,
             'file_name': self._file_name,
             'file_path': self._file_path
         }

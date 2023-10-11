@@ -165,7 +165,7 @@ def dois_txt_to_unidir_json(dois_txt, output_dir):
     :returns
     path to output JSON
     '''
-    output_path = os.path.join(output_dir,"unidir_20_07.json")
+    output_path = os.path.join(output_dir,"unidir.json")
     return dict_to_json(pipeline_txt_dois_unidir(dois_txt,output_dir),output_path)
 
 
@@ -188,7 +188,7 @@ def from_papers_json_to_unidir(papers_json, output_dir):
         unidir = check_unidir(paper, output_dir)
         if unidir:
             result.update(unidir)
-    return dict_to_json(result,output_path=os.path.join(output_dir,"unidir_20_07.json"))
+    return dict_to_json(result,output_path=os.path.join(output_dir,"unidir.json"))
 
 
 

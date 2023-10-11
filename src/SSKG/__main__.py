@@ -5,7 +5,7 @@ from . import __version__
 from .object_creator.create_downloadedObj import doi_to_downloadedJson, dois_txt_to_downloadedJson
 from .object_creator.downloaded_to_paperObj import dwnlddJson_to_paperJson
 from .object_creator.pipeline import dois_txt_to_unidir_json, dois_txt_to_bidir_json, pipeline_single_unidir, \
-    pipeline_single_bidir
+    pipeline_single_bidir, from_papers_json_to_unidir, from_papers_json_to_bidir
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 VALID_EXTENSIONS = ['.txt', '.json']
@@ -64,6 +64,7 @@ def assess(input, output,unidir,bidir):
         if input.endswith(".txt") and os.path.exists(input):
             dois_txt_to_unidir_json(dois_txt=input,output_dir=output)
         if input.endswith(".json") and os.path.exists(input):
+            from_papers_json_to_unidir(papers_json=input,output_dir=output)
             return
         else:
             pipeline_single_unidir(doi=input,output_dir=output)
@@ -74,7 +75,7 @@ def assess(input, output,unidir,bidir):
             print("test")
             dois_txt_to_bidir_json(dois_txt=input,output_dir=output)
         if input.endswith(".json") and os.path.exists(input):
-            return
+            from_papers_json_to_bidir(papers_json=input, output_dir= output)
         else:
             pipeline_single_bidir(doi=input,output_dir=output)
             return

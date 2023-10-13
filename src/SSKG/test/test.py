@@ -69,6 +69,12 @@ class test_create_DownloadedObj(TestCase):
         meta = doi_to_metadataObj(doi)
         dwn_obj = meta_to_dwnldd(meta, "./pipeline_folder")
         self.assertEquals(dwn_obj.doi, doi)
+    #TODO create work around redirect
+    # def test_problematic_doi2(self):
+    #     doi = "10.1016/j.engappai.2022.104755"
+    #     meta = doi_to_metadataObj(doi)
+    #     dwn_obj = meta_to_dwnldd(meta, "./pipeline_folder")
+    #     self.assertEquals(dwn_obj.doi, doi)
     def test_dois_txt_to_json(self):
         wipe_directory("./pipeline_folder")
         doi_txt = "./testOEG.txt"

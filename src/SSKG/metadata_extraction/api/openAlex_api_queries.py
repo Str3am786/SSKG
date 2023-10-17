@@ -4,11 +4,11 @@ import requests
 import json
 
 
-BASE_URL = 'https://api.openalex.org/works/'
+BASE_URL = 'https://api.openalex.org/works'
 
 def query_openalex_api(doi):
     doi_url = convert_to_doi_url(doi)
-    url = BASE_URL + doi_url
+    url = BASE_URL + "/" + doi_url
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
@@ -48,6 +48,21 @@ def txt_to_meta(txt,path_out):
 
     with open(path_out, 'w') as json_file:
         json.dump(list_datas, json_file, indent=4)
+
+def pdf_title_to_meta(title):
+    if title == None:
+        return None
+    title_url = title.replace(" ","%20")
+    url = BASE_URL + "?filter=title.search:" + title_url
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            print('Error:', response.status_code)
+            return None
+    except Exception as e:
+        print(str(e))
 
 
 #input = '../../corpus_papers_w_code/papers_with_code'

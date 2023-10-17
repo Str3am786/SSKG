@@ -1,18 +1,16 @@
-import os
-import unittest
-from unittest import TestCase, mock
-import json
 from pathlib import Path
 from shutil import rmtree
+from unittest import TestCase
 
+from SSKG.metadata_extraction.api.openAlex_api_queries import pdf_title_to_meta
 from SSKG.metadata_extraction.paper_obj import PaperObj
-from SSKG.object_creator.doi_to_metadata import *
+from SSKG.modelling.unidirectionality import *
 from SSKG.object_creator.create_downloadedObj import *
+from SSKG.object_creator.doi_to_metadata import *
 from SSKG.object_creator.downloaded_to_paperObj import dwnlddJson_to_paperJson
 from SSKG.object_creator.pdf_to_downloaded import *
 from SSKG.object_creator.pipeline import *
-from SSKG.modelling.unidirectionality import *
-from SSKG.download_pdf import *
+
 
 def wipe_directory(directory_path):
     for path in Path(directory_path).glob("**/*"):
@@ -21,7 +19,27 @@ def wipe_directory(directory_path):
         elif path.is_dir():
             rmtree(path)
 
+class test_open_alex_query(TestCase):
+    def test_title_query(self):
+        title = "Widoco"
+        resp_json = pdf_title_to_meta(title)
+        doi = resp_json["results"][0]["doi"]
+        self.assertEquals(doi,"https://doi.org/10.1007/978-3-319-68204-4_9")
 
+    def test_no_title_query(self):
+        title = ""
+        resp_json = pdf_title_to_meta(title)
+        assert(resp_json)
+
+    def test_title_with_spaces(self):
+        title = "SPARQL2Flink: Evaluation of SPARQL Queries on Apache Flink"
+        resp_json = pdf_title_to_meta(title)
+        doi = resp_json["results"][0]["doi"]
+        self.assertEquals(doi, "https://doi.org/10.3390/app11157033")
+
+    def test_None_title(self):
+        test = pdf_title_to_meta(None)
+        self.assertIsNone(test)
 class test_doi_to_Obj(TestCase):
     def test_doi_toPaperObj(self):
         result = doi_to_metadataObj("10.1016/j.compbiomed.2019.05.002")
@@ -104,7 +122,7 @@ class test_pdf_to_downloaded(TestCase):
 
 from SSKG.object_creator.paper_to_directionality import check_paper_directionality
 from SSKG.object_creator.pipeline import doi_to_paper, pipeline_multiple_bidir, pipeline_single_bidir, \
-    pipeline_txt_dois_bidir, dois_txt_to_bidir_json
+    pipeline_txt_dois_bidir
 
 
 class test_downloaded_to_paper_obj(TestCase):

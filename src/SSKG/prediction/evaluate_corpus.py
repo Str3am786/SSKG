@@ -36,7 +36,7 @@ def evalutate_corpus():
                 fails["FalseNeg"].append(doi)
     precision = TruePositive / (TruePositive + FalsePositive)
     recall = TruePositive / (TruePositive + FalseNegative)
-    f1_score = 2*(( precision* recall)/(precision + recall))
+    f1_score = 2*((precision * recall)/(precision + recall))
 
     result = {"precision": precision, "recall": recall, "f1_score": f1_score, "_failed Repos": fails}
     return result

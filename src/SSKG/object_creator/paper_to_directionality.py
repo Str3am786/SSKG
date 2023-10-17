@@ -1,4 +1,4 @@
-from SSKG.metadata_extraction.somef_extraction.somef_extractor import download_repo_metadata
+from SSKG.extraction.somef_extraction.somef_extractor import download_repo_metadata
 from SSKG.modelling.bidirectionality import is_doi_bidir, is_arxiv_bidir
 from SSKG.modelling.unidirectionality import is_repo_unidir
 

@@ -1,6 +1,6 @@
 import json
-from SSKG.metadata_extraction.api.openAlex_api_queries import query_openalex_api
-from SSKG.metadata_extraction.metadata_obj import MetadataObj
+from SSKG.metadata.api.openAlex_api_queries import query_openalex_api
+from SSKG.metadata.metadata_obj import MetadataObj
 from SSKG.utils.regex import (
     str_to_arxivID,
     str_to_doiID

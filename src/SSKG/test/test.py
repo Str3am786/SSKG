@@ -2,8 +2,8 @@ from pathlib import Path
 from shutil import rmtree
 from unittest import TestCase
 
-from SSKG.metadata_extraction.api.openAlex_api_queries import pdf_title_to_meta
-from SSKG.metadata_extraction.paper_obj import PaperObj
+from SSKG.metadata.api.openAlex_api_queries import pdf_title_to_meta
+from SSKG.extraction.paper_obj import PaperObj
 from SSKG.modelling.unidirectionality import *
 from SSKG.object_creator.create_downloadedObj import *
 from SSKG.object_creator.doi_to_metadata import *
@@ -67,7 +67,7 @@ class test_doi_to_Obj(TestCase):
 class test_download_pdf_pipeline(TestCase):
 
     def test_normal_download(self):
-        assert()
+        assert(True)
     def test_download_directory_doesnt_exist_prior(TestCase):
         non_existent = "./not_exist"
         doi = "10.3233/sw-223135"

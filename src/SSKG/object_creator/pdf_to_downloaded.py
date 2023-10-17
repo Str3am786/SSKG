@@ -1,6 +1,6 @@
 
-from SSKG.utils.regex import is_filename_doi, str_to_arxivID, is_filename_doi, filename_to_doi_convert
-from SSKG.metadata_extraction.api.openAlex_api_queries import query_openalex_api
+from SSKG.utils.regex import is_filename_doi, filename_to_doi_convert
+from SSKG.metadata.api.openAlex_api_queries import query_openalex_api
 from SSKG.utils.regex import str_to_arxivID,str_to_doiID
 from SSKG.download_pdf.downloaded_obj import DownloadedObj
 #TODO CHANGE NAME OF CREATE_DOWNLOADED_OBJ

@@ -8,8 +8,11 @@ from SSKG.modelling.unidirectionality import *
 from SSKG.object_creator.create_downloadedObj import *
 from SSKG.object_creator.doi_to_metadata import *
 from SSKG.object_creator.downloaded_to_paperObj import dwnlddJson_to_paperJson
+from SSKG.object_creator.paper_to_directionality import check_paper_directionality
 from SSKG.object_creator.pdf_to_downloaded import *
-from SSKG.object_creator.pipeline import *
+from SSKG.object_creator.pipeline import doi_to_paper, multiple_doi_pipeline_bidir, single_doi_pipeline_bidir, \
+    dois_txt_pipeline_bidir, papers_json_to_bidir_json
+from SSKG.extraction.pdf_title_extraction import use_tika_title, use_pdf_title
 
 
 def wipe_directory(directory_path):
@@ -23,18 +26,18 @@ class test_open_alex_query(TestCase):
     def test_title_query(self):
         title = "Widoco"
         resp_json = pdf_title_to_meta(title)
-        doi = resp_json["results"][0]["doi"]
+        doi = resp_json["doi"]
         self.assertEquals(doi,"https://doi.org/10.1007/978-3-319-68204-4_9")
 
     def test_no_title_query(self):
         title = ""
         resp_json = pdf_title_to_meta(title)
-        assert(resp_json)
+        self.assertIsNone(resp_json)
 
     def test_title_with_spaces(self):
         title = "SPARQL2Flink: Evaluation of SPARQL Queries on Apache Flink"
         resp_json = pdf_title_to_meta(title)
-        doi = resp_json["results"][0]["doi"]
+        doi = resp_json["doi"]
         self.assertEquals(doi, "https://doi.org/10.3390/app11157033")
 
     def test_None_title(self):
@@ -75,6 +78,20 @@ class test_download_pdf_pipeline(TestCase):
         wipe_directory("./not_exist")
         os.rmdir("./not_exist")
         assert(result)
+
+class test_title_extraction_pdf(TestCase):
+
+    def test_normal_case(self):
+        title = use_pdf_title("pdfs/widoco-iswc2017.pdf")
+        self.assertEquals("WIDOCO: A Wizard for Documenting Ontologies", title)
+    def test_tika_title_normal_pdf(self):
+        title = use_tika_title("pdfs/widoco-iswc2017.pdf")
+        self.assertEquals("WIDOCO: A Wizard for Documenting Ontologies", title)
+    def test_tika_title_seperator_pdf(self):
+        title = use_tika_title("pdfs/test_with_weird_seperation.pdf")
+        self.assertEquals("AVIS: Autonomous Visual Information Seeking with Large Language Models", \
+                          title)
+
 class test_create_DownloadedObj(TestCase):
 
     def test_normal_pipeline(self):
@@ -120,9 +137,7 @@ class test_pdf_to_downloaded(TestCase):
         output_path = adrian_pdfs_2Json(directory)
         assert(output_path)
 
-from SSKG.object_creator.paper_to_directionality import check_paper_directionality
-from SSKG.object_creator.pipeline import doi_to_paper, pipeline_multiple_bidir, pipeline_single_bidir, \
-    pipeline_txt_dois_bidir
+
 
 
 class test_downloaded_to_paper_obj(TestCase):
@@ -333,13 +348,13 @@ class test_pipeline(TestCase):
         wipe_directory("./pipeline_folder")
         doi = '10.1016/j.compbiomed.2019.05.002'
         output_dir = "./pipeline_folder"
-        result = pipeline_single_bidir(doi, output_dir)
+        result = single_doi_pipeline_bidir(doi, output_dir)
         assert(result)
     def test_one_doi2(self):
         wipe_directory("./pipeline_folder")
         doi = '10.3233/SW-223135'
         output_dir = "./pipeline_folder"
-        result = pipeline_single_bidir(doi, output_dir)
+        result = single_doi_pipeline_bidir(doi, output_dir)
         assert(result)
 
     def test_short_list_doi(self):
@@ -348,13 +363,13 @@ class test_pipeline(TestCase):
         output_dir = "./pipeline_folder"
         with open(list_dois_txt, 'r') as file:
             dois = file.read().splitlines()
-        result = pipeline_multiple_bidir(dois, output_dir)
+        result = multiple_doi_pipeline_bidir(dois, output_dir)
         assert(result)
     def test_txts_bidir(self):
         wipe_directory("./pipeline_folder")
         list_dois_txt = "./short.txt"
         output_dir = "./pipeline_folder"
-        result = pipeline_txt_dois_bidir(list_dois_txt,output_dir)
+        result = dois_txt_pipeline_bidir(list_dois_txt, output_dir)
         assert(result)
     # def test_txts_to_bidir(self):
     #     wipe_directory("./pipeline_folder")
@@ -367,7 +382,7 @@ class test_paperJson_to_bidir(TestCase):
 
     def test_ppJson_to_bidir(self):
         wipe_directory("./pipeline_folder")
-        from_papers_json_to_bidir("./json/paperTest.json","./pipeline_folder")
+        papers_json_to_bidir_json("./json/paperTest.json", "./pipeline_folder")
 
 
 class test_unidir(TestCase):

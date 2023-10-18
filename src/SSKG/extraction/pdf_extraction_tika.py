@@ -1,10 +1,26 @@
 import collections
+import logging
 import os
 import re
 from tika import parser
 from SSKG.extraction.paper_obj import PaperObj
 
-def read_pdf(pdf_path):
+def raw_read_pdf(pdf_path):
+    path = os.path.expandvars(pdf_path)
+    try:
+        parsed = parser.from_file(path)
+        content = parsed.get('content', None)
+        if not content:
+            logging.error("Issue when retrieving pdf content TIKA")
+        return content
+    except FileNotFoundError:
+        logging.error(f"PDF file not found at path: {pdf_path}")
+        return None
+    except Exception as e:
+        logging.error(f"An error occurred while reading the PDF: {str(e)}")
+        return None
+
+def read_pdf_list(pdf_path):
     try:
         raw = parser.from_file(pdf_path)
         list_pdf_data = raw['content'].split('\n')
@@ -14,6 +30,41 @@ def read_pdf(pdf_path):
         return list_pdf_data
     except Exception as e:
         return []
+
+def get_possible_title(pdf):
+    pdf_raw = raw_read_pdf(pdf)
+    if not pdf_raw:
+        return None
+    return extract_possible_title(pdf_raw)
+def extract_possible_title(pdf_raw_data):
+    """
+    Given raw data, this function attempts to extract a possible title.
+    ASSUMPTION: The title is assumed to be the first non-line break character and ends with two line breaks \n\n
+    :param pdf_raw_data: String of raw PDF data
+    --
+    :return: Possible title (String), or None if not found
+    """
+    poss_title = ""
+    foundFirstChar = False
+    previous_was_newline = False
+    for i in pdf_raw_data:
+        if not foundFirstChar:
+            if i != '\n':
+                foundFirstChar = True
+                poss_title = poss_title + i
+            else:
+                continue
+        else:
+            if i == '\n' and previous_was_newline:
+                return poss_title[:-1]
+            elif i == '\n':
+                previous_was_newline = True
+                poss_title = poss_title + " "
+            else:
+                previous_was_newline = False
+                poss_title = poss_title + i
+    return None
+
 
 def find_abstract_index(pdf_data):
     index = 0
@@ -138,7 +189,7 @@ def make_Pdf_Obj(pdf_path):
     paper obj
     """
     try:
-        pdf_data = read_pdf(pdf_path)
+        pdf_data = read_pdf_list(pdf_path)
         pdf_title =  pdf_data[0]
         github_urls = ranked_git_url(pdf_data)
         pdf_file_name = get_file_name(pdf_path)

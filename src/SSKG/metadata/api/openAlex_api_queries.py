@@ -2,7 +2,8 @@ import os
 
 import requests
 import json
-
+from fuzzywuzzy import fuzz
+from urllib.parse import quote
 
 BASE_URL = 'https://api.openalex.org/works'
 
@@ -49,20 +50,49 @@ def txt_to_meta(txt,path_out):
     with open(path_out, 'w') as json_file:
         json.dump(list_datas, json_file, indent=4)
 
-def pdf_title_to_meta(title):
-    if title == None:
+#TODO need to create a way to double check the pdf title vs the one extracted
+#TODO ensure that the first option in the returned list is the one I want
+
+def _verify_title(response_json, og_title):
+    """
+    Give the correct result by comparing titles based on a fuzzy matching ratio.
+
+    :param response_json: JSON response from the search.
+    :param original_title: PDF title to match against.
+    :return: Metadata of result if the titles match.
+    """
+    fuzzy_threshold = 85
+    try:
+        results = response_json["results"]
+    except KeyError:
         return None
-    title_url = title.replace(" ","%20")
+    for result in results:
+        try:
+            title = result['title']
+        except:
+            continue
+        if (fuzz.partial_ratio(og_title.lower(), title.lower())) > fuzzy_threshold:
+            return result
+    print("Work not found within OpenAlex")
+    return None
+
+def pdf_title_to_meta(title):
+    """
+
+    """
+    if title == None or title == "":
+        return None
+    title_url = quote(title)
     url = BASE_URL + "?filter=title.search:" + title_url
     try:
         response = requests.get(url)
         if response.status_code == 200:
-            return response.json()
+
+            return _verify_title(response_json=response.json(), og_title=title)
         else:
-            print('Error:', response.status_code)
-            return None
-    except Exception as e:
-        print(str(e))
+            raise requests.RequestException(f"Error: {response.status_code}")
+    except requests.RequestException as e:
+        raise RuntimeError(f"Request failed: {str(e)}")
 
 
 #input = '../../corpus_papers_w_code/papers_with_code'

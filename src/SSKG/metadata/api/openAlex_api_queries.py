@@ -1,54 +1,62 @@
+import logging
 import os
 
 import requests
 import json
 from fuzzywuzzy import fuzz
 from urllib.parse import quote
+from ...utils.regex import str_to_doiID
 
 BASE_URL = 'https://api.openalex.org/works'
 
+
 def query_openalex_api(doi):
+    """
+    @Param String doi: DOI Identifier\
+    -----
+    returns JSON of Open Alex response
+    """
     doi_url = convert_to_doi_url(doi)
+    if doi_url is None:
+        return None
     url = BASE_URL + "/" + doi_url
-    response = requests.get(url)
-    if response.status_code == 200:
+    try:
+        response = requests.get(url)
+        if response.status_code != 200:
+            logging.error("HTTP request failed with status code: %s", response.status_code)
+            return None
         data = response.json()
         return data
-    else:
-        print('Error:', response.status_code)
-        print(doi)
-        return None
+    except json.JSONDecodeError as e:
+        logging.error("Error decoding JSON response: %s", str(e))
+    except Exception as e:
+        logging.error("Other Error has been produced %s", str(e))
+    return None
 
 
 def convert_to_doi_url(input_string):
-    if input_string.startswith('http://doi.org/') or input_string.startswith('https://doi.org/'):
-        return input_string
+    """
+    @Param input_string: possible DOI to be converted to DOI URL
+    :returns String: DOI URL or None
+    """
+    doi = str_to_doiID(input_string)
+    if doi is not None:
+        doi_url = 'https://doi.org/' + doi.strip()
+        return doi_url
+    return None
 
-    doi = input_string.strip()
-    doi_url = 'https://doi.org/' + doi
-    return doi_url
 
-def pdf_name_to_meta(pdf_folder,path_out):
-    list_datas = []
-    for file in os.listdir(pdf_folder):
-        if file.endswith(".pdf"):
-            doi = file.replace("_","/").replace(".pdf",'')
-            data = query_openalex_api(doi)
-            list_datas.append(data)
-    with open(path_out, 'w') as json_file:
-        json.dump(list_datas, json_file, indent=4)
-
-def txt_to_meta(txt,path_out):
-    list_datas = []
-    with open(txt, 'r') as file:
-        dois = file.read().splitlines()
-
-    for doi in dois:
-        data = query_openalex_api(doi)
-        list_datas.append(data)
-
-    with open(path_out, 'w') as json_file:
-        json.dump(list_datas, json_file, indent=4)
+#TODO change the pdf naming system and this function
+# def pdf_name_to_meta(pdf_folder,path_out):
+#
+#     list_datas = []
+#     for file in os.listdir(pdf_folder):
+#         if file.endswith(".pdf"):
+#             doi = file.replace("_","/").replace(".pdf",'')
+#             data = query_openalex_api(doi)
+#             list_datas.append(data)
+#     with open(path_out, 'w') as json_file:
+#         json.dump(list_datas, json_file, indent=4)
 
 #TODO need to create a way to double check the pdf title vs the one extracted
 #TODO ensure that the first option in the returned list is the one I want

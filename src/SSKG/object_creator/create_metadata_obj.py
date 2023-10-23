@@ -10,6 +10,8 @@ from SSKG.utils.regex import (
 
 
 def extract_arxivID (openAlexJson):
+    if openAlexJson is None:
+        return None
     location = safe_dic(openAlexJson, "locations")
     for locat in location:
         if safe_dic(locat, "is_oa"):

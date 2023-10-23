@@ -1,6 +1,7 @@
 import json
 from SSKG.metadata.api.openAlex_api_queries import query_openalex_api
 from SSKG.metadata.metadata_obj import MetadataObj
+from SSKG.metadata.api.openAlex_api_queries import pdf_title_to_meta
 from SSKG.utils.regex import (
     str_to_arxivID,
     str_to_doiID
@@ -42,6 +43,13 @@ def doi_to_metadataObj(doi):
     except Exception as e:
         print(str(e))
 
+# def title_to_meta_obj(title):
+#     oa_meta = pdf_title_to_meta(title)
+#     titL = safe_dic(oa_meta, "title")
+#     doi = str_to_doiID(safe_dic(oa_meta, "doi"))
+#     arxiv = extract_arxivID(oa_meta)
+#     metadata = MetadataObj(title=titL, doi=doi, arxiv=arxiv)
+#     return metadata
 def doi_to_metaDict(doi):
     """
     Input doi

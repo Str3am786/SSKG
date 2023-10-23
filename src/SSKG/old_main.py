@@ -1,5 +1,5 @@
 from object_creator.pipeline import *
-from object_creator.doi_to_metadata import *
+from object_creator.create_metadata_obj import *
 from object_creator.downloaded_to_paperObj import *
 from modelling.bidirectionality import *
 from object_creator.paper_obj_utils import *

@@ -1,7 +1,7 @@
 from SSKG.extraction.somef_extraction.somef_extractor import download_repo_metadata
 from SSKG.modelling.bidirectionality import is_doi_bidir, is_arxiv_bidir
 from SSKG.modelling.unidirectionality import is_repo_unidir
-
+import logging
 
 def check_bidir(paper,output_dir):
     return check_paper_directionality(paper,True,output_dir)
@@ -48,6 +48,7 @@ def check_paper_directionality(paper,directionality, output_dir):
     except Exception as e:
         print("error while trying to extract metadata")
         print(str(e))
+        logging.error("An error occurred: %s", str(e))
         pass
     if len(result.keys()) > 0:
         return result

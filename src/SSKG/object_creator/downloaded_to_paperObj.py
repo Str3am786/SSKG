@@ -1,6 +1,7 @@
 import json
+import logging
 import os
-from SSKG.extraction.github_extractor_tika import ranked_git_url, read_pdf, get_possible_abstract
+from SSKG.extraction.pdf_extraction_tika import ranked_git_url, read_pdf_list, get_possible_abstract
 from SSKG.extraction.paper_obj import PaperObj
 from SSKG.object_creator.create_downloadedObj import downloadedDic_to_downloadedObj
 
@@ -16,7 +17,7 @@ def downloaded_to_paperObj(downloadedObj):
     if not downloadedObj:
         return None
     try:
-        pdf_data = read_pdf(downloadedObj.file_path)
+        pdf_data = read_pdf_list(downloadedObj.file_path)
         urls = ranked_git_url(pdf_data)
         abstract = get_possible_abstract(pdf_data)
         title = downloadedObj.title
@@ -28,6 +29,13 @@ def downloaded_to_paperObj(downloadedObj):
     except Exception as e:
         print(str(e))
         print("Error while trying to read from the pdf")
+def dwnldd_obj_to_paper_dic(downloaded_obj):
+    paper = downloaded_to_paperObj(downloaded_obj)
+    return paperObj_ppDict(paper=paper)
+
+def dwnldd_obj_to_paper_json(download_obj,output_dir):
+    pp_dic = dwnldd_obj_to_paper_dic(download_obj)
+    return pp_dic_to_json(pp_dic, output_dir)
 
 def dwnlddDic_to_paper_dic(downloadeds_dic):
     result = {}
@@ -85,8 +93,25 @@ def pp_dic_to_json(pp_dic, output_dir):
                   ensure_ascii=False)
     return output_path
 
+#TODO cleanup all
+BACKUP_ID = 0
 def paperObj_ppDict(paper):
-    return {paper.doi: paper.to_dict()}
+    #TODO find a cleaner way
+    global BACKUP_ID
+    try:
+        if paper is not None:
+            if paper.doi is None:
+                logging.warning(f"This paper does not have a doi, created a fake ID for {paper.title}")
+                paper.doi = BACKUP_ID
+                ans = {str(BACKUP_ID): paper.to_dict()}
+                BACKUP_ID += 1
+                return ans
+            return {paper.doi: paper.to_dict()}
+        else:
+            logging.error("paper is None; cannot process.")
+            return None
+    except Exception as e:
+        logging.error("An error occurred while processing paper with DOI %s: %s", paper.doi, str(e))
 
 def safe_dic(dic, key):
     try:

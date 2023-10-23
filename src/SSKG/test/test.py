@@ -6,7 +6,7 @@ from SSKG.metadata.api.openAlex_api_queries import pdf_title_to_meta
 from SSKG.extraction.paper_obj import PaperObj
 from SSKG.modelling.unidirectionality import *
 from SSKG.object_creator.create_downloadedObj import *
-from SSKG.object_creator.doi_to_metadata import *
+from SSKG.object_creator.create_metadata_obj import *
 from SSKG.object_creator.downloaded_to_paperObj import dwnlddJson_to_paperJson
 from SSKG.object_creator.paper_to_directionality import check_paper_directionality
 from SSKG.object_creator.pdf_to_downloaded import *
@@ -43,6 +43,13 @@ class test_open_alex_query(TestCase):
     def test_None_title(self):
         test = pdf_title_to_meta(None)
         self.assertIsNone(test)
+    def test_problematic_title(self):
+        #TODO fails due to OA
+        title = "(In)Stability for the Blockchain: Deleveraging Spirals and Stablecoin Attacks"
+        resp_json = resp_json = pdf_title_to_meta(title)
+        doi = resp_json["doi"]
+        expected = "https://doi.org/10.21428/58320208.e46b7b81"
+        self.assertEquals(doi,expected)
 class test_doi_to_Obj(TestCase):
     def test_doi_toPaperObj(self):
         result = doi_to_metadataObj("10.1016/j.compbiomed.2019.05.002")
@@ -84,6 +91,11 @@ class test_title_extraction_pdf(TestCase):
     def test_normal_case(self):
         title = use_pdf_title("pdfs/widoco-iswc2017.pdf")
         self.assertEquals("WIDOCO: A Wizard for Documenting Ontologies", title)
+    def test_no_pdf(self):
+        #TODO see if "" is a useful return
+        title = use_pdf_title("")
+        self.assertEquals("",title)
+
     def test_tika_title_normal_pdf(self):
         title = use_tika_title("pdfs/widoco-iswc2017.pdf")
         self.assertEquals("WIDOCO: A Wizard for Documenting Ontologies", title)
@@ -91,7 +103,27 @@ class test_title_extraction_pdf(TestCase):
         title = use_tika_title("pdfs/test_with_weird_seperation.pdf")
         self.assertEquals("AVIS: Autonomous Visual Information Seeking with Large Language Models", \
                           title)
+    def test_tika_title_3(self):
+        title = use_tika_title("pdfs/possible_fail.pdf")
+        expected = "Intensity-modulated radiotherapy versus stereotactic body radiotherapy for prostate cancer (PACE-B): 2-year toxicity results from an open-label, randomised, phase 3, non-inferiority trial"
+        self.assertEquals(title, expected)
 
+    def test_tika_title3(self):
+        #Found a failure, this paper has a header in the title page
+        title = use_tika_title("pdfs/poss_fail2.pdf")
+        expected = "DYNAMIC CARDIAC MRI RECONSTRUCTION USING COMBINED TENSOR NUCLEAR NORM AND CASORATI MATRIX NUCLEAR NORM REGULARIZATIONS"
+        self.assertNotEquals(title,expected)
+
+    def test_pdf_title(self):
+        #test_tika_title3 fails but works with pdf_title
+        title = use_pdf_title("pdfs/poss_fail2.pdf")
+        expected = "Dynamic Cardiac MRI Reconstruction Using Combined Tensor Nuclear Norm and Casorati Matrix Nuclear Norm Regularizations"
+        self.assertEquals(expected, title)
+
+    def test_title_extract(self):
+        title = extract_pdf_title("pdfs/unicode_fail.pdf")
+        expected = "Data governance through a multi-DLT architecture in view of the GDPR"
+        self.assertEquals(title, expected)
 class test_create_DownloadedObj(TestCase):
 
     def test_normal_pipeline(self):
@@ -122,6 +154,10 @@ class test_create_DownloadedObj(TestCase):
         assert(dict_dwn)
         pass
 
+    def test_pdf_to_downloaded_obj(self):
+        pdf = "pdfs/issues_meta.pdf"
+        pdf_to_downloaded_obj(pdf,"json/")
+
 class test_pdf_to_downloaded(TestCase):
     def test_adrian_to_dict(self):
         directory = "./pdfs"
@@ -137,9 +173,6 @@ class test_pdf_to_downloaded(TestCase):
         output_path = adrian_pdfs_2Json(directory)
         assert(output_path)
 
-
-
-
 class test_downloaded_to_paper_obj(TestCase):
 
     def test_downloadedJson_to_pp_Json(self):
@@ -147,8 +180,10 @@ class test_downloaded_to_paper_obj(TestCase):
         output_path = "./pdfs/"
         dwnlddJson_to_paperJson(dwn_json,output_path)
 
-
 class test_bidir(TestCase):
+    #TODO DELETE
+    def test_processed_pipeline(self):
+        papers_json_to_bidir_json("json/processed_metadata.json", "/Users/pingamax2/Desktop/testSSKG_OEG/paper_w_code/output/JSONs")
     def test_doi_pipeline(self):
         wipe_directory("./pipeline_folder")
         doi = "10.1016/j.compbiomed.2019.05.002"

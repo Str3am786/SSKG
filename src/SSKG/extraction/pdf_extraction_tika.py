@@ -68,11 +68,15 @@ def extract_possible_title(pdf_raw_data):
 
 def find_abstract_index(pdf_data):
     index = 0
-    for line in pdf_data:
-        if "abstract" in line.lower():
-            if index < len(pdf_data):
-                return index
-        index +=1
+    try:
+        for line in pdf_data:
+            if "abstract" in line.lower():
+                if index < len(pdf_data):
+                    return index
+            index +=1
+    except Exception as e:
+        logging.warning("Failed to Extract the abstract")
+        return None
 def get_possible_abstract(pdf_data):
     try:
         index = find_abstract_index(pdf_data)

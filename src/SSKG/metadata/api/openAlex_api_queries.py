@@ -86,6 +86,7 @@ def pdf_title_to_meta(title):
     url = BASE_URL + "?filter=title.search:" + title_url
     try:
         response = requests.get(url)
+        print("This is the open alex response " + str(response.status_code))
         if response.status_code == 200:
 
             return _verify_title(response_json=response.json(), og_title=title)

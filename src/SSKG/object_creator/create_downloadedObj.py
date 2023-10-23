@@ -2,7 +2,11 @@ import os
 import json
 from SSKG.download_pdf.download_pipeline import pdf_download_pipeline
 from SSKG.download_pdf.downloaded_obj import DownloadedObj
-from SSKG.object_creator.doi_to_metadata import metaDict_to_metaObj, doi_to_metadataObj
+from SSKG.object_creator.create_metadata_obj import metaDict_to_metaObj, doi_to_metadataObj
+from SSKG.extraction.pdf_title_extraction import extract_pdf_title
+from SSKG.metadata.api.openAlex_api_queries import pdf_title_to_meta
+from SSKG.object_creator.create_metadata_obj import extract_arxivID
+from SSKG.utils.regex import str_to_doiID
 
 
 def meta_to_dwnldd(metadataObj, output_dir):
@@ -145,12 +149,24 @@ def dois_to_downloadedJson(dois,output_dir):
                   ensure_ascii=False)
     return output_path
 def dois_txt_to_downloadedJson(dois_txt,output_dir):
-    dict = dois_txt_to_downloadedDics(dois_txt, output_dir)
+    dic = dois_txt_to_downloadedDics(dois_txt, output_dir)
     output_path = output_dir + "/" + "downloaded_metadata.json"
     with open(output_path, 'w+') as out_file:
-        json.dump(dict, out_file, sort_keys=True, indent=4,
+        json.dump(dic, out_file, sort_keys=True, indent=4,
                   ensure_ascii=False)
     return output_path
+
+def pdf_to_downloaded_obj(pdf,output_dir):
+    # TODO
+    if not os.path.exists(output_dir):
+        raise FileNotFoundError
+    if not (title := extract_pdf_title(pdf=pdf)):
+        return None
+    resp_jsn = pdf_title_to_meta(title)
+    titL = safe_dic(resp_jsn, "title")
+    doi = str_to_doiID(safe_dic(resp_jsn, "doi"))
+    arxiv = extract_arxivID(resp_jsn)
+    return DownloadedObj(title=titL,doi=doi,arxiv=arxiv,file_name="",file_path=pdf)
 
 def download_from_doi(doi,output_dir):
     return doi_to_downloadedJson(doi,output_dir)

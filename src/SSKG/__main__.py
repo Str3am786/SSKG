@@ -1,12 +1,8 @@
 #TODO find appropiate names
+from . import __version__
 import click
 import os
-from . import __version__
-from .object_creator.create_downloadedObj import doi_to_downloadedJson, dois_txt_to_downloadedJson
-from .object_creator.downloaded_to_paperObj import dwnlddJson_to_paperJson
-from .object_creator.pipeline import dois_txt_to_unidir_json, dois_txt_to_bidir_json, pipeline_single_unidir, \
-    pipeline_single_bidir, from_papers_json_to_unidir, from_papers_json_to_bidir
-
+import logging
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 VALID_EXTENSIONS = ['.txt', '.json']
 
@@ -22,13 +18,12 @@ def cli():
     ███████  ███████  ██   ██   ██████  \n
 
     Scientific Software Knowledge Graphs (SSKG)\n
-    Automatically generates a searchable portal for every repository of an organization/s or user/s, which is easy to host.\n
+    Find and assess Research Software within Research papers.\n
 
     Usage:\n
     1. (assess)     Assess doi for unidirectionality or bidirectionality\n
     2. (download)   Download PDF (paper) from a doi or list\n
     3. (process)    Process downloaded pdf to find urls and abstract\n
-    4. (summary)    Create a summary from the portal information
 
     """
     pass
@@ -60,24 +55,25 @@ def cli():
 @click.option('--unidir', '-U', is_flag=True, default = False, help="Unidirectionality")
 @click.option('--bidir', '-B', is_flag=True, default = False, help="Bidirectionality")
 def assess(input, output,unidir,bidir):
+    from .object_creator.pipeline import dois_txt_to_unidir_json, dois_txt_to_bidir_json, single_doi_pipeline_unidir, \
+        single_doi_pipeline_bidir, papers_json_to_unidir_json, papers_json_to_bidir_json
     if unidir:
         if input.endswith(".txt") and os.path.exists(input):
             dois_txt_to_unidir_json(dois_txt=input,output_dir=output)
         if input.endswith(".json") and os.path.exists(input):
-            from_papers_json_to_unidir(papers_json=input,output_dir=output)
+            papers_json_to_unidir_json(papers_json=input, output_dir=output)
             return
         else:
-            pipeline_single_unidir(doi=input,output_dir=output)
+            single_doi_pipeline_unidir(doi=input,output_dir=output)
             return
 
     elif bidir:
         if input.endswith(".txt") and os.path.exists(input):
-            print("test")
             dois_txt_to_bidir_json(dois_txt=input,output_dir=output)
         if input.endswith(".json") and os.path.exists(input):
-            from_papers_json_to_bidir(papers_json=input, output_dir= output)
+            papers_json_to_bidir_json(papers_json=input, output_dir=output)
         else:
-            pipeline_single_bidir(doi=input,output_dir=output)
+            single_doi_pipeline_bidir(doi=input, output_dir=output)
             return
     else:
         print("Please select a directionality to measure")
@@ -91,7 +87,7 @@ def assess(input, output,unidir,bidir):
 @click.option('--input','-i', required=True, help="DOI or path to .txt list of DOIs", metavar='<name>')
 @click.option('--output','-o', default="./", show_default=True, help="Output Directory ", metavar='<path>')
 def download(input, output):
-
+    from .object_creator.create_downloadedObj import doi_to_downloadedJson, dois_txt_to_downloadedJson
     if input.endswith(".txt") and os.path.exists(input):
         dois_txt_to_downloadedJson(dois_txt=input, output_dir=output)
     else:
@@ -104,10 +100,50 @@ def download(input, output):
 @click.option('--input','-i', required=True, help="DOI or path to .txt list of DOIs", metavar='<name>')
 @click.option('--output','-o', default="./", show_default=True, help="Output Directory ", metavar='<path>')
 def process(input,output):
+    from .object_creator.downloaded_to_paperObj import dwnlddJson_to_paperJson, dwnldd_obj_to_paper_json
+    from .object_creator.create_downloadedObj import pdf_to_downloaded_obj
+
+    if os.path.isdir(input):
+        _aux_pdfs_to_pp_json(input= input, output= output)
+        return
     if input.endswith(".json") and os.path.exists(input):
         dwnlddJson_to_paperJson(input,output)
+    if input.endswith(".pdf") and os.path.exists(input):
+        #TODO
+        dwnldd = pdf_to_downloaded_obj(pdf= input, output_dir= output)
+        dwnldd_obj_to_paper_json(download_obj= dwnldd,output_dir= output)
+        return
     else:
         print("Error")
         return
-    return
 
+def _aux_pdfs_to_pp_json(input, output):
+    from .object_creator.create_downloadedObj import pdf_to_downloaded_obj
+    from .object_creator.downloaded_to_paperObj import dwnldd_obj_to_paper_dic
+    import json
+    try:
+        result = {}
+        for pdfFile in os.listdir(input):
+            print(pdfFile)
+            try:
+                if os.path.isfile(pdfFile) and pdfFile.endswith(".pdf"):
+                    dwnldd = pdf_to_downloaded_obj(pdf=pdfFile, output_dir=output)
+                    pp_dic = dwnldd_obj_to_paper_dic(downloaded_obj=dwnldd)
+                    try:
+                        result.update(pp_dic)
+                    except Exception as update_error:
+                        logging.error(f"Error updating result with pp_dic: {str(update_error)}")
+                        continue
+                        print(pp_dic)
+                        print(pdfFile)
+            except Exception as file_error:
+                logging.error(f"Error processing file: {str(file_error)}")
+                continue
+        output_path = output + "/" + "processed_metadata.json"
+        with open(output_path, 'w+') as out_file:
+            json.dump(result, out_file, sort_keys=True, indent=4,
+                      ensure_ascii=False)
+        return output_path
+    except Exception as e:
+        logging.error(f"an error occurred: {str(e)}")
+        print(str(e))

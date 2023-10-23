@@ -8,7 +8,7 @@ from SSKG.object_creator.create_downloadedObj import downloaded_dictionary
 import os.path
 import json
 
-from .doi_to_metadata import doi_to_metadataObj
+from .create_metadata_obj import doi_to_metadataObj
 
 
 #WARNING this is for adrians pdfs

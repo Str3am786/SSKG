@@ -36,14 +36,20 @@ def is_doi_bidir(pdfObj, repo_json):
         print(str(e))
         return False
     doi_list = find_doi_citation(repo_data)
+    if pdfObj.doi is None:
+        return False
     if doi_list:
         for doi in doi_list:
+            if not doi:
+                continue
             if doi.lower() == pdfObj.doi.lower():
                 return True
     #run through description, if doi is found, will be within dictionary of lists
     doi_list = safe_dic(description_finder(repo_data),'doi')
     if doi_list:
         for doi in doi_list:
+            if not doi:
+                continue
             if doi.lower() == pdfObj.doi.lower():
                 return True
     return False

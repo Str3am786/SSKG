@@ -1,13 +1,24 @@
 {
-    "null": [
-        "https://github.com/makerdao/awesome-makerdao",
-        "https://github.com/aklamun/Stablecoin_Deleveraging"
-    ],
     "10.1007/978-3-030-01240-3_10": [
         "https://github.com/skyoung/MemTrack"
     ],
+    "10.1016/j.compbiomed.2019.05.002": [
+        "https://github.com/mateuszbuda/brain-segmentation"
+    ],
+    "10.1016/j.cpc.2020.107260": [
+        "https://github.com/ryosuke-akashi/AtomREM"
+    ],
+    "10.1016/j.tcs.2019.03.012": [
+        "https://github.com/felipelouza/bwsd"
+    ],
+    "10.1051/0004-6361/201935695": [
+        "https://github.com/astro-alexis/magnotron-tts"
+    ],
     "10.1051/0004-6361/202039603": [
         "http://github.com/mianbreton/RR_code"
+    ],
+    "10.1101/2020.04.12.038158": [
+        "https://github.com/ml-jku/DeepRC"
     ],
     "10.1109/cig.2019.8848075": [
         "https://github.com/kngwyu/rogue-gym-agents-cog19",
@@ -22,11 +33,14 @@
     "10.1109/iccv48922.2021.00338": [
         "https://github.com/uncbiag/ICON"
     ],
+    "10.1109/iceccme55909.2022.9988605": [
+        "https://github.com/ika-rwth-aachen/DEviLOG"
+    ],
     "10.1109/icse43902.2021.00072": [
         "https://github.com/vasumv/bonsai-fuzzing"
     ],
-    "10.1109/tcss.2021.3059286": [
-        "https://github.com/Mehrnoom/Cryptocurrency-Pump-Dump"
+    "10.1109/itsc.2019.8917177": [
+        "https://github.com/lukasliebel/MultiDepth"
     ],
     "10.1145/3442381.3449934": [
         "https://github.com/Vvrep/MASTER-electric_vehicle_charging_recommendation"
@@ -47,6 +61,9 @@
     "10.18653/v1/2020.acl-main.55": [
         "https://github.com/cl-tohoku/eval-via-selection"
     ],
+    "10.18653/v1/2020.emnlp-main.495": [
+        "https://github.com/AI-secure/T3"
+    ],
     "10.18653/v1/2021.findings-emnlp.116": [
         "https://github.com/YunqiuXu/H-KGA"
     ],
@@ -56,10 +73,14 @@
     "10.18653/v1/2022.naacl-main.207": [
         "https://github.com/aviclu/long-context-qa-contrast"
     ],
+    "10.21428/58320208.e46b7b81": [
+        "https://github.com/makerdao/awesome-makerdao",
+        "https://github.com/aklamun/Stablecoin_Deleveraging"
+    ],
     "10.2478/pralin-2018-0002": [
         "https://github.com/tensorflow/tensor2tensor"
     ],
-    "10.48550/arxiv.2211.08278": [
-        "https://github.com/ika-rwth-aachen/DEviLOG"
+    "10.31219/osf.io/dqz89": [
+        "https://github.com/Mehrnoom/Cryptocurrency-Pump-Dump"
     ]
 }

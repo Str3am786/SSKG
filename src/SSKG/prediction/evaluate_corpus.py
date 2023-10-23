@@ -19,7 +19,7 @@ def evalutate_corpus():
         dict_bidirs = json.load(json_file)
 
     for index, row in csv.iterrows():
-        doi = row['DOI']
+        doi = row['DOI/arxiv_in_github']
         if doi in dict_bidirs:
             prediction = row.get("biDirectional")
             if prediction:
@@ -56,7 +56,7 @@ def evalutate_corpus():
         dict_bidirs = json.load(json_file)
 
     for index, row in csv.iterrows():
-        doi = row['DOI']
+        doi = row['DOI_oa']
         if doi in dict_bidirs:
             prediction = row.get("biDirectional")
             if prediction:

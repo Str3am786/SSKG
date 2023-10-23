@@ -9,7 +9,7 @@ This tool verifies the link between a scientific paper and a software repository
 There is also a "unidirectional" metric, which finds a repository url and see's within the repository if the paper is named.
   
 ## Dependencies  
-- Python 3.9
+- Python 3.10
 - Java 8 or above (please see [Tika requirements](https://tika.apache.org))  
   
 ## Installation  
@@ -39,18 +39,23 @@ TODO
 ### The repository is divided into the following directories:  
   
 1. Download_pdf 
-2. Metadata_extraction
-3. Object_creator  
-4. Modelling
-5. Prediction
+2. Metadata
+3. Extraction
+4. Object_creator  
+5. Modelling
+6. Prediction
   
 ### Download_pdf
 Pertains to all the downloading of pdfs. 
 Downloaded_obj is a representation of downloaded papers which have not been processed yet.
 
-### Metadata_extraction
+### Metadata
+TODO
 Encompasses petitions to OpenAlex for fetching the paper's metadata.
 MetadataObj contains the metadata from  OpenAlex: doi, arxiv and its title.
+
+### Extraction
+TODO
 Tika scripts to open a pdf and extract its urls are also found witin this module.
 PaperObj is created once the downloadedObj's pdf has been processed to locate all its urls. Contains: doi, arxiv, title, file_path, urls.
 Finally, the necessary functions dowloading a repository and extracting its metadata with SOMEF

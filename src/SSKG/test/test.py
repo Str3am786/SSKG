@@ -1,7 +1,11 @@
-
+import os.path
 from pathlib import Path
 from shutil import rmtree
 from unittest import TestCase
+
+TEST_DIR = os.path.dirname(os.path.abspath(__file__))
+PIPELINE_FOLDER = os.path.join(TEST_DIR, "pipeline_folder")
+
 
 def wipe_directory(directory_path):
     for path in Path(directory_path).glob("**/*"):
@@ -12,7 +16,9 @@ def wipe_directory(directory_path):
 
 
 
-# Metadata testing
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#-------------------------------------------------Metadata Testing------------------------------------------------------
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 from SSKG.metadata.api.openAlex_api_queries import pdf_title_to_meta, convert_to_doi_url, query_openalex_api
 
@@ -109,3 +115,65 @@ class test_open_alex_query(TestCase):
         doi = resp_json["doi"]
         expected = "https://doi.org/10.21428/58320208.e46b7b81"
         self.assertIsNone(doi)
+
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#-------------------------------------------------Download Testing------------------------------------------------------
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+from ..download_pdf.arxiv_downloader import download_pdf, convert_to_arxiv_url
+
+class test_arxiv_downloader(TestCase):
+    #!-----------------------------------------------
+    #Arxiv url test:
+    #
+    def test_arxiv_url(self):
+        arxiv = "2212.13788"
+        expected = "https://arxiv.org/pdf/2212.13788.pdf"
+        ans = convert_to_arxiv_url(arxiv)
+        self.assertEquals(ans, expected)
+
+    def test_not_arxiv_url(self):
+        arxiv = ""
+        ans = convert_to_arxiv_url(arxiv)
+        self.assertIsNone(ans)
+
+    def test_None_arxiv_url(self):
+        arxiv = None
+        ans = convert_to_arxiv_url(arxiv)
+        self.assertIsNone(ans)
+
+
+    #!-----------------------------------------------
+    #Arxiv pdf download test:
+    #
+    def test_download_arxiv_pdf(self):
+        wipe_directory(PIPELINE_FOLDER)
+        arxiv = "2212.13788"
+        output_file = download_pdf(url=arxiv, output_dir=PIPELINE_FOLDER)
+        self.assertTrue(os.path.exists(output_file))
+
+    def test_download_not_arxiv_pdf(self):
+        wipe_directory(PIPELINE_FOLDER)
+        arxiv = "221213.788"
+        output_file = download_pdf(url=arxiv, output_dir=PIPELINE_FOLDER)
+        self.assertIsNone(output_file)
+
+    def test_download_none_arxiv_pdf(self):
+        wipe_directory(PIPELINE_FOLDER)
+        arxiv = "221213.788"
+        output_file = download_pdf(url=arxiv, output_dir=PIPELINE_FOLDER)
+        self.assertIsNone(output_file)
+
+    def test_download_arxiv_pdf_no_dir(self):
+        wipe_directory(PIPELINE_FOLDER)
+        arxiv = "2212.13788"
+        output_file = download_pdf(url=arxiv, output_dir=None)
+        self.assertIsNone(output_file)
+
+
+
+
+
+class test_open_alex_url_extractor(TestCase):
+    pass

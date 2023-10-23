@@ -5,26 +5,13 @@ from SSKG.download_pdf.oa_pdf_url_extractor import create_unpaywall_url_from_str
 #TODO fix naming scheme
 from SSKG.download_pdf.arxiv_downloader import download_pdf as download_arxiv_pdf
 from SSKG.download_pdf.oa_pdf_downloader import download_pdf
+from ..utils.regex import str_to_arxivID
 
 
 
-def _is_arxiv(doi):
-    '''
-    :param doi: doi in string format
-    :return:
-    a url for the arxiv pdf
-    '''
-    if doi is None:
-        return None
-    if 'arxiv' in doi:
-        arxiv_ID = doi.split('/arxiv.')[-1]
-        arxiv_url = 'https://arxiv.org/pdf/' + arxiv_ID + '.pdf'
-        return arxiv_url
-    else:
-        return False
 
 
-def pdf_download_pipeline(doi, output_directory):
+def pdf_download_pipeline(id, output_directory):
     """
     Input
     Takes a doi as a string.
@@ -53,13 +40,13 @@ def pdf_download_pipeline(doi, output_directory):
         print("Error while trying to create the directory  Err@ PDF download")
         print(str(e))
 
-    if(arxiv_url:=_is_arxiv(doi)):
+    if(arxiv_url:= _is_arxiv(id)):
         file_path = download_arxiv_pdf(arxiv_url,pdf_output_directory)
     if arxiv_url is None:
         return None
     else:
-        url = paywall_url(doi)
-        file_path = download_pdf(url, doi, pdf_output_directory)
+        url = paywall_url(id)
+        file_path = download_pdf(url, id, pdf_output_directory)
     if file_path:
         logging.info("Success downloading the pdf file")
         return file_path

@@ -27,7 +27,6 @@ def download_pdf(url,name_of_pdf, output_dir):
     try:
         try:
             r = requests.get(url)
-            logging.debug(r)
              # Save the pdf
             pdf_filepath = output_dir + '/' + name
             idk = str(r.content)

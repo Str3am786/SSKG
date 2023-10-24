@@ -122,6 +122,11 @@ class test_open_alex_query(TestCase):
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 from ..download_pdf.arxiv_downloader import download_pdf, convert_to_arxiv_url
+from ..download_pdf.oa_pdf_url_extractor import (
+    create_unpaywall_url_from_string,
+    create_unpaywall_url,
+    get_unpaywall_pdf_url
+)
 
 class test_arxiv_downloader(TestCase):
     #!-----------------------------------------------
@@ -170,10 +175,88 @@ class test_arxiv_downloader(TestCase):
         arxiv = "2212.13788"
         output_file = download_pdf(url=arxiv, output_dir=None)
         self.assertIsNone(output_file)
-
-
-
-
-
 class test_open_alex_url_extractor(TestCase):
     pass
+
+class test_oa_downloader(TestCase):
+    pass
+
+class test_download_pipeline(TestCase):
+    pass
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#-------------------------------------------------Extraction Testing----------------------------------------------------
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+from ..extraction.somef_extraction.somef_extractor import is_github_repo_url, download_repo_metadata
+
+class test_somef_extraction(TestCase):
+
+    def test_github_url(self):
+        test = "https://github.com/SoftwareUnderstanding/SSKG"
+        ans = is_github_repo_url(test)
+        self.assertTrue(ans)
+
+    def test_not_github_url(self):
+        test = "https://github.com/SoftwareUnderstandingSSKG"
+        ans = is_github_repo_url(test)
+        self.assertFalse(ans)
+
+    def test_None_github_url(self):
+        test = None
+        ans = is_github_repo_url(test)
+        self.assertFalse(ans)
+    #!-----------------------------------------------
+    #Test download_repo_metadata:
+    #
+
+    def test_dwnld_repo_meta(self):
+        wipe_directory(PIPELINE_FOLDER)
+        real_url = "https://github.com/SoftwareUnderstanding/SSKG"
+        ans = download_repo_metadata(url=real_url, output_folder_path=PIPELINE_FOLDER)
+        self.assertTrue(os.path.exists(ans))
+
+    def test_already_dwnldd_repo_meta(self):
+        real_url = "https://github.com/SoftwareUnderstanding/SSKG"
+        output_dir = os.path.join(TEST_DIR,"json")
+        expected = os.path.join(output_dir, "JSONs/SoftwareUnderstanding_SSKG.json")
+        ans = download_repo_metadata(url=real_url, output_folder_path=output_dir)
+        self.assertEquals(ans,str(expected))
+
+    def test_d_r_m_not_url(self):
+        fake_url = ""
+        ans = download_repo_metadata(url=fake_url, output_folder_path=PIPELINE_FOLDER)
+        self.assertIsNone(ans)
+
+    def test_d_r_m_none_url(self):
+        none_url = None
+        ans = download_repo_metadata(url=none_url, output_folder_path=PIPELINE_FOLDER)
+        self.assertIsNone(ans)
+
+    def test_d_r_m_output_nonexistent(self):
+        wipe_directory(PIPELINE_FOLDER)
+        real_url = "https://github.com/SoftwareUnderstanding/SSKG"
+        non_existent_dir = os.path.join(PIPELINE_FOLDER,"non_existent")
+        ans = download_repo_metadata(url=real_url, output_folder_path=non_existent_dir)
+        self.assertTrue(os.path.exists(ans))
+    def test_d_r_m_output_path_none(self):
+        real_url = "https://github.com/SoftwareUnderstanding/SSKG"
+        ans = download_repo_metadata(url=real_url, output_folder_path=None)
+        self.assertIsNone(ans)
+
+    def test_d_r_m_somef_fail(self):
+        wipe_directory(PIPELINE_FOLDER)
+        real_url = "https://github.com/oeg-upm/web-oeg"
+        ans = download_repo_metadata(url=real_url, output_folder_path=PIPELINE_FOLDER)
+        self.assertIsNone(ans)
+
+
+
+
+
+
+
+
+
+
+

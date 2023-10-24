@@ -1,16 +1,39 @@
+import logging
 import os
 import re
 import json
+import subprocess
+
 import bibtexparser
 
 #downloads repo metadata creating a json as the github project name.json
 
-def is_github_url(url):
+def is_github_repo_url(url):
+    '''
+    :@Param url: String, possible github url
+    :returns:
+    if the url is a github Repository
+        True
+    Else
+        False
+    '''
+    if not url:
+        return False
     pattern = r'^http(s)?://github\.com/[\w-]+/[\w-]+/?$'
     match = re.match(pattern, url)
     return match is not None
 def download_repo_metadata(url, output_folder_path):
-    if not is_github_url(url):
+    '''
+    @Param url: String with github url
+    @Param output_folder_path: Path to the desired output folder
+    :returns
+    path to the somef json file for the given url
+    or
+    None if failure/invalid input
+    '''
+    if not is_github_repo_url(url):
+        return None
+    if not output_folder_path:
         return None
     pattern = r'(?:http|https)://(?:gitlab\.com|github\.com)/'
     replacement = ''
@@ -28,9 +51,15 @@ def download_repo_metadata(url, output_folder_path):
         print('Already created a file: ' + output_file_path)
         return output_file_path
     else:
-        command = f"somef describe -r {url} -o {output_file_path} -t 0.8"
-        print(command)
-        os.system((command))
+        try:
+            command = f"somef describe -r {url} -o {output_file_path} -t 0.8"
+            completed_process = subprocess.run(command, shell=True, capture_output=True, text=True)
+            if completed_process.returncode != 0:
+                raise Exception(
+                    f"Command failed with return code {completed_process.returncode}: {completed_process.stderr}")
+        except Exception as e:
+            logging.error(f"ERROR:{url} SOMEF failed due to: {str(e)}")
+            return None
     return output_file_path
 
 #extraction of metadata

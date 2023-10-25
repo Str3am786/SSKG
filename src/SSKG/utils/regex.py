@@ -1,8 +1,6 @@
 import re
 
-#object_creator
-
-DOI_REGEX= r'\b(10[.][0-9]{4,}(?:[.][0-9]+)*/(?:(?!["&\'<>])\S)+)\b'
+DOI_REGEX= r'\b(10[.][0-9]{4,}(?:[.][0-9]+)*/(?:(?!["&\'<>,])\S)+)\b'
 ARXIV_REGEX = r'.*(\d{4}\.\d{4,5}).*'
 
 def str_to_doiID(string):
@@ -15,6 +13,13 @@ def str_to_doiID(string):
     except:
         None
 
+def str_to_doi_list(string):
+    if not string:
+        return None
+    pattern = r'\b(10[.][0-9]{4,}(?:[.][0-9]+)*/(?:(?!["&\'<>])\S)+)\b'
+    matches = re.findall(pattern, string)
+    return matches if len(matches) > 0 else None
+
 def str_to_arxivID(string):
     try:
         match = re.search(ARXIV_REGEX, string)
@@ -24,29 +29,35 @@ def str_to_arxivID(string):
         return None
     except:
         return None
+
+def str_to_arxiv_list(string):
+    if not string:
+        return None
+    pattern = r'.*(\d{4}\.\d{4,5}).*'
+    matches = re.findall(pattern, string)
+    return matches if len(matches) > 0 else None
+
+
 #TODO change the _ for ! in the filename doi. Alsolook at oa_pdf_downloader
-def is_filename_doi(file_name):
+def adrian_is_filename_doi(file_name):
     """
     Regex on the file name and return it if it is of DOI ID format.
     Returns
     -------
     List Strings (doi's)
     """
+
     file_name = file_name.replace('_','/').replace('.pdf','').replace('-DOT-','.')
-    pattern = r'\b(10[.][0-9]{4,}(?:[.][0-9]+)*/(?:(?!["&\'<>])\S)+)\b'
-    match = re.search(pattern,file_name)
+    match = re.search(DOI_REGEX,file_name)
     if match:
         return file_name
     else:
         return False
 
-    matches = re.findall(pattern, file_name)
-    return matches
 
-def filename_to_doi_convert(file_name):
+def adrian_filename_to_doi_convert(file_name):
     possDOI = file_name.replace('_', '/').replace('.pdf', '').replace('-DOT-', '.')
-    pattern = r'\b(10[.][0-9]{4,}(?:[.][0-9]+)*/(?:(?!["&\'<>])\S)+)\b'
-    match = re.search(pattern,possDOI)
+    match = re.search(DOI_REGEX,possDOI)
     if match:
         return match.group(1)
     return None

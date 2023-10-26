@@ -1,7 +1,7 @@
 import json
 from fuzzywuzzy import fuzz
 
-
+FUZZY_THRESHOLD = 85
 def load_json(path):
     with open(path, 'r') as f:
         return json.load(f)
@@ -22,7 +22,7 @@ def is_substring_found(substring, larger_string):
         if ratio > max_ratio:
             max_ratio = ratio
     #This is to print the highest scoring fuzzy string comp print(max_ratio)
-    if max_ratio > 85:  # Adjust the threshold based on your requirement
+    if max_ratio > FUZZY_THRESHOLD:
         return True
     else:
         return False

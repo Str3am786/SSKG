@@ -15,15 +15,16 @@ def backup(jayson):
                 continue
             else:
                 return pdf
+        return None
     except Exception as e:
         print(str(e))
         return None
 #downloads pdf and returns file directory if correctly downloaded
 #TODO change the "/" to "!" instead of _ to avoid doi conversion confusion
-def download_pdf(url,name_of_pdf, output_dir):
+def doi_download_pdf(url,doi, output_dir):
     #characters within doi that is allowed -._;()/
     # replace dois_id / with _
-    name = name_of_pdf.replace('http://doi.org/','').replace('https://doi.org/', '').replace('/','%').replace('.','!') + '.pdf'
+    name = doi.replace('http://doi.org/','').replace('https://doi.org/', '').replace('/','%').replace('.','!') + '.pdf'
     try:
         try:
             r = requests.get(url)
@@ -35,20 +36,26 @@ def download_pdf(url,name_of_pdf, output_dir):
             try:
                 pdf = requests.get(json_idk['best_oa_location']['url'])
                 if pdf.status_code != 200:
-                    print("Request Rejected with code " + str(pdf.status_code))
+                    logging.warning("Request Rejected with code " + str(pdf.status_code) + "\n" + \
+                                    "Running backup")
                     pdf = backup(json_idk)
             except:
                 print("Error while trying to get the best_oa_location")
                 pdf = backup(json_idk)
             if not pdf:
+                logging.error(f"Failed to download the pdf for {str(doi)} with {str(url)}")
+                print("-------------------------------")
                 return None
             with open(pdf_filepath, 'wb') as f: #here download the pdf
                 f.write(pdf.content)
+                print("PDF was downloaded successfully")
+                print("-------------------------------")
                 logging.info('written pdf successfully')
             return output_dir + '/' + name
 
         except Exception as e:
             print(str(e))
+            print("-------------------------------")
 
     except Exception as e:
         # make a file for the error trace

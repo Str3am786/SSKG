@@ -1,4 +1,5 @@
 import requests
+from ..utils.regex import str_to_doiID
 
 def create_unpaywall_url(data):
     """
@@ -23,6 +24,9 @@ def create_unpaywall_url_from_string(doi: str):
     :return
     unpaywall  url (String)
     """
+    doi  = str_to_doiID(doi) #Ensure we have a doi without the https://
+    if not doi:
+        return None
     if 'figshare' in doi or 'zenodo' in doi:
         return None
     url = doi.split('org/')[-1]

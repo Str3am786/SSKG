@@ -38,7 +38,7 @@ def str_to_arxiv_list(string):
     return matches if len(matches) > 0 else None
 
 
-#TODO change the _ for ! in the filename doi. Alsolook at oa_pdf_downloader
+#TODO change the _ for ! in the filename doi. Alsolook at unpaywall_pdf_downloader
 def adrian_is_filename_doi(file_name):
     """
     Regex on the file name and return it if it is of DOI ID format.

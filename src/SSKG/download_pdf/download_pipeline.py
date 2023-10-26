@@ -1,9 +1,9 @@
 import logging
 import os
 #TODO fix imports
-from SSKG.download_pdf.oa_pdf_url_extractor import create_unpaywall_url_from_string as paywall_url
+from SSKG.download_pdf.unpaywall_pdf_url_extractor import create_unpaywall_url_from_string as paywall_url
 from SSKG.download_pdf.arxiv_downloader import download_pdf as download_arxiv_pdf
-from SSKG.download_pdf.oa_pdf_downloader import download_pdf
+from SSKG.download_pdf.unpaywall_pdf_downloader import doi_download_pdf
 
 
 
@@ -38,12 +38,15 @@ def pdf_download_pipeline(id, output_directory):
         print("Error while trying to create the directory  Err@ PDF download")
         print(str(e))
 
+    print(f"Attempting to download pdf for {str(id)}")
     if(file_path:=download_arxiv_pdf(id,pdf_output_directory) is not None):
         return file_path
-
     else:
         url = paywall_url(id)
-        file_path = download_pdf(url, id, pdf_output_directory)
+        if not url:
+            logging.error("We are only able to download pdfs via arxiv or doi for now, sorry")
+            return None
+        file_path = doi_download_pdf(url, id, pdf_output_directory)
     if file_path:
         logging.info("Success downloading the pdf file")
         return file_path

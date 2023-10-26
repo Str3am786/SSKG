@@ -1,5 +1,5 @@
 
-from SSKG.utils.regex import is_filename_doi, filename_to_doi_convert
+from SSKG.utils.regex import adrian_is_filename_doi, adrian_filename_to_doi_convert
 from SSKG.metadata.api.openAlex_api_queries import query_openalex_api
 from SSKG.utils.regex import str_to_arxivID,str_to_doiID
 from SSKG.download_pdf.downloaded_obj import DownloadedObj
@@ -51,7 +51,7 @@ def adrian_to_downloaded(file_path):
         #TODO
         pass
     possible_ID = possible_ID.replace("_","/")
-    if (doi:= is_filename_doi(possible_ID)):
+    if (doi:= adrian_is_filename_doi(possible_ID)):
         return pdfDoi_to_downloaded(doi,file_path)
 
 def adrian_pdfs_2dictionary(directory):
@@ -108,7 +108,7 @@ def pdfs_to_downloaded_dics(directory):
 
 def pdf_to_downloaded_dic(file_path):
     file_name = os.path.basename(file_path)
-    doi = filename_to_doi_convert(file_name)
+    doi = adrian_filename_to_doi_convert(file_name)
     meta = doi_to_metadataObj(doi)
     if not meta:
         return None

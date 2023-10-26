@@ -1,13 +1,12 @@
+import json
 import logging
 import os
 import re
-import json
 import subprocess
 
-import bibtexparser
+from ...utils.regex import str_to_doi_list, str_to_arxiv_list, str_to_arxivID
 
-#downloads repo metadata creating a json as the github project name.json
-
+#DOWNLOAD
 def is_github_repo_url(url):
     '''
     :@Param url: String, possible github url
@@ -22,6 +21,7 @@ def is_github_repo_url(url):
     pattern = r'^http(s)?://github\.com/[\w-]+/[\w-]+/?$'
     match = re.match(pattern, url)
     return match is not None
+
 def download_repo_metadata(url, output_folder_path):
     '''
     @Param url: String with github url
@@ -62,38 +62,124 @@ def download_repo_metadata(url, output_folder_path):
             return None
     return output_file_path
 
-#extraction of metadata
+#----------------
+#EXTRACTION
 
-def load_json(path):
-    with open(path,'r') as f:
-        return json.load(f)
+def get_related_paper(somef_data: dict):
+    """
+    @Param somef_data: dictionary of the somef output
+    :returns:
+    List of all the related papers IDs within the repo
+    else
+    None
+    """
+    list_ids = []
+    related_papers = safe_dic(somef_data, 'related_papers')
+    if not related_papers:
+        return None
+    for paper in related_papers:
+        url = safe_dic(safe_dic(paper,"result"),"value")
+        if url:
+            arxivID = str_to_arxivID(url)
+            list_ids.append(arxivID)
+    return list_ids if len(list_ids) > 0 else None
 
-def cff_parser(cite_list: list):
+def description_finder(somef_data: dict):
+    """
+    @Param somef_data: dictionary of the somef output
+    :returns:
+    Dictionary {doi: "", arxiv: ""} of all the related papers IDs within the repo's description
+    else
+    None
+    """
+    description = safe_dic(somef_data, 'description')
+    desc = {'doi': set(), 'arxiv': set()}
+    if description is None:
+        return desc
+    for result in description:
+        value = safe_dic(safe_dic(result, 'result'), 'value')
+        if value is None:
+            continue
+        if (doi := str_to_doi_list(value)):
+            desc['doi'].update(doi)
+        if (arxiv := str_to_arxiv_list(value)):
+            desc['arxiv'].update(arxiv)
+    return desc
+
+#TODO might need to return to parsing the bibtex to avoid non-pickup due to noise
+def find_doi_citation(somef_data: dict):
     '''
-    Parse the citation list of a cff file given by somef
+    :@Param somef_data: Dictionary of repository metadata from somef
+    :returns:
+    list of dois
+    Else
+    None
     '''
-    # remove empty elements
-    cite_list = [element for element in cite_list if element != '']
-    # replace " by ''
-    cite_list = [element.replace('"', '') for element in cite_list]
-    parsed_dict = {}
-    for element in cite_list:
-        if element.count(':') > 1:
-            key = element.split(':')[0].strip()
-            value = ':'.join(element.split(':')[1:]).strip()
-            parsed_dict[key] = value
+    #See if there is citations within the repository
+    if not (citations := safe_dic(somef_data, 'citation')):
+        return None
+    doi_list = []
+    for cite in citations:
+        result = safe_dic(cite, 'result')
+        if (format:=(safe_dic(result,'format'))):
+            if format == "cff":
+                doi = str_to_doi_list(safe_dic(result,"value"))
+                if doi:
+                    doi_list.extend(doi)
+            elif format == "bibtex":
+                doi = str_to_doi_list(safe_dic(result, "value"))
+                if doi:
+                    doi_list.extend(doi)
+            else:
+                print("Unexpected, maybe a somef update?")
         else:
-            try:
-                key, value = element.split(':')
-                key = key.strip()
-                value = value.strip()
-            except ValueError:
-                key = element.split(':')[0].strip()
-                value = ''
-            parsed_dict[key] = value
-    return parsed_dict
+            if safe_dic(result,"type") == 'Text_excerpt':
+                doi = str_to_doi_list(safe_dic(result,'value'))
+                if doi:
+                    doi_list.extend(doi)
+    return doi_list if len(doi_list) > 0 else None
 
-def bibtex_parser(cite_list: list):
+#TODO might need to return to parsing the bibtex to avoid non-pickup due to noise
+def find_arxiv_citation(somef_data: dict):
+    '''
+    :@Param somef_data: Dictionary of repository metadata from somef
+    :returns:
+    list of arxivs
+    Else
+    None
+    '''
+    #See if there is citations within the repository
+    if not (citations := safe_dic(somef_data, 'citation')):
+        return None
+    arxiv_list = []
+    for cite in citations:
+        result = safe_dic(cite, 'result')
+        if (format:=(safe_dic(result,'format'))):
+            if format == "cff":
+                arxiv = str_to_arxiv_list(safe_dic(result,"value"))
+                if arxiv:
+                    arxiv_list.extend(arxiv)
+            elif format == "bibtex":
+                arxiv = str_to_arxiv_list(safe_dic(result, "value"))
+                if arxiv:
+                    arxiv_list.extend(arxiv)
+            else:
+                print("Unexpected, maybe a somef update?")
+        else:
+            if safe_dic(result,"type") == 'Text_excerpt':
+                arxiv = str_to_arxiv_list(safe_dic(result,'value'))
+                if arxiv:
+                    arxiv_list.extend(arxiv)
+    return arxiv_list if len(arxiv_list) > 0 else None
+
+#PARSERS
+def bibtex_parser(cite_text: str):
+    if not isinstance(cite_text, str):
+        return None
+    break_up_keys = _break_up_bibtex_text(bibtx_str=cite_text)
+    return _parse_bib_item_list(break_up_keys)
+
+def _parse_bib_item_list(cite_list: list):
     '''
     Parse the citation list of a bibtex ref given by somef
     '''
@@ -111,166 +197,32 @@ def bibtex_parser(cite_list: list):
     for element in cite_list:
         if element.count('=') > 1:
             key = element.split('=')[0].strip()
+            key = key.lower()
             value = '='.join(element.split('=')[1:])
             parsed_dict[key] = value
         else:
             try:
                 key, value = element.split('=')
                 key = key.strip()
+                key = key.lower()
                 value = value.strip()
             except ValueError:
                 key = element.split('=')[0].strip()
                 value = ''
             parsed_dict[key] = value
     return parsed_dict
-
-
-def text_excerpt_parser(cite_list: list):
-    # remove @ and {}
-    cite_list = [element.replace('@', '').replace('{', '').replace('}', '') for element in cite_list]
-    # strip elements
-    cite_list = [element.strip() for element in cite_list]
-    # remove empty elements
-    cite_list = [element for element in cite_list if element != '']
-    # remove final comma
-    cite_list = [element[:-1] if element[-1] == ',' else element for element in cite_list]
-
-    parsed_dict = {}
-    for element in cite_list:
-        if element.count('=') == 1:
-            try:
-                key, value = element.split('=')
-                key = key.strip()
-                value = value.strip()
-            except ValueError:
-                key = element.split('=')[0].strip()
-                value = ''
-            parsed_dict[key] = value
-
-    return parsed_dict
-
-#WARNING returns the doi's with the / replaced by the "_"
-def find_doi_citation(somef_data: dict):
-    #TODO fix and change to a list of results
-    '''
-    Find the doi in somef data
-    '''
-    try:
-        data = somef_data['citation']
-    except KeyError:
-        return None
-
-    for cite in data:
-        try:
-            if cite['result']['format'] == 'cff':
-                cff = cff_parser(cite['result']['value'].split('\n'))
-                doi_find = description_doi_finder(cff['doi'])
-                return doi_find
-
-            elif cite['result']['format'] == 'bibtex':
-                try:
-                    bibtex = bibtexparser.loads(cite["result"]["value"]).entries[0]
-                except:
-                    print('Error parsing bibtex')
-                    bibtex = bibtex_parser(cite['result']['value'].split('\n'))
-                try:
-                    doi_find = description_doi_finder(bibtex['doi'])
-                except:
-                    doi_find = description_doi_finder(bibtex['url'])
-
-                return doi_find
-        except:
-            try:
-                if cite['result']['type'] == 'Text_excerpt':
-                    doi_find = description_doi_finder((cite['result']['value']))
-                    return doi_find
-            except:
-                return None
-    return None
-
-def find_arxiv_citation(somef_data: dict):
-    '''
-    Find the arxiv in somef data citation
-    '''
-    try:
-        data = somef_data['citation']
-    except KeyError:
-        return None
-
-    for cite in data:
-        try:
-            if cite['result']['format'] == 'cff':
-                cff = cff_parser(cite['result']['value'].split('\n'))
-                arxiv_find = description_arxiv_finder(cff['arxiv'])
-                return arxiv_find
-
-            elif cite['result']['format'] == 'bibtex':
-                try:
-                    bibtex = bibtexparser.loads(cite["result"]["value"]).entries[0]
-                except:
-                    print('Error parsing bibtex')
-                    bibtex = bibtex_parser(cite['result']['value'].split('\n'))
-                try:
-                    arxiv_find = description_arxiv_finder(bibtex['arxiv'])
-                except:
-                    arxiv_find = description_arxiv_finder(bibtex['url'])
-
-                return arxiv_find
-        except:
-            try:
-                if cite['result']['type'] == 'Text_excerpt':
-                    arxiv_find = description_arxiv_finder((cite['result']['value']))
-                    return arxiv_find
-            except:
-                return None
-    return None
-
-
-def get_related_paper(somef_data: dict):
-    """Returns a list of all the related papers within the repo"""
-    list_ids = []
-    related_papers = safe_dic(somef_data, 'related_papers')
-    if not related_papers:
-        return None
-    for paper in related_papers:
-        url = safe_dic(safe_dic(paper,"result"),"value")
-        if url:
-            # TODO once regex.py is created update so that the code is cleaner
-            arxivID = description_arxiv_finder(url)[0]
-            list_ids.append(arxivID)
-    return list_ids if len(list_ids) > 0 else None
-
-def description_finder(somef_data: dict):
-    description = safe_dic(somef_data, 'description')
-    desc = {'doi': set(), 'arxiv': set()}
-    if description is None:
-        return desc
-    for result in description:
-        value = safe_dic(safe_dic(result, 'result'), 'value')
-        if value is None:
-            continue
-        if len(doi := description_doi_finder(value)) > 0:
-            desc['doi'].update(doi)
-        elif len(arxiv := description_arxiv_finder(value)) > 0:
-            desc['arxiv'].update(arxiv)
+def _break_up_bibtex_text(bibtx_str):
+    broken_up_into_list = []
+    elemnt = ""
+    for char in bibtx_str:
+        if char == "\n":
+            broken_up_into_list.append(elemnt)
+            elemnt = ""
         else:
-            description_Name_finder(value)
-    return desc
+            elemnt = elemnt + char
 
-def description_doi_finder(value):
-    pattern = r'\b(10[.][0-9]{4,}(?:[.][0-9]+)*/(?:(?!["&\'<>])\S)+)\b'
-    matches = re.findall(pattern, value)
-    return matches
+    return broken_up_into_list
 
-
-def description_arxiv_finder(value):
-    pattern = r'.*(\d{4}\.\d{4,5}).*'
-    matches = re.findall(pattern, value)
-    return matches
-
-
-def description_Name_finder(value):
-    return
 
 def safe_dic(dic, key):
     try:

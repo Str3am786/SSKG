@@ -1,3 +1,4 @@
+import json
 import os.path
 from pathlib import Path
 from shutil import rmtree
@@ -13,6 +14,10 @@ def wipe_directory(directory_path):
             path.unlink()
         elif path.is_dir():
             rmtree(path)
+
+def load_json(path):
+    with open(path,'r') as f:
+        return json.load(f)
 
 
 
@@ -188,7 +193,9 @@ class test_download_pipeline(TestCase):
 #-------------------------------------------------Extraction Testing----------------------------------------------------
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from ..extraction.somef_extraction.somef_extractor import is_github_repo_url, download_repo_metadata
+from ..extraction.somef_extraction.somef_extractor import is_github_repo_url, download_repo_metadata, get_related_paper, \
+    description_finder, find_doi_citation, find_arxiv_citation
+
 
 class test_somef_extraction(TestCase):
 
@@ -250,6 +257,183 @@ class test_somef_extraction(TestCase):
         ans = download_repo_metadata(url=real_url, output_folder_path=PIPELINE_FOLDER)
         self.assertIsNone(ans)
 
+    # !-----------------------------------------------
+    # Test related paper extraction:
+    #
+    def test_related_paper(self):
+        false_dict = {"related_papers": [{"result": {"value": ";alskdfja2206.05328"}}]}
+        ans = get_related_paper(false_dict)
+        expected = "2206.05328"
+        self.assertEquals(ans[0],expected)
+        pass
+
+    def test_related_none(self):
+        ans = get_related_paper(None)
+        self.assertIsNone(ans)
+
+    def test_no_related(self):
+        false_dic = {}
+        ans = get_related_paper(false_dic)
+        self.assertIsNone(ans)
+
+    def test_empty_related_paper_1(self):
+        false_dict = {"related_papers": [{"result": {"value": ""}}]}
+        ans = get_related_paper(false_dict)
+        self.assertIsNone(ans)
+
+    def test_empty_related_paper_2(self):
+        false_dict = {"related_papers": [{"result": {}}]}
+        ans = get_related_paper(false_dict)
+        self.assertIsNone(ans)
+
+    def test_empty_related_paper_3(self):
+        false_dict = {"related_papers": []}
+        ans = get_related_paper(false_dict)
+        self.assertIsNone(ans)
+
+    #!-----------------------------------------------
+    #Test Description extraction:
+    #
+    def test_description_arxiv(self):
+        false_dict = {"description": [{"result": {"value": ";alskdfja2206.05328"}}]}
+        ans = description_finder(false_dict)
+        expected = "2206.05328"
+        self.assertEquals(ans['arxiv'].pop(),expected)
+
+    def test_description_doi(self):
+        false_dict = {"description": [{"result": {"value": ";alskdfja2206.05328https://doi.org/10.5281/zenodo.838601"}}]}
+        ans = description_finder(false_dict)
+        expected = "10.5281/zenodo.838601"
+        self.assertEquals(ans['doi'].pop(),expected)
+
+    def test_description_both(self):
+        false_dict = {"description": [{"result": {"value": ";alskdfja2206.05328asfhttps://doi.org/10.5555/KVTD-VPWM"}}]}
+        ans = description_finder(false_dict)
+        expected_doi = "10.5555/KVTD-VPWM"
+        expected_arxiv = "2206.05328"
+        self.assertTrue((ans['doi'].pop() == expected_doi) and (ans['arxiv'].pop() == expected_arxiv))
+
+    def test_description_none(self):
+        ans = description_finder(None)
+        self.assertIsNone(ans)
+
+    def test_no_description(self):
+        false_dic = {}
+        ans = description_finder(false_dic)
+        self.assertTrue(len(ans['doi']) == 0)
+
+    def test_empty_description_1(self):
+        false_dict = {"related_papers": [{"result": {"value": ""}}]}
+        ans = description_finder(false_dict)
+        self.assertTrue(len(ans['doi']) == 0)
+    def test_empty_description_2(self):
+        false_dict = {"related_papers": [{"result": {}}]}
+        ans = description_finder(false_dict)
+        self.assertTrue(len(ans['doi']) == 0)
+    def test_empty_description_3(self):
+        false_dict = {"related_papers": []}
+        ans = description_finder(false_dict)
+        self.assertTrue(len(ans['doi']) == 0)
+
+    #!-----------------------------------------------
+    #Test find_doi_citation:
+    #
+    def test_find_doi_citation_cff(self):
+        false_dict = {"citation": [{"result": {"format": "cff", "value": "https://doi.org/10.5555/KVTD-VPWM"}}]}
+        expected = "10.5555/KVTD-VPWM"
+        ans = find_doi_citation(false_dict)
+        self.assertEquals(ans[0], expected)
+
+    def test_find_doi_citation_none(self):
+        ans = find_doi_citation(None)
+        self.assertIsNone(ans)
+
+    def test_find_doi_broken_citation_cff(self):
+        false_dict = {"citation": [{"result":{"format":"cff", "value": ""}}]}
+        ans = find_doi_citation(false_dict)
+        self.assertIsNone(ans)
+
+    def test_find_doi_broken_citation_2_cff(self):
+        false_dict = {"citation": [{"result":{"format":"cff"}}]}
+        ans = find_doi_citation(false_dict)
+        self.assertIsNone(ans)
+
+    def test_find_doi_broken_citation_3(self):
+        false_dict = {"citation": [{}]}
+        ans = find_doi_citation(false_dict)
+        self.assertIsNone(ans)
+    def test_find_doi_citation_bib(self):
+        false_dict = {"citation": [{"result": {"format": "bibtex","value":"https://doi.org/10.5555/KVTD-VPWM"}}]}
+        expected = "10.5555/KVTD-VPWM"
+        ans = find_doi_citation(false_dict)
+        self.assertEquals(ans[0],expected)
+
+    def test_find_doi_broken_citation(self):
+        false_dict = {"citation": [{"result": {"format": "RANDOM", "value": ""}}]}
+        ans = find_doi_citation(false_dict)
+        self.assertIsNone(ans)
+
+    def test_find_doi_text_excerpt(self):
+        false_dict = {"citation": [{"result": {"type": "Text_excerpt", "value": "https://doi.org/10.5555/KVTD-VPWM"}}]}
+        expected = "10.5555/KVTD-VPWM"
+        ans = find_doi_citation(false_dict)
+        self.assertEquals(ans[0], expected)
+
+    def test_real_life_example_2_dois(self):
+        examp_json = os.path.join(TEST_DIR, "json/somef.json")
+        somef_data = load_json(examp_json)
+        ans = find_doi_citation(somef_data = somef_data)
+        self.assertTrue(len(ans) > 0)
+
+    #!-----------------------------------------------
+    #Test find_arxiv_citation:
+    #
+    def test_find_arxiv_citation_cff(self):
+        false_dict = {"citation": [{"result": {"format": "cff", "value": "https://arxiv.org/abs/2206.05328"}}]}
+        expected = "2206.05328"
+        ans = find_arxiv_citation(false_dict)
+        self.assertEquals(ans[0], expected)
+
+    def test_find_arxiv_citation_none(self):
+        ans = find_arxiv_citation(None)
+        self.assertIsNone(ans)
+
+    def test_find_arxiv_broken_citation_cff(self):
+        false_dict = {"citation": [{"result":{"format":"cff", "value": ""}}]}
+        ans = find_arxiv_citation(false_dict)
+        self.assertIsNone(ans)
+
+    def test_find_arxiv_broken_citation_2_cff(self):
+        false_dict = {"citation": [{"result":{"format":"cff"}}]}
+        ans = find_arxiv_citation(false_dict)
+        self.assertIsNone(ans)
+
+    def test_find_arxiv_broken_citation_3(self):
+        false_dict = {"citation": [{}]}
+        ans = find_arxiv_citation(false_dict)
+        self.assertIsNone(ans)
+    def test_find_arxiv_citation_bib(self):
+        false_dict = {"citation": [{"result": {"format": "bibtex","value":"ads;fl\n2206.05328"}}]}
+        expected = "2206.05328"
+        ans = find_arxiv_citation(false_dict)
+        self.assertEquals(ans[0],expected)
+
+    def test_find_arxiv_broken_citation(self):
+        false_dict = {"citation": [{"result": {"format": "RANDOM", "value": ""}}]}
+        ans = find_arxiv_citation(false_dict)
+        self.assertIsNone(ans)
+
+    def test_find_arxiv_text_excerpt(self):
+        false_dict = {"citation": [{"result": {"type": "Text_excerpt", "value": "a;lskdfj;l2206.05328"}}]}
+        expected = "2206.05328"
+        ans = find_arxiv_citation(false_dict)
+        self.assertEquals(ans[0], expected)
+
+    def test_real_life_example_2_arxivs(self):
+        examp_json = os.path.join(TEST_DIR, "json/somef.json")
+        somef_data = load_json(examp_json)
+        ans = find_arxiv_citation(somef_data = somef_data)
+        self.assertTrue(len(ans) > 0)
 
 
 

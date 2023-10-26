@@ -88,6 +88,7 @@ def assess(input, output,unidir,bidir):
 @click.option('--output','-o', default="./", show_default=True, help="Output Directory ", metavar='<path>')
 def download(input, output):
     from .object_creator.create_downloadedObj import doi_to_downloadedJson, dois_txt_to_downloadedJson
+    from .utils.regex import str_to_doiID
     if input.endswith(".txt") and os.path.exists(input):
         dois_txt_to_downloadedJson(dois_txt=input, output_dir=output)
     else:

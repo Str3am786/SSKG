@@ -1,12 +1,13 @@
+import logging
 import os
 import json
-from SSKG.download_pdf.download_pipeline import pdf_download_pipeline
-from SSKG.download_pdf.downloaded_obj import DownloadedObj
-from SSKG.object_creator.create_metadata_obj import metaDict_to_metaObj, doi_to_metadataObj
-from SSKG.extraction.pdf_title_extraction import extract_pdf_title
-from SSKG.metadata.api.openAlex_api_queries import pdf_title_to_meta
-from SSKG.object_creator.create_metadata_obj import extract_arxivID
-from SSKG.utils.regex import str_to_doiID
+from ..download_pdf.download_pipeline import pdf_download_pipeline
+from ..download_pdf.downloaded_obj import DownloadedObj
+from ..object_creator.create_metadata_obj import metaDict_to_metaObj, doi_to_metadataObj
+from ..extraction.pdf_title_extraction import extract_pdf_title
+from ..metadata.api.openAlex_api_queries import pdf_title_to_meta
+from ..object_creator.create_metadata_obj import extract_arxivID
+from ..utils.regex import str_to_doiID
 
 
 def meta_to_dwnldd(metadataObj, output_dir):
@@ -111,7 +112,21 @@ def metaJson_to_downloadedJson(meta_json, output_dir):
 
 def doi_to_downloadedObj(doi,output_dir):
     meta = doi_to_metadataObj(doi)
-    return meta_to_dwnldd(meta,output_dir)
+    if meta:
+        return meta_to_dwnldd(meta, output_dir)
+    else:
+        return _doi_to_downloaded_obj_backup(doi, output_dir)
+def _doi_to_downloaded_obj_backup(doi,output_dir):
+    try:
+        file_path = pdf_download_pipeline(id=doi, output_directory=output_dir)
+        if not file_path:
+            return None
+        #TODO extract title
+        return DownloadedObj(title=extract_pdf_title(pdf_path=file_path), doi=doi, arxiv=None,
+                             file_name=os.path.basename(file_path), file_path=file_path)
+    except Exception as e:
+        logging.error(f"An error occurred in _doi_to_downloaded_obj_backup: {str(e)}")
+        return None
 
 def doi_to_downloadedDic(doi,output_dir):
     return downloaded_dictionary(doi_to_downloadedObj(doi, output_dir))
@@ -160,7 +175,7 @@ def pdf_to_downloaded_obj(pdf,output_dir):
     # TODO
     if not os.path.exists(output_dir):
         raise FileNotFoundError
-    if not (title := extract_pdf_title(pdf=pdf)):
+    if not (title := extract_pdf_title(pdf_path=pdf)):
         return None
     resp_jsn = pdf_title_to_meta(title)
     titL = safe_dic(resp_jsn, "title")

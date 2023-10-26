@@ -5,14 +5,14 @@ from SSKG.extraction.pdf_extraction_tika import get_possible_title as use_tika_t
 
 
 
-def extract_pdf_title(pdf):
+def extract_pdf_title(pdf_path):
 
-    if (title:= use_pdf_title(pdf)):
+    if (title:= use_pdf_title(pdf_path)):
         print("This is the extracted title " + title)
         return title
     else:
         logging.warning("pdf_title was not able to extract the title will fallback to Tika")
-        title = use_tika_title(pdf)
+        title = use_tika_title(pdf_path)
     print("This is the extracted title " + title)
     return title
 
@@ -20,7 +20,7 @@ def extract_pdf_title(pdf):
 
 def use_pdf_title(pdf):
     """
-    @Param pdf: Name of the pdf for the title to be found
+    @Param pdf: Name of the pdf file for the title to be found
     :returns
     Title as string if found. Else None
     """
@@ -41,6 +41,7 @@ def use_pdf_title(pdf):
         return pdf_title
     except Exception as e:
         logging.error(str(e), exc_info=True)
+        pass
         return None
 
 

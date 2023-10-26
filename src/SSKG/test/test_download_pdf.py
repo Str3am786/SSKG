@@ -3,6 +3,7 @@ import os.path
 from pathlib import Path
 from shutil import rmtree
 from unittest import TestCase
+from ..download_pdf.download_pipeline import pdf_download_pipeline
 from ..download_pdf.arxiv_downloader import download_pdf, convert_to_arxiv_url
 from ..download_pdf.unpaywall_pdf_url_extractor import (
     create_unpaywall_url_from_string,
@@ -86,8 +87,18 @@ class test_arxiv_downloader(TestCase):
 class test_open_alex_url_extractor(TestCase):
     pass
 
+from ..download_pdf.unpaywall_pdf_downloader import doi_download_pdf, backup
 class test_oa_downloader(TestCase):
+    def test_download_html_response(self):
+        doi = "10.7554/elife.21634"
+        url = create_unpaywall_url_from_string(doi)
+        output_dir = PIPELINE_FOLDER
+        doi_download_pdf(url,doi,output_dir)
     pass
 
 class test_download_pipeline(TestCase):
+    def test_pdf_pipeline_html_response(self):
+        doi = "10.7554/elife!21634"
+        pdf_download_pipeline(doi)
+
     pass

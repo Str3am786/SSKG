@@ -266,6 +266,7 @@ class test_somef_extraction(TestCase):
 
 
 from ..extraction.pdf_extraction_tika import raw_read_pdf, read_pdf_list
+
 class test_pdf_extraction_tika(TestCase):
     def test_raw_pdf(self):
         path_file = os.path.join(TEST_DIR, "pdfs/widoco-iswc2017.pdf")
@@ -298,3 +299,52 @@ class test_pdf_extraction_tika(TestCase):
 
     def test_read_pdf_list_none(self):
         self.assertTrue(len(read_pdf_list(None)) == 0)
+
+from ..extraction.pdf_title_extraction import extract_pdf_title, use_pdf_title, use_tika_title
+class test_title_extraction_pdf(TestCase):
+
+    def test_normal_case(self):
+        path_file = os.path.join(TEST_DIR,"pdfs/widoco-iswc2017.pdf")
+        title = use_pdf_title(path_file)
+        self.assertEquals("WIDOCO: A Wizard for Documenting Ontologies", title)
+    def test_no_pdf(self):
+        title = use_pdf_title("")
+        self.assertIsNone(title)
+
+    def test_tika_title_normal_pdf(self):
+        path_file = os.path.join(TEST_DIR, "pdfs/widoco-iswc2017.pdf")
+        title = use_pdf_title(path_file)
+        self.assertEquals("WIDOCO: A Wizard for Documenting Ontologies", title)
+
+    def test_tika_title_seperator_pdf(self):
+        path_file = os.path.join(TEST_DIR,"pdfs/test_with_weird_seperation.pdf")
+        title = use_pdf_title(path_file)
+        self.assertEquals("AVIS: Autonomous Visual Information Seeking with Large Language Models", \
+                          title)
+
+    def test_tika_title_3(self):
+        path_file = os.path.join(TEST_DIR,"pdfs/possible_fail.pdf")
+        title = use_pdf_title(path_file)
+        expected = "Intensity-modulated radiotherapy versus stereotactic body radiotherapy for prostate cancer (PACE-B): 2-year toxicity results from an open-label, randomised, phase 3, non-inferiority trial"
+        self.assertEquals(title, expected)
+
+    def test_tika_title4(self):
+        #Found a failure, this paper has a header in the title page
+        path_file = os.path.join(TEST_DIR,"pdfs/poss_fail2.pdf")
+        title = use_pdf_title(path_file)
+        expected = "DYNAMIC CARDIAC MRI RECONSTRUCTION USING COMBINED TENSOR NUCLEAR NORM AND CASORATI MATRIX NUCLEAR NORM REGULARIZATIONS"
+        self.assertNotEquals(title,expected)
+
+    def test_pdf_title(self):
+        #test_tika_title3 fails but works with pdf_title
+        path_file = os.path.join(TEST_DIR, "pdfs/poss_fail2.pdf")
+        title = use_pdf_title(path_file)
+        expected = "Dynamic Cardiac MRI Reconstruction Using Combined Tensor Nuclear Norm and Casorati Matrix Nuclear Norm Regularizations"
+        self.assertEquals(expected, title)
+
+    def test_title_extract(self):
+        path_file = os.path.join(TEST_DIR,"pdfs/unicode_fail.pdf")
+        title = extract_pdf_title(path_file)
+        expected = "Data governance through a multi-DLT architecture in view of the GDPR"
+        self.assertEquals(title, expected)
+

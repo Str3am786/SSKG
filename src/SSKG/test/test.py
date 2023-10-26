@@ -127,7 +127,7 @@ class test_open_alex_query(TestCase):
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 from ..download_pdf.arxiv_downloader import download_pdf, convert_to_arxiv_url
-from ..download_pdf.oa_pdf_url_extractor import (
+from ..download_pdf.unpaywall_pdf_url_extractor import (
     create_unpaywall_url_from_string,
     create_unpaywall_url,
     get_unpaywall_pdf_url

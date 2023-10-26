@@ -23,7 +23,7 @@ def backup(jayson):
 def download_pdf(url,name_of_pdf, output_dir):
     #characters within doi that is allowed -._;()/
     # replace dois_id / with _
-    name = name_of_pdf.replace('http://doi.org/','').replace('https://doi.org/', '').replace('/','_').replace('.','-DOT-') + '.pdf'
+    name = name_of_pdf.replace('http://doi.org/','').replace('https://doi.org/', '').replace('/','%').replace('.','!') + '.pdf'
     try:
         try:
             r = requests.get(url)

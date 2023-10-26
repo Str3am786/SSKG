@@ -26,7 +26,7 @@ def pdf_to_paper(pdf,output_dir):
     paperObj from pdf
     '''
     #TODO
-    dwnldd = pdf_to_downloadedObj(pdf,output_dir)
+    dwnldd = pdf_to_downloaded_obj(pdf,output_dir)
     return downloaded_to_paperObj(downloadedObj=dwnldd)
 
 def single_doi_pipeline_bidir(doi,output_dir):

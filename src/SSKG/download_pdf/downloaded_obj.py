@@ -4,6 +4,7 @@ from SSKG.utils.regex import (
     str_to_doiID
 )
 
+
 class DownloadedObj:
 
     def __init__(self, title, doi, arxiv, file_name, file_path):
@@ -12,6 +13,7 @@ class DownloadedObj:
         self._arxiv = str_to_arxivID(arxiv)
         self._file_name = file_name
         self._file_path = file_path
+
     @property
     def title(self):
         return self._title

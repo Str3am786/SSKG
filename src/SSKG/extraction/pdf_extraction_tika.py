@@ -83,7 +83,7 @@ def find_abstract_index(pdf_data):
                     return index
             index +=1
     except Exception as e:
-        logging.warning("Failed to Extract the abstract")
+        logging.warning(f"Failed to Extract the abstract {str(e)}")
         return None
 def get_possible_abstract(pdf_data):
     try:

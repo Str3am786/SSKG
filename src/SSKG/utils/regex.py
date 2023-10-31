@@ -1,7 +1,8 @@
 import re
 
-DOI_REGEX= r'\b(10[.][0-9]{4,}(?:[.][0-9]+)*/(?:(?!["&\'<>,])\S)+)\b'
+DOI_REGEX = r'\b(10[.][0-9]{4,}(?:[.][0-9]+)*/(?:(?!["&\'<>,])\S)+)\b'
 ARXIV_REGEX = r'.*(\d{4}\.\d{4,5}).*'
+
 
 def str_to_doiID(string):
     try:
@@ -11,7 +12,8 @@ def str_to_doiID(string):
             return doi
         return None
     except:
-        None
+        return None
+
 
 def str_to_doi_list(string):
     if not string:
@@ -19,6 +21,7 @@ def str_to_doi_list(string):
     pattern = r'\b(10[.][0-9]{4,}(?:[.][0-9]+)*/(?:(?!["&\'<>])\S)+)\b'
     matches = re.findall(pattern, string)
     return matches if len(matches) > 0 else None
+
 
 def str_to_arxivID(string):
     try:
@@ -30,6 +33,7 @@ def str_to_arxivID(string):
     except:
         return None
 
+
 def str_to_arxiv_list(string):
     if not string:
         return None
@@ -38,7 +42,7 @@ def str_to_arxiv_list(string):
     return matches if len(matches) > 0 else None
 
 
-#TODO change the _ for ! in the filename doi. Alsolook at unpaywall_pdf_downloader
+# TODO change the _ for ! in the filename doi. Alsolook at unpaywall_pdf_downloader
 def adrian_is_filename_doi(file_name):
     """
     Regex on the file name and return it if it is of DOI ID format.

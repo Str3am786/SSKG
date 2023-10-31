@@ -51,8 +51,8 @@ def adrian_is_filename_doi(file_name):
     List Strings (doi's)
     """
 
-    file_name = file_name.replace('_','/').replace('.pdf','').replace('-DOT-','.')
-    match = re.search(DOI_REGEX,file_name)
+    file_name = file_name.replace('_', '/').replace('.pdf', '').replace('-DOT-', '.')
+    match = re.search(DOI_REGEX, file_name)
     if match:
         return file_name
     else:
@@ -60,8 +60,8 @@ def adrian_is_filename_doi(file_name):
 
 
 def adrian_filename_to_doi_convert(file_name):
-    possDOI = file_name.replace('_', '/').replace('.pdf', '').replace('-DOT-', '.')
-    match = re.search(DOI_REGEX,possDOI)
+    poss_doi = file_name.replace('_', '/').replace('.pdf', '').replace('-DOT-', '.')
+    match = re.search(DOI_REGEX, poss_doi)
     if match:
         return match.group(1)
     return None

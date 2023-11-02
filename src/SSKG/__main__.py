@@ -50,11 +50,11 @@ def cli():
 #         exit(1)
 
 @cli.command()
-@click.option('--input','-i', required=True, help="DOI or path to .txt list of DOIs", metavar='<name>')
-@click.option('--output','-o', default="output", show_default=True, help="Output csv file", metavar='<path>')
+@click.option('--input', '-i', required=True, help="DOI or path to .txt list of DOIs", metavar='<name>')
+@click.option('--output', '-o', default="output", show_default=True, help="Output csv file", metavar='<path>')
 @click.option('--unidir', '-U', is_flag=True, default = False, help="Unidirectionality")
 @click.option('--bidir', '-B', is_flag=True, default = False, help="Bidirectionality")
-def assess(input, output,unidir,bidir):
+def assess(input, output, unidir, bidir):
     from .object_creator.pipeline import dois_txt_to_unidir_json, dois_txt_to_bidir_json, single_doi_pipeline_unidir, \
         single_doi_pipeline_bidir, papers_json_to_unidir_json, papers_json_to_bidir_json
     if unidir:
@@ -84,8 +84,8 @@ def assess(input, output,unidir,bidir):
 
 
 @cli.command()
-@click.option('--input','-i', required=True, help="DOI or path to .txt list of DOIs", metavar='<name>')
-@click.option('--output','-o', default="./", show_default=True, help="Output Directory ", metavar='<path>')
+@click.option('--input', '-i', required=True, help="DOI or path to .txt list of DOIs", metavar='<name>')
+@click.option('--output', '-o', default="./", show_default=True, help="Output Directory ", metavar='<path>')
 def download(input, output):
     from .object_creator.create_downloadedObj import doi_to_downloadedJson, dois_txt_to_downloadedJson
     from .utils.regex import str_to_doiID

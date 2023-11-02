@@ -116,6 +116,8 @@ def doi_to_downloadedObj(doi,output_dir):
         return meta_to_dwnldd(meta, output_dir)
     else:
         return _doi_to_downloaded_obj_backup(doi, output_dir)
+
+
 def _doi_to_downloaded_obj_backup(doi,output_dir):
     try:
         file_path = pdf_download_pipeline(id=doi, output_directory=output_dir)
@@ -141,6 +143,7 @@ def dois_to_downloadedDics(dois_list, output_dir):
             if(dwnldd := doi_to_downloadedDic(doi, output_dir)):
                 result.update(dwnldd)
     return result
+
 def dois_txt_to_downloadedDics(dois_txt,output_dir):
     try:
         with open(dois_txt, 'r') as file:
@@ -149,6 +152,7 @@ def dois_txt_to_downloadedDics(dois_txt,output_dir):
         print("Error while opening the txt")
     return dois_to_downloadedDics(dois,output_dir)
 
+
 def doi_to_downloadedJson(doi,output_dir):
     dict = doi_to_downloadedDic(doi, output_dir)
     output_path = output_dir + "/" + "downloaded_metadata.json"
@@ -156,6 +160,8 @@ def doi_to_downloadedJson(doi,output_dir):
         json.dump(dict, out_file, sort_keys=True, indent=4,
                   ensure_ascii=False)
     return output_path
+
+
 def dois_to_downloadedJson(dois,output_dir):
     dict = dois_to_downloadedDics(dois, output_dir)
     output_path = output_dir + "/" + "downloaded_metadata.json"
@@ -163,7 +169,9 @@ def dois_to_downloadedJson(dois,output_dir):
         json.dump(dict, out_file, sort_keys=True, indent=4,
                   ensure_ascii=False)
     return output_path
-def dois_txt_to_downloadedJson(dois_txt,output_dir):
+
+
+def dois_txt_to_downloadedJson(dois_txt, output_dir):
     dic = dois_txt_to_downloadedDics(dois_txt, output_dir)
     output_path = output_dir + "/" + "downloaded_metadata.json"
     with open(output_path, 'w+') as out_file:

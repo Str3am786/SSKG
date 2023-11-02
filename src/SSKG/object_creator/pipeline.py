@@ -29,7 +29,8 @@ def pdf_to_paper(pdf,output_dir):
     dwnldd = pdf_to_downloaded_obj(pdf,output_dir)
     return downloaded_to_paperObj(downloadedObj=dwnldd)
 
-def single_doi_pipeline_bidir(doi,output_dir):
+
+def single_doi_pipeline_bidir(doi, output_dir):
     '''
     @Param doi: doi
     @Param output_dir: where the pdf will be downloaded to
@@ -40,7 +41,8 @@ def single_doi_pipeline_bidir(doi,output_dir):
     result = check_bidir(paper,output_dir)
     return result
 
-def single_doi_pipeline_unidir(doi,output_dir):
+
+def single_doi_pipeline_unidir(doi, output_dir):
     '''
     @Param doi: doi
     @Param output_dir: where the pdf will be downloaded to
@@ -94,7 +96,7 @@ def multiple_doi_pipeline_bidir(list_dois, output_dir):
             paper = doi_to_paper(doi,output_dir)
             if not paper:
                 continue
-            if (bidir:=(check_bidir(paper,output_dir))):
+            if (bidir := (check_bidir(paper, output_dir))):
                 result.update(bidir)
         return result
     except Exception as e:

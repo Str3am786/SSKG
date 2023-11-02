@@ -4,7 +4,7 @@ import requests
 import logging
 from ..utils.regex import str_to_arxivID
 
-#Deprecated but keep around to view old usage
+# Deprecated but keep around to view old usage
 # def filter_arxiv(file_path):
 #     # Read the csv file
 #     df = pd.read_csv(file_path)
@@ -22,6 +22,7 @@ from ..utils.regex import str_to_arxivID
 #
 #     return df_arxiv['arxiv_url']
 
+
 def download_pdf(url, output_dir):
     """
     @param url: arxiv url
@@ -29,19 +30,20 @@ def download_pdf(url, output_dir):
     ------
     :returns path to the pdf file
     """
-    if(url:=convert_to_arxiv_url(input_string=url)) is None:
+    if(url := convert_to_arxiv_url(input_string=url)) is None:
         return None
     try:
         r = requests.get(url)
         if r.status_code != 200:
             logging.error("Failed to download PDF from URL: %s (Status Code: %s)", url, r.status_code)
             return None
-        output_path = os.path.join(output_dir,url.split('/')[-1])
+        output_path = os.path.join(output_dir, url.split('/')[-1])
         with open(output_path, 'wb') as f:
             f.write(r.content)
         return output_path
     except Exception as e:
         logging.error("Issue when trying to download Arxiv PDF %s", str(e))
+        print("-------------------------------")
         return None
 
 

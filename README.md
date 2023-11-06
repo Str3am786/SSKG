@@ -1,6 +1,6 @@
 
   
-# Scientific Software Knowledge Graphs (SSKG)  
+# Research Software Extraction Framework (RSEF)  
 README IN PROGRESS  
 ## Introduction  
   

@@ -5,10 +5,17 @@ import requests
 import json
 from fuzzywuzzy import fuzz
 from urllib.parse import quote
-from ...utils.regex import str_to_doiID
+from ...utils.regex import str_to_doiID, str_to_arxivID
 
 BASE_URL = 'https://api.openalex.org/works'
 
+
+def create_arxiv_doi(arxiv):
+    # Every arxiv after 2022 has an automatically generated doi like the one below
+    base_doi = "https://doi.org/10.48550/arXiv."
+    if arxiv_id := str_to_doiID(arxiv):
+        return base_doi + arxiv_id
+    return None
 
 def query_openalex_api(doi):
     """

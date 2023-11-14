@@ -22,6 +22,7 @@ def raw_read_pdf(pdf_path):
         logging.error(f"An error occurred while reading the PDF: {str(e)}")
         return None
 
+
 def read_pdf_list(pdf_path):
     try:
         raw = parser.from_file(pdf_path)
@@ -44,6 +45,8 @@ def get_possible_title(pdf):
     if not pdf_raw:
         return None
     return extract_possible_title(pdf_raw)
+
+
 def extract_possible_title(pdf_raw_data):
     """
     Given raw data, this function attempts to extract a possible title.
@@ -53,12 +56,12 @@ def extract_possible_title(pdf_raw_data):
     :return: Possible title (String), or None if not found
     """
     poss_title = ""
-    foundFirstChar = False
+    found_first_char = False
     previous_was_newline = False
     for i in pdf_raw_data:
-        if not foundFirstChar:
+        if not found_first_char:
             if i != '\n':
-                foundFirstChar = True
+                found_first_char = True
                 poss_title = poss_title + i
             else:
                 continue
@@ -85,6 +88,8 @@ def find_abstract_index(pdf_data):
     except Exception as e:
         logging.warning(f"Failed to Extract the abstract {str(e)}")
         return None
+
+
 def get_possible_abstract(pdf_data):
     try:
         index = find_abstract_index(pdf_data)
@@ -100,7 +105,7 @@ def find_github_in_abstract(pdf_data):
         return look_for_github_urls(abstract)
 
 
-#regular expression to get all the urls, returned as a list
+# regular expression to get all the urls, returned as a list
 def get_git_urls(text):
     """
     Returns

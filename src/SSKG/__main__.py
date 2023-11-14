@@ -100,7 +100,7 @@ def download(input, output):
 @cli.command()
 @click.option('--input','-i', required=True, help="DOI or path to .txt list of DOIs", metavar='<name>')
 @click.option('--output','-o', default="./", show_default=True, help="Output Directory ", metavar='<path>')
-def process(input,output):
+def process(input, output):
     from .object_creator.downloaded_to_paperObj import dwnlddJson_to_paperJson, dwnldd_obj_to_paper_json
     from .object_creator.create_downloadedObj import pdf_to_downloaded_obj
 
@@ -108,7 +108,7 @@ def process(input,output):
         _aux_pdfs_to_pp_json(input= input, output= output)
         return
     if input.endswith(".json") and os.path.exists(input):
-        dwnlddJson_to_paperJson(input,output)
+        dwnlddJson_to_paperJson(input, output)
     if input.endswith(".pdf") and os.path.exists(input):
         #TODO
         dwnldd = pdf_to_downloaded_obj(pdf= input, output_dir= output)
@@ -117,6 +117,7 @@ def process(input,output):
     else:
         print("Error")
         return
+
 
 def _aux_pdfs_to_pp_json(input, output):
     from .object_creator.create_downloadedObj import pdf_to_downloaded_obj

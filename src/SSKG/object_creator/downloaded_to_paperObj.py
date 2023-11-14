@@ -37,22 +37,25 @@ def dwnldd_obj_to_paper_json(download_obj,output_dir):
     pp_dic = dwnldd_obj_to_paper_dic(download_obj)
     return pp_dic_to_json(pp_dic, output_dir)
 
+
 def dwnlddDic_to_paper_dic(downloadeds_dic):
     result = {}
     count = 0
-    for doi in downloadeds_dic:
-        dwnldd_dict = safe_dic(downloadeds_dic, doi)
+    for iden in downloadeds_dic:
+        dwnldd_dict = safe_dic(downloadeds_dic, iden)
         dwnObj = downloadedDic_to_downloadedObj(dwnldd_dict=dwnldd_dict)
         paper = downloaded_to_paperObj(dwnObj)
-        result.update({doi: paper.to_dict()})
-        print(doi)
+        result.update({iden: paper.to_dict()})
+        print(iden)
         count += 1
-        print("Processed %s, \n Total Processed: %s Papers" %(doi,count))
+        print("Processed %s, \n Total Processed: %s Papers" % (iden, count))
     return result
+
 
 def dwnlddDic_to_paperJson(downloadeds_dic,output_dir):
     pp_dic = dwnlddDic_to_paper_dic(downloadeds_dic)
     return pp_dic_to_json(pp_dic,output_dir)
+
 
 def dwnlddJson_to_paper_dic(dwnldd_json):
     """
@@ -69,6 +72,7 @@ def dwnlddJson_to_paper_dic(dwnldd_json):
         print(str(e) + "Error while opening metadata json")
     return dwnlddDic_to_paper_dic(downloadeds_dic=dwnldd_json)
 
+
 def dwnlddJson_to_paperJson(dwnldd_json, output_dir):
     """
     @Param dwnldd_json: Json of Downloaded Dictionaries
@@ -77,7 +81,8 @@ def dwnlddJson_to_paperJson(dwnldd_json, output_dir):
     Path to the paper JSON
     """
     pp_dic = dwnlddJson_to_paper_dic(dwnldd_json)
-    return pp_dic_to_json(pp_dic,output_dir)
+    return pp_dic_to_json(pp_dic, output_dir)
+
 
 def pp_dic_to_json(pp_dic, output_dir):
     """
@@ -93,10 +98,10 @@ def pp_dic_to_json(pp_dic, output_dir):
                   ensure_ascii=False)
     return output_path
 
-#TODO cleanup all
+# TODO cleanup all
 BACKUP_ID = 0
 def paperObj_ppDict(paper):
-    #TODO find a cleaner way
+    # TODO find a cleaner way
     global BACKUP_ID
     try:
         if paper is not None:

@@ -3,31 +3,38 @@ from SSKG.modelling.bidirectionality import is_doi_bidir, is_arxiv_bidir
 from SSKG.modelling.unidirectionality import is_repo_unidir
 import logging
 
+
 def check_bidir(paper,output_dir):
-    return check_paper_directionality(paper,True,output_dir)
+    return check_paper_directionality(paper, True, output_dir)
+
 
 def check_unidir(paper,output_dir):
-    return check_paper_directionality(paper,False,output_dir)
+    return check_paper_directionality(paper, False, output_dir)
 
-def check_paper_directionality(paper,directionality, output_dir):
+
+def check_paper_directionality(paper, directionality, output_dir):
     """
      Input
-     @param directionality True: to assess bidirectionality False: to assess Unidirectionality
-     Takes doi
-     Takes output folder to download the somef JSON and pdf
+     :param paper: PaperObj type
+     :param directionality: Boolean True: to assess bidirectionality False: to assess Unidirectionality
+     :param output_dir: Output path to where the jsons will be saved
      -------
      Output
      :returns
-     dictionary K: doi, V: List of urls that link back to the paper
+     dictionary K: iden, V: List of urls that link back to the paper
      -------
      """
     result = {}
     is_unidir = False
     is_bidir = False
-    doi = paper.doi
+
+    iden = paper.doi
+    if iden is None:
+        iden = paper.arxiv
+
     try:
-        # runs through the list of extracted github urls, starting with the most frequently mentioned
-        firstTime = True
+        # runs through the list of extracted gitHub urls, starting with the most frequently mentioned
+        first_time = True
         for pair in paper.urls:
             url = pair[0]
             # Download repository from SOMEF
@@ -40,10 +47,10 @@ def check_paper_directionality(paper,directionality, output_dir):
             if not directionality:
                 is_unidir = is_repo_unidir(paper, repo_file)
             if is_bidir or is_unidir:
-                if firstTime:
-                    result[doi] = []
-                    firstTime = False
-                result[doi].append(url)
+                if first_time:
+                    result[iden] = []
+                    first_time = False
+                result[iden].append(url)
                 print(result)
     except Exception as e:
         print("error while trying to extract metadata")

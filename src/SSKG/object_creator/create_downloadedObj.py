@@ -12,8 +12,8 @@ from ..utils.regex import str_to_doiID
 
 def meta_to_dwnldd(metadataObj, output_dir):
     """
-    @Param metdataObj metadata object will be used to download the pdf
-    @Param output_dir output directory to where the pdf will be downloaded
+    :param metdataObj: metadata object will be used to download the pdf
+    :param output_dir: String output directory to where the pdf will be downloaded
     ----
     :returns
     downloaded Object, which has a filename and filepath
@@ -37,9 +37,9 @@ def meta_to_dwnldd(metadataObj, output_dir):
 
 def downloaded_dictionary(dwnldd_obj):
     """
-    @Param dwnldd_obj
+    :param dwnldd_obj: Downloaded Object
     ----
-    :returns 
+    :returns
     Dictionary of Downloaded Dictionary
     K: is the DOI V: Dictionary of downloaded Object
     """
@@ -54,12 +54,13 @@ def create_downloaded_json(downloaded_dict,output_folder):
                   ensure_ascii=False)
     return output_path
 
+
 def downloadedDic_to_downloadedObj(dwnldd_dict):
     title = safe_dic(dwnldd_dict, "title")
     doi = safe_dic(dwnldd_dict, "doi")
     arxiv = safe_dic(dwnldd_dict, "arxiv")
-    file_name = safe_dic(dwnldd_dict,"file_name")
-    file_path = safe_dic(dwnldd_dict,"file_path")
+    file_name = safe_dic(dwnldd_dict, "file_name")
+    file_path = safe_dic(dwnldd_dict, "file_path")
     return DownloadedObj(title=title, doi=doi, arxiv=arxiv, file_name=file_name, file_path=file_path)
 
 

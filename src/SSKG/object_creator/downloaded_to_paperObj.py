@@ -1,7 +1,8 @@
 import json
 import logging
 import os
-from SSKG.extraction.pdf_extraction_tika import ranked_git_url, read_pdf_list, get_possible_abstract
+from SSKG.extraction.pdf_extraction_tika import raw_ranked_git_url, read_pdf_list, get_possible_abstract, raw_read_pdf, \
+    get_git_urls
 from SSKG.extraction.paper_obj import PaperObj
 from SSKG.object_creator.create_downloadedObj import downloadedDic_to_downloadedObj
 
@@ -9,16 +10,17 @@ from SSKG.object_creator.create_downloadedObj import downloadedDic_to_downloaded
 
 def downloaded_to_paperObj(downloadedObj):
     """
-    @Param downloadedObj
+    :param: downloadedObj
     ---
-    :returns 
+    :returns:
     Paper Obj (will have processed the paper within the downloaded Obj to look for github urls)
     """
     if not downloadedObj:
         return None
     try:
+        #pdf_data = read_pdf_list(downloadedObj.file_path)
         pdf_data = read_pdf_list(downloadedObj.file_path)
-        urls = ranked_git_url(pdf_data)
+        urls = get_git_urls(pdf_data)
         abstract = get_possible_abstract(pdf_data)
         title = downloadedObj.title
         doi = downloadedObj.doi

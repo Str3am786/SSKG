@@ -122,15 +122,47 @@ def get_git_urls(text):
     urls = urls_github + urls_gitlab
     return urls
 
+def raw_get_git_urls(raw_pdf_text):
+    # TODO docstring
+    text = re.sub(r'\n(?=[A-Za-z0-9_.-])', '', raw_pdf_text)
+    urls_github = re.findall(r'(https?://github.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)', text)
+    urls_gitlab = re.findall(r'(https?://gitlab.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)', text)
+    urls = urls_github + urls_gitlab
+    return urls
+
+def clean_up_git_url(git_url_list):
+    clean_urls = []
+    for url in git_url_list:
+        # Strip the trailing period if it exists
+        if url.endswith('.'):
+            url = url[:-1]
+        # Strip '.git' if it exists
+        elif url.endswith('.git'):
+            url = url[:-4]
+        clean_urls.append(url)
+
+    return clean_urls
+
 
 def look_for_github_urls(list_pdf_data):
-    github_urls = []
+    git_urls = []
     for value in list_pdf_data:
         results = get_git_urls(value)
         if results:
-            github_urls.extend(results)
-    github_urls = [url[:-1] if url[-1] == '.' else url for url in github_urls]
-    return github_urls
+            git_urls.extend(results)
+    git_urls = clean_up_git_url(git_urls)
+    return git_urls
+
+
+def raw_look_for_github_urls(raw_pdf_data):
+    # TODO clean up and fix
+    if not raw_pdf_data:
+        return []
+    urls = raw_get_git_urls(raw_pdf_data)
+    if not urls:
+        return []
+    git_urls = clean_up_git_url(urls)
+    return git_urls
 
 
 def rank_elements(url_list):
@@ -168,5 +200,26 @@ def ranked_git_url(pdf_data):
             return None
     except Exception as e:
         print(str(e))
+
+
+def raw_ranked_git_url(raw_pdf_data):
+    """
+    Creates  ranked list of GitHub urls and count pairs or false if none are available
+    Returns
+    -------
+    List Strings (urls)
+    --
+    Else (none are found)
+        False
+    """
+    try:
+        github_urls = raw_look_for_github_urls(raw_pdf_data)
+        if github_urls:
+            return rank_elements(github_urls)
+        else:
+            return None
+    except Exception as e:
+        print(str(e))
+
 
 

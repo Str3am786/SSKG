@@ -49,7 +49,7 @@ def is_valid_repo_url(url):
         return True
     else:
         return False
-    
+
 
 def download_repo_metadata(url, output_folder_path):
     """

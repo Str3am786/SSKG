@@ -2,7 +2,7 @@ import json
 import logging
 import os
 from SSKG.extraction.pdf_extraction_tika import raw_ranked_git_url, read_pdf_list, get_possible_abstract, raw_read_pdf, \
-    get_git_urls
+    look_for_github_urls
 from SSKG.extraction.paper_obj import PaperObj
 from SSKG.object_creator.create_downloadedObj import downloadedDic_to_downloadedObj
 
@@ -20,7 +20,7 @@ def downloaded_to_paperObj(downloadedObj):
     try:
         #pdf_data = read_pdf_list(downloadedObj.file_path)
         pdf_data = read_pdf_list(downloadedObj.file_path)
-        urls = get_git_urls(pdf_data)
+        urls = look_for_github_urls(pdf_data)
         abstract = get_possible_abstract(pdf_data)
         title = downloadedObj.title
         doi = downloadedObj.doi

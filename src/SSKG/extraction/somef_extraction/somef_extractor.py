@@ -9,23 +9,49 @@ from ...utils.regex import str_to_doi_list, str_to_arxiv_list, str_to_arxivID
 
 # DOWNLOAD
 def is_github_repo_url(url):
-    '''
+    """
     :param url: String, possible github url
     :returns:
     if the url is a github Repository
-        True
+        match
     Else
-        False
-    '''
+        None
+    """
     if not url:
         return False
-    pattern = r'^http(s)?://github\.com/[\w-]+/[\w-]+/?$'
+    pattern = r'(https?://github.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)'
     match = re.match(pattern, url)
     return match is not None
 
 
+def is_gitlab_repo_url(url):
+    """
+    :param url: String, possible gitlab url
+    :returns:
+    if the url is a gitlab Repository
+        Match
+    Else
+        None
+    """
+    if not url:
+        return False
+    pattern = r'(https?://gitlab.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)'
+    match = re.match(pattern, url)
+    return match is not None
+
+
+def is_valid_repo_url(url):
+
+    if match := is_github_repo_url(url):
+        return match
+
+    if match := is_gitlab_repo_url:
+        return match
+    else:
+        return None
+
 def download_repo_metadata(url, output_folder_path):
-    '''
+    """
     :param url: String with github url
     :param output_folder_path: Path to the desired output folder
 
@@ -33,9 +59,9 @@ def download_repo_metadata(url, output_folder_path):
     path to the somef json file for the given url
     or
     None if failure/invalid input
-    '''
-    if not is_github_repo_url(url):
-        logging.error("download_repo_metadata: URL given is not a valid github url")
+    """
+    if not is_valid_repo_url(url):
+        logging.error("download_repo_metadata: URL given is not a valid github/gitlab url")
         return None
     if not output_folder_path:
         logging.error("download_repo_metadata: No output path")

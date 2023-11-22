@@ -13,9 +13,9 @@ def is_github_repo_url(url):
     :param url: String, possible github url
     :returns:
     if the url is a github Repository
-        match
+        True
     Else
-        None
+        False
     """
     if not url:
         return False
@@ -29,9 +29,9 @@ def is_gitlab_repo_url(url):
     :param url: String, possible gitlab url
     :returns:
     if the url is a gitlab Repository
-        Match
+        True
     Else
-        None
+        False
     """
     if not url:
         return False
@@ -43,12 +43,12 @@ def is_gitlab_repo_url(url):
 def is_valid_repo_url(url):
 
     if match := is_github_repo_url(url):
-        return match
+        return True
 
     if match := is_gitlab_repo_url:
-        return match
+        return True
     else:
-        return None
+        return False
 
 def download_repo_metadata(url, output_folder_path):
     """

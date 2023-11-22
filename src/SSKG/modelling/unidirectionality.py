@@ -2,15 +2,19 @@ import json
 from fuzzywuzzy import fuzz
 
 FUZZY_THRESHOLD = 85
+
+
 def load_json(path):
     with open(path, 'r') as f:
         return json.load(f)
+
+
 def is_substring_found(substring, larger_string):
     """
-    @Param substring: The string you want to find
-    @Param larger_string: The string where you will look for the substring
-    :returns
-    True or False depending if its been found or not
+    :param substring: The string you want to find
+    :param larger_string: The string where you will look for the substring
+    :returns:
+    True: Found, False: Not found substr within string
     """
     index = larger_string.lower().find(substring.lower())
     if index != -1:
@@ -21,14 +25,16 @@ def is_substring_found(substring, larger_string):
         ratio = fuzz.partial_ratio(substring.lower(), larger_string[i:i+len(substring)].lower())
         if ratio > max_ratio:
             max_ratio = ratio
-    #This is to print the highest scoring fuzzy string comp print(max_ratio)
+    # This is to print the highest scoring fuzzy string comp print(max_ratio)
     if max_ratio > FUZZY_THRESHOLD:
         return True
     else:
         return False
 
+
 def find_substring(substring, larger_string):
     return
+
 
 def _iterate_results(results, string_2_find):
     if (not results) or (not string_2_find):
@@ -38,6 +44,8 @@ def _iterate_results(results, string_2_find):
         if value:
             return is_substring_found(string_2_find,value) or is_substring_found(value,string_2_find)
     return False
+
+
 def is_repo_unidir(paperObj, repo_json):
     try:
         repo_data = load_json(repo_json)
@@ -48,18 +56,19 @@ def is_repo_unidir(paperObj, repo_json):
     results = safe_dic(repo_data,'name')
     unidir = _iterate_results(results, paperObj.title)
     if not unidir:
-        #Repo title is close to the repo full title
+        #PDF title is close to the repo full title
         results = safe_dic(repo_data,'full_title')
         unidir = _iterate_results(results, paperObj.title)
     if not unidir:
-        #Repo title is close to the repo full title
+        #PDF title is close to the repo full title
         results = safe_dic(repo_data,'name')
         unidir = _iterate_results(results, paperObj.abstract)
     if not unidir:
-        #Repo title is close to the repo full title
+        # repo full title is within the abstract
         results = safe_dic(repo_data,'full_title')
         unidir = _iterate_results(results, paperObj.abstract)
     # See if paper title is within the description
+    # TODO update due to new bidirectional
     if not unidir:
         results = safe_dic(repo_data,'description')
         unidir = _iterate_results(results, paperObj.title)

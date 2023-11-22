@@ -28,10 +28,10 @@ def meta_to_dwnldd(metadataObj, output_dir):
     except Exception as e:
         try:
             meta_doi = str(metadataObj.doi)
-            #logging.error("Error while creating the downloaded object with this doi: %s for due to %s", meta_doi, str(e))
+            logging.error("Error while creating the downloaded object with this doi: %s for due to %s", meta_doi, str(e))
         except:
             print("Error with metadataObj")
-            #logging.error("Error due to metadataObj")
+            logging.error("Error due to metadataObj")
         return None
 
 

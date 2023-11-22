@@ -33,7 +33,7 @@ def pdf_download_pipeline(id, output_directory):
         print(str(e))
 
     print(f"Attempting to download pdf for {str(id)}")
-    if not (file_path := download_arxiv_pdf(id, pdf_output_directory)):
+    if (file_path := download_arxiv_pdf(id, pdf_output_directory)):
         return file_path
     else:
         url = paywall_url(id)

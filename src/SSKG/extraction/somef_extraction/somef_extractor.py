@@ -42,10 +42,10 @@ def is_gitlab_repo_url(url):
 
 def is_valid_repo_url(url):
 
-    if match := is_github_repo_url(url):
+    if is_github_repo_url(url):
         return True
 
-    if match := is_gitlab_repo_url:
+    if is_gitlab_repo_url(url):
         return True
     else:
         return False

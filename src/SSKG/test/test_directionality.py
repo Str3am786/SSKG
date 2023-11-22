@@ -7,6 +7,7 @@ from unittest import TestCase
 #from ..modelling.bidirectionality import *
 from ..object_creator.paper_to_directionality import check_paper_directionality
 from ..object_creator.pipeline import doi_to_paper
+from ..object_creator.paper_obj_utils import paperDict_to_paperObj
 
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
 PIPELINE_FOLDER = os.path.join(TEST_DIR, "pipeline_folder")
@@ -131,6 +132,7 @@ class test_bidir(TestCase):
         result = check_paper_directionality(paper, True, PIPELINE_FOLDER)
         expected_result = "https://github.com/Robbie-Xu/CPSD"
         # self.assertEquals(result[doi]["Url"], expected_result)
+        pass
 
     def test_arxiv_5(self):
         # TODO
@@ -141,6 +143,7 @@ class test_bidir(TestCase):
         result = check_paper_directionality(paper, True, PIPELINE_FOLDER)
         expected_result = "https://github.com/IlyaTrofimov/dlr"
         # self.assertEquals(result[doi]["Url"], expected_result)
+        pass
 
     def test_arxiv_6(self):
         ''''''
@@ -194,4 +197,35 @@ class test_bidir(TestCase):
         paper = doi_to_paper(doi, PIPELINE_FOLDER)
         result = check_paper_directionality(paper, True, PIPELINE_FOLDER)
         expected_result = "https://github.com/CodeplaySoftware/SYCL-DNN"
+        pass
         # self.assertTrue(expected_result in result[doi])
+
+    # def test_title(self):
+    #     from ..object_creator.paper_obj_utils import paperDict_to_paperObj
+    #     wipe_directory(PIPELINE_FOLDER)
+    #     pp_dict = {
+    #         "doi": "https://doi.org/10.48550/arXiv.2307.10793",
+    #         "arxiv": "2307.10793",
+    #         "title": "Addressing Compiler Errors: Stack Overflow or Large Language Models?",
+    #         "file_name": "",
+    #         "file_path": "",
+    #         "urls": [("https://github.com/patwdj/java-compiler-error-help",1)]
+    #     }
+    #     paper = paperDict_to_paperObj(pp_dict)
+    #     result = check_paper_directionality(paper,True,PIPELINE_FOLDER)
+    #     print(result)
+
+    def test_title1(self):
+        wipe_directory(PIPELINE_FOLDER)
+        pp_dict = {
+            "doi": "",
+            "arxiv": "1234.56789",
+            "title": "WIDOCO: a wizard for documenting ontologies",
+            "file_name": "",
+            "file_path": "",
+            "urls": [("https://github.com/dgarijo/Widoco",1)]
+        }
+        paper = paperDict_to_paperObj(pp_dict)
+        result = check_paper_directionality(paper,True,PIPELINE_FOLDER)
+        expected_result = "https://github.com/dgarijo/Widoco"
+        self.assertEquals(expected_result, result["1234.56789"][0]["Url"])

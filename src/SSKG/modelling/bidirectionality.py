@@ -11,6 +11,9 @@ from SSKG.extraction.somef_extraction.somef_extractor import (
 )
 
 
+
+
+
 def is_it_bidir(paper_obj, repo_json):
     """
     Checks if the paper relationship with the repository is bidirectional.
@@ -39,6 +42,10 @@ def is_it_bidir(paper_obj, repo_json):
         bidir_location = is_arxiv_bidir(arxiv_id, repo_data, paper_obj.title)
         if bidir_location != "NOT_BIDIR":
             return arxiv_id, bidir_location
+    if pp_title := paper_obj.title:
+        bidir_location = is_title_bidir(pp_title, repo_data)
+        if bidir_location != "NOT_BIDIR":
+            return pp_title, bidir_location
     # TODO add other forms of identification
     else:
         return None
@@ -78,6 +85,7 @@ def _doi_is_citation_bidir(pp_doi, repo_data):
                 return True
     return False
 
+
 def is_arxiv_bidir(arxiv_id, repo_data, title):
 
     if _arxiv_in_citation(arxiv_id, repo_data):
@@ -89,7 +97,6 @@ def is_arxiv_bidir(arxiv_id, repo_data, title):
         return location
     else:
         return "NOT_BIDIR"
-
 
 
 def _arxiv_in_citation(arxiv_id, repo_data):
@@ -117,19 +124,21 @@ def _arxiv_in_related(arxiv_id, repo_data, title):
         if arxivID_list is not None:
             if arxiv_id in arxivID_list:
                 return "RELATED_PAPERS"
-            ls_papers = get_paper_from_arxiv_id(arxivID_list)
-            if title.lower() in get_title_from_arxiv_id(ls_papers):
-                return "TITLE ARXIV"
+            # ls_papers = get_paper_from_arxiv_id(arxivID_list)
+            # if ls_papers and title.lower() in get_title_from_arxiv_id(ls_papers):
+            #     return "TITLE ARXIV"
     return None
 
 
 def get_paper_from_arxiv_id(arxiv_id_list):
-    ls_papers = []
-    for id in arxiv_id_list:
-        search = arxiv.Search(id_list=[str(id)])
-        paper = next(search.results())
-        ls_papers.append(paper)
-        return ls_papers if len(ls_papers) > 0 else False
+    return None
+    # TODO assess viability
+    #ls_papers = []
+    # for id in arxiv_id_list:
+    #     search = arxiv.Search(id_list=[str(id)])
+    #     paper = next(search.results())
+    #     ls_papers.append(paper)
+    #     return ls_papers if len(ls_papers) > 0 else None
 
 
 def get_doi_from_arxiv_id(arxiv_paperList):
@@ -148,23 +157,70 @@ def get_title_from_arxiv_id(arxiv_paperList):
     return ls_titles
 
 
-def get_paper_from_arxiv_id(arxiv_id_list):
-    ls_papers = []
-    for id in arxiv_id_list:
-        search = arxiv.Search(id_list=[str(id)])
-        paper = next(search.results())
-        ls_papers.append(paper)
-        return ls_papers if len(ls_papers) > 0 else False
+# def get_paper_from_arxiv_id(arxiv_id_list):
+#     ls_papers = []
+#     for id in arxiv_id_list:
+#         search = arxiv.Search(id_list=[str(id)])
+#         paper = next(search.results())
+#         ls_papers.append(paper)
+#         return ls_papers if len(ls_papers) > 0 else False
+
+
+def is_title_bidir(pp_title, repo_data):
+
+    # See if its within the citation
+    results = safe_dic(repo_data, 'citation')
+    title_found = _iterate_results(results, pp_title)
+    if title_found:
+        return "CITATION"
+    # See if its within the Description
+    results = safe_dic(repo_data, 'description')
+    title_found = _iterate_results(results, pp_title)
+    if title_found:
+        return "DESCRIPTION"
+
+    poss_found = safe_dic(repo_data, 'full_title')
+    if poss_found and type(poss_found) == str:
+        title_found = poss_found.lower() == pp_title.lower
+    if title_found:
+        return "TITLE REPOSITORY"
+
+    return "NOT_BIDIR"
+
+
+def is_substring_found(substring, larger_string):
+    """
+    :param substring: The string you want to find
+    :param larger_string: The string where you will look for the substring
+    :returns:
+    True: Found, False: Not found substr within string
+    """
+    if substring.lower() in larger_string.lower():
+        return True
+    else:
+        return False
+
+
+def _iterate_results(results, string_2_find):
+    if (not results) or (not string_2_find):
+        return False
+    for result in results:
+        value = safe_dic(safe_dic(result, "result"), 'value')
+        if value:
+            return is_substring_found(string_2_find, value) or is_substring_found(value, string_2_find)
+    return False
 
 def load_json(path):
     with open(path, 'r') as f:
         return json.load(f)
+
 
 def safe_dic(dic, key):
     try:
         return dic[key]
     except:
         return None
+
 
 def safe_list(list, i):
     try:

@@ -6,10 +6,11 @@ import subprocess
 
 from ...utils.regex import str_to_doi_list, str_to_arxiv_list, str_to_arxivID
 
-#DOWNLOAD
+
+# DOWNLOAD
 def is_github_repo_url(url):
     '''
-    :@Param url: String, possible github url
+    :param url: String, possible github url
     :returns:
     if the url is a github Repository
         True
@@ -22,18 +23,22 @@ def is_github_repo_url(url):
     match = re.match(pattern, url)
     return match is not None
 
+
 def download_repo_metadata(url, output_folder_path):
     '''
-    @Param url: String with github url
-    @Param output_folder_path: Path to the desired output folder
-    :returns
+    :param url: String with github url
+    :param output_folder_path: Path to the desired output folder
+
+    :returns:
     path to the somef json file for the given url
     or
     None if failure/invalid input
     '''
     if not is_github_repo_url(url):
+        logging.error("download_repo_metadata: URL given is not a valid github url")
         return None
     if not output_folder_path:
+        logging.error("download_repo_metadata: No output path")
         return None
     pattern = r'(?:http|https)://(?:gitlab\.com|github\.com)/'
     replacement = ''
@@ -53,25 +58,32 @@ def download_repo_metadata(url, output_folder_path):
     else:
         try:
             command = f"somef describe -r {url} -o {output_file_path} -t 0.8"
-            completed_process = subprocess.run(command, shell=True, capture_output=True, text=True)
+            # Timeout set to 5 minutes, somef should not take longer than a couple of minutes, should cover most cases.
+            completed_process = subprocess.run(command, shell=True, capture_output=True, text=True, timeout=300)
             if completed_process.returncode != 0:
                 raise Exception(
-                    f"Command failed with return code {completed_process.returncode}: {completed_process.stderr}")
+                    f"SOMEF Command failed with return code {completed_process.returncode}: {completed_process.stderr}")
+        except subprocess.TimeoutExpired:
+            logging.error(f"ERROR: {url} SOMEF command timed out after 5 minutes")
+            return None
         except Exception as e:
             logging.error(f"ERROR:{url} SOMEF failed due to: {str(e)}")
             return None
     return output_file_path
 
-#----------------
-#EXTRACTION
+# ----------------
+# EXTRACTION
+
 
 def get_related_paper(somef_data: dict):
     """
-    @Param somef_data: dictionary of the somef output
+    Extracts a list of related paper IDs from a repository based on somef output.
+
+    :param somef_data: A dictionary containing the output from somef, representing repository metadata.
+
     :returns:
-    List of all the related papers IDs within the repo
-    else
-    None
+        list: A list of all related paper arxivs found within the repository.
+        None: Returns None if no paper IDs are found.
     """
     list_ids = []
     related_papers = safe_dic(somef_data, 'related_papers')
@@ -84,13 +96,13 @@ def get_related_paper(somef_data: dict):
             list_ids.append(arxivID)
     return list_ids if len(list_ids) > 0 else None
 
+
 def description_finder(somef_data: dict):
     """
-    @Param somef_data: dictionary of the somef output
+    :param somef_data: A dictionary containing the output from somef, representing repository metadata.
+
     :returns:
-    Dictionary {doi: "", arxiv: ""} of all the related papers IDs within the repo's description
-    else
-    None
+        Dictionary: {doi: "", arxiv: ""} of all the related papers IDs within the repo's description
     """
     description = safe_dic(somef_data, 'description')
     desc = {'doi': set(), 'arxiv': set()}
@@ -106,15 +118,18 @@ def description_finder(somef_data: dict):
             desc['arxiv'].update(arxiv)
     return desc
 
-#TODO might need to return to parsing the bibtex to avoid non-pickup due to noise
+
+# TODO might need to return to parsing the bibtex to avoid non-pickup due to noise
 def find_doi_citation(somef_data: dict):
-    '''
-    :@Param somef_data: Dictionary of repository metadata from somef
+    """
+    Extracts DOI citations from a given repository metadata.
+
+    :param somef_data: A dictionary containing repository metadata extracted using somef.
+
     :returns:
-    list of dois
-    Else
-    None
-    '''
+        list: A list of DOIs if available in the metadata.
+        None: Returns None if no DOIs are found.
+    """
     #See if there is citations within the repository
     if not (citations := safe_dic(somef_data, 'citation')):
         return None
@@ -139,16 +154,19 @@ def find_doi_citation(somef_data: dict):
                     doi_list.extend(doi)
     return doi_list if len(doi_list) > 0 else None
 
-#TODO might need to return to parsing the bibtex to avoid non-pickup due to noise
+
+# TODO might need to return to parsing the bibtex to avoid non-pickup due to noise
 def find_arxiv_citation(somef_data: dict):
-    '''
-    :@Param somef_data: Dictionary of repository metadata from somef
+    """
+    Extracts DOI citations from a given repository metadata.
+
+    :param somef_data: A dictionary containing repository metadata extracted using somef.
+
     :returns:
-    list of arxivs
-    Else
-    None
-    '''
-    #See if there is citations within the repository
+        list: A list of arxiv ID's if available in the metadata.
+        None: Returns None if no DOIs are found.
+    """
+    # See if there is citations within the repository
     if not (citations := safe_dic(somef_data, 'citation')):
         return None
     arxiv_list = []
@@ -166,23 +184,25 @@ def find_arxiv_citation(somef_data: dict):
             else:
                 print("Unexpected, maybe a somef update?")
         else:
-            if safe_dic(result,"type") == 'Text_excerpt':
+            if safe_dic(result, "type") == 'Text_excerpt':
                 arxiv = str_to_arxiv_list(safe_dic(result,'value'))
                 if arxiv:
                     arxiv_list.extend(arxiv)
     return arxiv_list if len(arxiv_list) > 0 else None
 
-#PARSERS
+
+# PARSERS
 def bibtex_parser(cite_text: str):
     if not isinstance(cite_text, str):
         return None
     break_up_keys = _break_up_bibtex_text(bibtx_str=cite_text)
     return _parse_bib_item_list(break_up_keys)
 
+
 def _parse_bib_item_list(cite_list: list):
-    '''
+    """
     Parse the citation list of a bibtex ref given by somef
-    '''
+    """
     # parse first element
     cite_list[0] = cite_list[0].replace('{','=')
     # remove @ and {}
@@ -211,6 +231,8 @@ def _parse_bib_item_list(cite_list: list):
                 value = ''
             parsed_dict[key] = value
     return parsed_dict
+
+
 def _break_up_bibtex_text(bibtx_str):
     broken_up_into_list = []
     elemnt = ""

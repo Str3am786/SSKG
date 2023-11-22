@@ -143,8 +143,10 @@ class test_somef_extraction(TestCase):
         self.assertTrue((ans['doi'].pop() == expected_doi) and (ans['arxiv'].pop() == expected_arxiv))
 
     def test_description_none(self):
+        # TODO ensure this return is optimal
         ans = description_finder(None)
-        self.assertIsNone(ans)
+        res = ((len(ans["doi"]) == 0)  and (len(ans["doi"]) == 0))
+        self.assertTrue(res)
 
     def test_no_description(self):
         false_dic = {}
@@ -300,6 +302,9 @@ class test_pdf_extraction_tika(TestCase):
     def test_read_pdf_list_none(self):
         self.assertTrue(len(read_pdf_list(None)) == 0)
 
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
 from ..extraction.pdf_title_extraction import extract_pdf_title, use_pdf_title, use_tika_title
 class test_title_extraction_pdf(TestCase):
 
@@ -348,3 +353,22 @@ class test_title_extraction_pdf(TestCase):
         expected = "Data governance through a multi-DLT architecture in view of the GDPR"
         self.assertEquals(title, expected)
 
+
+from ..extraction.pdf_extraction_tika import ranked_git_url
+
+from ..object_creator.downloaded_to_paperObj import dwnlddJson_to_paperJson
+
+class test_github_url_extraction_pdf(TestCase):
+
+    def test_problematic_pdf_urls_1(self):
+        path_file = os.path.join(TEST_DIR, "pdfs/2305.16120v1.pdf")
+        pdf_data = read_pdf_list(path_file)
+        git_urls = ranked_git_url(pdf_data)
+        print(git_urls)
+
+
+
+    def test_process(self):
+        path_file = os.path.join(TEST_DIR, "json/false_dowloaded.json")
+        cock = dwnlddJson_to_paperJson(dwnldd_json=path_file, output_dir=PIPELINE_FOLDER)
+        print(cock)

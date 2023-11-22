@@ -10,77 +10,118 @@ from SSKG.extraction.somef_extraction.somef_extractor import (
     get_related_paper
 )
 
-def load_json(path):
-    with open(path, 'r') as f:
-        return json.load(f)
 
-def is_doi_bidirectional(repo_file, pdf_file_name):
-    try:
-        repo_data = load_json(repo_file)
-    except:
-        print("Error while opening the repository file")
-        return False
-    doi = find_doi_citation(repo_data)
-    if doi:
-        doi_pdf = pdf_file_name.replace('.pdf','').replace('_','/')
-        return doi == doi_pdf
-    else:
-        print("No doi found within the citation")
-        return False
+def is_it_bidir(paper_obj, repo_json):
+    """
+    Checks if the paper relationship with the repository is bidirectional.
 
-def is_doi_bidir(pdfObj, repo_json):
+    :param paper_obj: An instance of the Paper class representing the paper.
+    :param repo_json: A string representing the path to the JSON file of the repository.
+
+    :returns:
+    ID and its location (Two strings)
+    """
     try:
+        # Load somef json
         repo_data = load_json(repo_json)
     except Exception as e:
+        # TODO update to a logging
         print("Error while trying to open the repository JSON")
         print(str(e))
-        return False
-    doi_list = find_doi_citation(repo_data)
-    if pdfObj.doi is None:
-        return False
+        return None
+
+    if doi := paper_obj.doi:
+        bidir_location = is_doi_bidir(doi, repo_data)
+        if bidir_location != "NOT_BIDIR":
+            return doi, bidir_location
+
+    if arxiv_id := paper_obj.arxiv:
+        bidir_location = is_arxiv_bidir(arxiv_id, repo_data, paper_obj.title)
+        if bidir_location != "NOT_BIDIR":
+            return arxiv_id, bidir_location
+    # TODO add other forms of identification
+    else:
+        return None
+
+    return None
+
+
+def is_doi_bidir(doi, repo_data):
+
+    if _doi_is_citation_bidir(doi, repo_data):
+        return "CITATION"
+    if _doi_is_description_bidir(doi, repo_data):
+        return "DESCRIPTION"
+    else:
+        return "NOT_BIDIR"
+
+
+def _doi_is_description_bidir(pp_doi, repo_data):
+    # run through description, if doi is found, will be within dictionary of lists
+    doi_list = safe_dic(description_finder(repo_data), 'doi')
     if doi_list:
         for doi in doi_list:
             if not doi:
                 continue
-            if doi.lower() == pdfObj.doi.lower():
-                return True
-    #run through description, if doi is found, will be within dictionary of lists
-    doi_list = safe_dic(description_finder(repo_data),'doi')
-    if doi_list:
-        for doi in doi_list:
-            if not doi:
-                continue
-            if doi.lower() == pdfObj.doi.lower():
+            if doi.lower() == pp_doi.lower():
                 return True
     return False
 
-def is_arxiv_bidir(pdfObj, repo_json):
-    try:
-        repo_data = load_json(repo_json)
-    except Exception as e:
-        print("Error while trying to open the repository JSON")
-        print(str(e))
-    if (arxivID_list := get_related_paper(repo_data)):
-        if arxivID_list is not None:
-            if pdfObj.arxiv in arxivID_list:
-                return True
-            ls_papers = get_paper_from_arxiv_id(arxivID_list)
-            if pdfObj.title in get_title_from_arxiv_id(ls_papers):
-                return True
-    if (arxivID_list := find_arxiv_citation(repo_data)):
-        if arxivID_list is not None:
-            if pdfObj.arxiv in arxivID_list:
-                return True
-    arxiv_list = safe_dic(description_finder(repo_data), 'arxiv')
-    if arxiv_list is not None and pdfObj.arxiv in arxiv_list:
-        return True
 
-def is_title_bidir(repo_json):
-    try:
-        repo_data = load_json(repo_json)
-    except Exception as e:
-        print("Error while trying to open the repository JSON")
-        print(str(e))
+def _doi_is_citation_bidir(pp_doi, repo_data):
+    doi_list = find_doi_citation(repo_data)
+    if doi_list:
+        for doi in doi_list:
+            if not doi:
+                continue
+            if doi.lower() == pp_doi.lower():
+                return True
+    return False
+
+def is_arxiv_bidir(arxiv_id, repo_data, title):
+
+    if _arxiv_in_citation(arxiv_id, repo_data):
+        return "CITATION"
+
+    elif _arxiv_in_description(arxiv_id, repo_data):
+        return "DESCRIPTION"
+    elif location := _arxiv_in_related(arxiv_id, repo_data, title):
+        return location
+    else:
+        return "NOT_BIDIR"
+
+
+
+def _arxiv_in_citation(arxiv_id, repo_data):
+
+    if arxivID_list := find_arxiv_citation(repo_data):
+        if arxivID_list is not None:
+            if arxiv_id in arxivID_list:
+                return "CITATION"
+    else:
+        return None
+
+
+def _arxiv_in_description(arxiv_id, repo_data):
+
+    arxiv_list = safe_dic(description_finder(repo_data), 'arxiv')
+    if arxiv_list is not None and arxiv_id in arxiv_list:
+        return "DESCRIPTION"
+    else:
+        return None
+
+
+def _arxiv_in_related(arxiv_id, repo_data, title):
+
+    if arxivID_list := get_related_paper(repo_data):
+        if arxivID_list is not None:
+            if arxiv_id in arxivID_list:
+                return "RELATED_PAPERS"
+            ls_papers = get_paper_from_arxiv_id(arxivID_list)
+            if title.lower() in get_title_from_arxiv_id(ls_papers):
+                return "TITLE ARXIV"
+    return None
+
 
 def get_paper_from_arxiv_id(arxiv_id_list):
     ls_papers = []
@@ -89,38 +130,35 @@ def get_paper_from_arxiv_id(arxiv_id_list):
         paper = next(search.results())
         ls_papers.append(paper)
         return ls_papers if len(ls_papers) > 0 else False
+
+
 def get_doi_from_arxiv_id(arxiv_paperList):
     ls_dois = []
     for paper in arxiv_paperList:
         if paper.doi:
             ls_dois.append(paper.doi)
     return ls_dois
+
+
 def get_title_from_arxiv_id(arxiv_paperList):
     ls_titles = []
     for paper in arxiv_paperList:
         if paper.title:
-            ls_titles.append(paper.title)
+            ls_titles.append(paper.title.lower())
     return ls_titles
-#TODO
-def title_compare(found_title, pdf_title):
-    jaro_score = jaro.jaro_winkler_metric(found_title, pdf_title)
-    return True if jaro_score > 0.85 else False
 
-def get_doi_from_arxiv(arxiv_id):
-    # Step 1: Query arXiv API to retrieve metadata
-    url = f"https://arxiv.org/abs/{arxiv_id}"
-    response = requests.get(url)
-    if response.status_code == 200:
-        soup = BeautifulSoup(response.content, 'html.parser')
-        doi_link = soup.find('a', href=lambda href: href and 'doi.org' in href)
-        if doi_link:
-            return doi_link.contents
-        return None
-        print("DOI not found for the given arXiv ID.")
-    else:
-        print("Error occurred while querying the arXiv API.")
-    return None
 
+def get_paper_from_arxiv_id(arxiv_id_list):
+    ls_papers = []
+    for id in arxiv_id_list:
+        search = arxiv.Search(id_list=[str(id)])
+        paper = next(search.results())
+        ls_papers.append(paper)
+        return ls_papers if len(ls_papers) > 0 else False
+
+def load_json(path):
+    with open(path, 'r') as f:
+        return json.load(f)
 
 def safe_dic(dic, key):
     try:

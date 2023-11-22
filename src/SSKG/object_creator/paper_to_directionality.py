@@ -1,5 +1,5 @@
 from SSKG.extraction.somef_extraction.somef_extractor import download_repo_metadata
-from SSKG.modelling.bidirectionality import is_doi_bidir, is_arxiv_bidir
+from SSKG.modelling.bidirectionality import is_it_bidir
 from SSKG.modelling.unidirectionality import is_repo_unidir
 import logging
 
@@ -23,8 +23,8 @@ def _get_identifier(paper):
     if not paper:
         logging.error("Paper Object is None")
         return None
-    if iden := paper.doi:
-        return iden
+    # if iden := paper.doi:
+    #     return iden
     elif iden := paper.arxiv:
         return iden
     else:
@@ -45,8 +45,8 @@ def check_paper_directionality(paper, directionality, output_dir):
      -------
      """
     result = {}
-    is_unidir = False
-    is_bidir = False
+    is_unidir = None
+    is_bidir = None
 
     if not (iden := _get_identifier(paper)):
         logging.error("check_paper_directionality: No identifier found for this paper")
@@ -70,15 +70,25 @@ def check_paper_directionality(paper, directionality, output_dir):
                 continue
             # assessment of bidirectionality
             if directionality:
-                is_bidir = (is_doi_bidir(paper, repo_file) or is_arxiv_bidir(paper, repo_file, ))
+                is_bidir = is_it_bidir(paper, repo_file)
             if not directionality:
                 is_unidir = is_repo_unidir(paper, repo_file)
-            if is_bidir or is_unidir:
+            if is_bidir:
+                if first_time:
+                    result[iden] = []
+                    first_time = False
+                entry = {
+                    "Url": url,
+                    "Directional ID": is_bidir[0],
+                    "Location found": is_bidir[1]
+                }
+                result[iden].append(entry)
+                print(entry)
+            if is_unidir:
                 if first_time:
                     result[iden] = []
                     first_time = False
                 result[iden].append(url)
-                print(result)
     except Exception as e:
         print("error while trying to extract metadata")
         print(str(e))

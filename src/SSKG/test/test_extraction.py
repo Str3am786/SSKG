@@ -127,13 +127,13 @@ class test_somef_extraction(TestCase):
         false_dict = {"description": [{"result": {"value": ";alskdfja2206.05328"}}]}
         ans = description_finder(false_dict)
         expected = "2206.05328"
-        self.assertEquals(ans['arxiv'].pop(),expected)
+        self.assertEquals(ans['arxiv'].pop(), expected)
 
     def test_description_doi(self):
         false_dict = {"description": [{"result": {"value": ";alskdfja2206.05328https://doi.org/10.5281/zenodo.838601"}}]}
         ans = description_finder(false_dict)
         expected = "10.5281/zenodo.838601"
-        self.assertEquals(ans['doi'].pop(),expected)
+        self.assertEquals(ans['doi'].pop(), expected)
 
     def test_description_both(self):
         false_dict = {"description": [{"result": {"value": ";alskdfja2206.05328asfhttps://doi.org/10.5555/KVTD-VPWM"}}]}
@@ -171,9 +171,9 @@ class test_somef_extraction(TestCase):
     #
     def test_find_doi_citation_cff(self):
         false_dict = {"citation": [{"result": {"format": "cff", "value": "https://doi.org/10.5555/KVTD-VPWM"}}]}
-        expected = "10.5555/KVTD-VPWM"
+        expected = (['10.5555/KVTD-VPWM'], None)
         ans = find_doi_citation(false_dict)
-        self.assertEquals(ans[0], expected)
+        self.assertEquals(ans["CFF"][0], expected)
 
     def test_find_doi_citation_none(self):
         ans = find_doi_citation(None)
@@ -193,11 +193,12 @@ class test_somef_extraction(TestCase):
         false_dict = {"citation": [{}]}
         ans = find_doi_citation(false_dict)
         self.assertIsNone(ans)
+
     def test_find_doi_citation_bib(self):
         false_dict = {"citation": [{"result": {"format": "bibtex","value":"https://doi.org/10.5555/KVTD-VPWM"}}]}
-        expected = "10.5555/KVTD-VPWM"
+        expected = (['10.5555/KVTD-VPWM'], None)
         ans = find_doi_citation(false_dict)
-        self.assertEquals(ans[0],expected)
+        self.assertEquals(ans["BIBTEX"].pop(), expected)
 
     def test_find_doi_broken_citation(self):
         false_dict = {"citation": [{"result": {"format": "RANDOM", "value": ""}}]}
@@ -206,24 +207,25 @@ class test_somef_extraction(TestCase):
 
     def test_find_doi_text_excerpt(self):
         false_dict = {"citation": [{"result": {"type": "Text_excerpt", "value": "https://doi.org/10.5555/KVTD-VPWM"}}]}
-        expected = "10.5555/KVTD-VPWM"
+        expected = (['10.5555/KVTD-VPWM'], None)
         ans = find_doi_citation(false_dict)
-        self.assertEquals(ans[0], expected)
+        self.assertEquals(ans["TEXT"].pop(), expected)
 
     def test_real_life_example_2_dois(self):
         examp_json = os.path.join(TEST_DIR, "json/somef.json")
         somef_data = load_json(examp_json)
         ans = find_doi_citation(somef_data = somef_data)
-        self.assertTrue(len(ans) > 0)
+        print(ans)
+        self.assertTrue(len(ans["CFF"]) > 0)
 
     #!-----------------------------------------------
     #Test find_arxiv_citation:
     #
     def test_find_arxiv_citation_cff(self):
         false_dict = {"citation": [{"result": {"format": "cff", "value": "https://arxiv.org/abs/2206.05328"}}]}
-        expected = "2206.05328"
+        expected = (["2206.05328"], None)
         ans = find_arxiv_citation(false_dict)
-        self.assertEquals(ans[0], expected)
+        self.assertEquals(ans["CFF"].pop(), expected)
 
     def test_find_arxiv_citation_none(self):
         ans = find_arxiv_citation(None)
@@ -245,9 +247,9 @@ class test_somef_extraction(TestCase):
         self.assertIsNone(ans)
     def test_find_arxiv_citation_bib(self):
         false_dict = {"citation": [{"result": {"format": "bibtex","value":"ads;fl\n2206.05328"}}]}
-        expected = "2206.05328"
+        expected = (["2206.05328"], None)
         ans = find_arxiv_citation(false_dict)
-        self.assertEquals(ans[0],expected)
+        self.assertEquals(ans["BIBTEX"].pop(), expected)
 
     def test_find_arxiv_broken_citation(self):
         false_dict = {"citation": [{"result": {"format": "RANDOM", "value": ""}}]}
@@ -256,9 +258,9 @@ class test_somef_extraction(TestCase):
 
     def test_find_arxiv_text_excerpt(self):
         false_dict = {"citation": [{"result": {"type": "Text_excerpt", "value": "a;lskdfj;l2206.05328"}}]}
-        expected = "2206.05328"
+        expected = (["2206.05328"], None)
         ans = find_arxiv_citation(false_dict)
-        self.assertEquals(ans[0], expected)
+        self.assertEquals(ans["TEXT"].pop(), expected)
 
     def test_real_life_example_2_arxivs(self):
         examp_json = os.path.join(TEST_DIR, "json/somef.json")

@@ -139,9 +139,9 @@ def description_finder(somef_data: dict):
         value = safe_dic(safe_dic(result, 'result'), 'value')
         if value is None:
             continue
-        if (doi := str_to_doi_list(value)):
+        if doi := str_to_doi_list(value):
             desc['doi'].update(doi)
-        if (arxiv := str_to_arxiv_list(value)):
+        if arxiv := str_to_arxiv_list(value):
             desc['arxiv'].update(arxiv)
     return desc
 
@@ -154,68 +154,87 @@ def find_doi_citation(somef_data: dict):
     :param somef_data: A dictionary containing repository metadata extracted using somef.
 
     :returns:
-        list: A list of DOIs if available in the metadata.
-        None: Returns None if no DOIs are found.
+        A dictionary with keys corresponding to the citation formats ('CFF',
+        'BIBTEX', 'TEXT'). Each key maps to a set of extracted DOIs in that
+        format. If no DOIs are found, the corresponding sets will be empty.
     """
     #See if there is citations within the repository
     if not (citations := safe_dic(somef_data, 'citation')):
         return None
-    doi_list = []
+    
+    citation_dois = {'CFF': [], 'BIBTEX': [], "TEXT": []}
+    
     for cite in citations:
         result = safe_dic(cite, 'result')
-        if (format:=(safe_dic(result,'format'))):
+        if format := (safe_dic(result, 'format')):
             if format == "cff":
                 doi = str_to_doi_list(safe_dic(result,"value"))
                 if doi:
-                    doi_list.extend(doi)
+                    source = safe_dic(cite, "source")
+                    citation_dois["CFF"].append((doi, source))
             elif format == "bibtex":
                 doi = str_to_doi_list(safe_dic(result, "value"))
                 if doi:
-                    doi_list.extend(doi)
+                    source = safe_dic(cite, "source")
+                    citation_dois["BIBTEX"].append((doi, source))
             else:
-                print("Unexpected, maybe a somef update?")
+                print("doi_citation: Unexpected Format, maybe a somef update?")
+                logging.warning(f"Unexpected, format, has there been a somef update? {format}")
+                continue
         else:
-            if safe_dic(result,"type") == 'Text_excerpt':
-                doi = str_to_doi_list(safe_dic(result,'value'))
+            if safe_dic(result, "type") == 'Text_excerpt':
+                doi = str_to_doi_list(safe_dic(result, 'value'))
                 if doi:
-                    doi_list.extend(doi)
-    return doi_list if len(doi_list) > 0 else None
+                    source = safe_dic(cite, "source")
+                    citation_dois["TEXT"].append((doi, source))
+
+    all_empty = all(len(doi_list) == 0 for doi_list in citation_dois.values())
+    return citation_dois if not all_empty else None
 
 
 # TODO might need to return to parsing the bibtex to avoid non-pickup due to noise
 def find_arxiv_citation(somef_data: dict):
     """
-    Extracts DOI citations from a given repository metadata.
+    Extracts arxiv citations from a given repository metadata.
 
     :param somef_data: A dictionary containing repository metadata extracted using somef.
 
     :returns:
-        list: A list of arxiv ID's if available in the metadata.
-        None: Returns None if no DOIs are found.
+        A dictionary with keys corresponding to the citation formats ('CFF',
+        'BIBTEX', 'TEXT'). Each key maps to a set of extracted Arxiv's in that
+        format. If no Arxiv's are found, the corresponding sets will be empty.
     """
     # See if there is citations within the repository
     if not (citations := safe_dic(somef_data, 'citation')):
         return None
-    arxiv_list = []
+
+    citation_arxivs = {'CFF': [], 'BIBTEX': [], "TEXT": []}
     for cite in citations:
         result = safe_dic(cite, 'result')
-        if (format:=(safe_dic(result,'format'))):
+        if format := (safe_dic(result, 'format')):
             if format == "cff":
-                arxiv = str_to_arxiv_list(safe_dic(result,"value"))
+                arxiv = str_to_arxiv_list(safe_dic(result, "value"))
                 if arxiv:
-                    arxiv_list.extend(arxiv)
+                    source = safe_dic(cite, "source")
+                    citation_arxivs["CFF"].append((arxiv, source))
             elif format == "bibtex":
                 arxiv = str_to_arxiv_list(safe_dic(result, "value"))
                 if arxiv:
-                    arxiv_list.extend(arxiv)
+                    source = safe_dic(cite, "source")
+                    citation_arxivs["BIBTEX"].append((arxiv, source))
             else:
-                print("Unexpected, maybe a somef update?")
+                print("arxiv_citation: Unexpected Format, maybe a somef update?")
+                logging.warning(f"Unexpected, format, has there been a somef update? {format}")
+                continue
         else:
             if safe_dic(result, "type") == 'Text_excerpt':
-                arxiv = str_to_arxiv_list(safe_dic(result,'value'))
+                arxiv = str_to_arxiv_list(safe_dic(result, 'value'))
                 if arxiv:
-                    arxiv_list.extend(arxiv)
-    return arxiv_list if len(arxiv_list) > 0 else None
+                    source = safe_dic(cite, "source")
+                    citation_arxivs["TEXT"].append((arxiv, source))
+
+    all_empty = all(len(arxiv_list) == 0 for arxiv_list in citation_arxivs.values())
+    return citation_arxivs if not all_empty else None
 
 
 # PARSERS

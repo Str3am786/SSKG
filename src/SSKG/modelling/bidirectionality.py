@@ -1,8 +1,5 @@
 import json
-import jaro
-import arxiv
-import requests
-from bs4 import BeautifulSoup
+import logging
 from SSKG.extraction.somef_extraction.somef_extractor import (
     find_doi_citation,
     description_finder,
@@ -11,6 +8,13 @@ from SSKG.extraction.somef_extraction.somef_extractor import (
 )
 
 
+def load_json(path):
+    try:
+        with open(path, 'r') as f:
+            return json.load(f)
+    except:
+        logging.error("Error while trying to open the repository JSON")
+        return None
 
 
 
@@ -22,173 +26,253 @@ def is_it_bidir(paper_obj, repo_json):
     :param repo_json: A string representing the path to the JSON file of the repository.
 
     :returns:
-    ID and its location (Two strings)
+
     """
-    try:
-        # Load somef json
-        repo_data = load_json(repo_json)
-    except Exception as e:
-        # TODO update to a logging
-        print("Error while trying to open the repository JSON")
-        print(str(e))
+    if not (repo_data := load_json(repo_json)):
+        logging.error("is_it_bidir: Error while trying to open repository JSON")
         return None
-
+    bidir_locations = []
     if doi := paper_obj.doi:
-        bidir_location = is_doi_bidir(doi, repo_data)
-        if bidir_location != "NOT_BIDIR":
-            return doi, bidir_location
+        found_bidir = is_doi_bidir(doi, repo_data)
+        if found_bidir:
+            bidir_locations.extend(found_bidir)
+    if arxiv := paper_obj.arxiv:
+        found_bidir = is_arxiv_bidir(arxiv, repo_data)
+        if found_bidir:
+            bidir_locations.extend(found_bidir)
+    if title := paper_obj.title:
+        found_bidir = is_title_bidir(title, repo_data)
+        if found_bidir:
+            bidir_locations.extend(found_bidir)
+    return bidir_locations
 
-    if arxiv_id := paper_obj.arxiv:
-        bidir_location = is_arxiv_bidir(arxiv_id, repo_data, paper_obj.title)
-        if bidir_location != "NOT_BIDIR":
-            return arxiv_id, bidir_location
-    if pp_title := paper_obj.title:
-        bidir_location = is_title_bidir(pp_title, repo_data)
-        if bidir_location != "NOT_BIDIR":
-            return pp_title, bidir_location
-    # TODO add other forms of identification
-    else:
+# ======================================================================================================================
+# DOI BIDIR
+# ======================================================================================================================
+
+
+def is_doi_bidir(doi: str, repo_data: dict):
+
+    bidir_citation = _doi_is_citation_bidir(doi, repo_data) or []
+    bidir_description = _doi_is_description_bidir(doi, repo_data) or []
+
+    return bidir_citation + bidir_description if bidir_citation or bidir_description else None
+
+
+def _doi_is_citation_bidir(pp_doi: str, repo_data: dict):
+    doi_cite = find_doi_citation(repo_data)
+    if not doi_cite:
         return None
 
-    return None
+    entries = _citation_bidir(pp_doi, doi_cite, "DOI")
+
+    return entries if entries else None
 
 
-def is_doi_bidir(doi, repo_data):
-
-    if _doi_is_citation_bidir(doi, repo_data):
-        return "CITATION"
-    if _doi_is_description_bidir(doi, repo_data):
-        return "DESCRIPTION"
-    else:
-        return "NOT_BIDIR"
-
-
-def _doi_is_description_bidir(pp_doi, repo_data):
+def _doi_is_description_bidir(pp_doi: str, repo_data: dict):
+    """
+    :param pp_doi: Paper's doi
+    :param repo_data: dictionary from SOMEF repo json
+    :returns:
+    list of dictionaries
+    """
     # run through description, if doi is found, will be within dictionary of lists
-    doi_list = safe_dic(description_finder(repo_data), 'doi')
-    if doi_list:
-        for doi in doi_list:
+    doi_set = safe_dic(description_finder(repo_data), 'doi')
+    result = []
+    if doi_set:
+        pp_doi = pp_doi.lower()
+        for doi in doi_set:
             if not doi:
                 continue
-            if doi.lower() == pp_doi.lower():
-                return True
-    return False
+            if doi.lower() == pp_doi:
+                result.append({
+                    "location": "DESCRIPTION",
+                    "id_type": "DOI",
+                    "identifier": doi,
+                    "source": "SOMEF"
+                })
+    return result
 
 
-def _doi_is_citation_bidir(pp_doi, repo_data):
-    doi_list = find_doi_citation(repo_data)
-    if doi_list:
-        for doi in doi_list:
-            if not doi:
-                continue
-            if doi.lower() == pp_doi.lower():
-                return True
-    return False
+def _iterate_citations(citation_data: list, id_2_find: str) -> set:
+    """
+    :param citation_data:  List[(list[ID's], source_url string)]
+    :returns:
+    set of tuples
+    tuple = (identifier: String , place: String)
+    """
+    id_2_find = id_2_find.lower()
+    directional_citations = set()
+    for ids, location in citation_data:
+        if id_2_find in map(str.lower, ids):
+            location_key = "README" if location and "readme" in location.lower() else "FILE"
+            directional_citations.add((id_2_find, location_key if location else "SOMEF_ERROR"))
+    return directional_citations
 
 
-def is_arxiv_bidir(arxiv_id, repo_data, title):
+def _generate_citation_entries(bidir_tuples: set, format: str, id_type: str) -> list:
+    """
+    :param bidir_tuples: set (identifier: String , place: String)
+    :param format: What citation format was used
 
-    if _arxiv_in_citation(arxiv_id, repo_data):
-        return "CITATION"
+    :returns: List of processed citation entries or None.
+    """
+    result = []
+    for tup in bidir_tuples:
+        entry = {
+            "location": str(tup[1]) + "_" + str(format),
+            "id_type": id_type,
+            "identifier": tup[0],
+            "source": "SOMEF"
+        }
+        result.append(entry)
+    return result
 
-    elif _arxiv_in_description(arxiv_id, repo_data):
-        return "DESCRIPTION"
-    elif location := _arxiv_in_related(arxiv_id, repo_data, title):
-        return location
-    else:
-        return "NOT_BIDIR"
+
+def _citation_bidir(id_2_find: str, analysed_citation: dict, id_type: str) -> list:
+    """
+    :param id_2_find: String identifier to be found within the different citation formats available
+    :param analysed_citation: {'CFF': [], 'BIBTEX': [], "TEXT": []} \
+                               Each list containing tuples = (id, source_url) (str,str)
+    :returns:
+    list of dictionaries where the id has been found to be bidirectional
+    """
+    result = []
+    for format_key in ["CFF", "BIBTEX", "TEXT"]:
+        if format_data := analysed_citation.get(format_key):
+            bidir = _iterate_citations(citation_data=format_data, id_2_find=id_2_find)
+            result.extend(_generate_citation_entries(bidir, format_key, id_type))
+    return result if len(result) > 0 else None
 
 
-def _arxiv_in_citation(arxiv_id, repo_data):
+# ======================================================================================================================
+# ARXIV BIDIR
+# ======================================================================================================================
 
-    if arxivID_list := find_arxiv_citation(repo_data):
-        if arxivID_list is not None:
-            if arxiv_id in arxivID_list:
-                return "CITATION"
+def is_arxiv_bidir(pp_arxiv, repo_data):
+    """
+       Returns:
+        list: Combined results from description, citation, and related sections.
+    """
+    result = []
+
+    desc = _arxiv_in_description(pp_arxiv, repo_data)
+    citation = _arxiv_is_citation_bidir(pp_arxiv, repo_data)
+    related = _arxiv_in_related(pp_arxiv, repo_data)
+
+    if citation:
+        result.extend(citation)
+    if desc:
+        result.append(desc)
+    if related:
+        result.append(related)
+
+    return result
+
+
+def _arxiv_in_description(pp_arxiv, repo_data):
+
+    arxiv_set = safe_dic(description_finder(repo_data), 'arxiv')
+    if arxiv_set is not None and pp_arxiv in arxiv_set:
+        return {
+            "location": "DESCRIPTION",
+            "id_type": "ARXIV",
+            "identifier": pp_arxiv,
+            "source": "SOMEF"
+        }
     else:
         return None
 
 
-def _arxiv_in_description(arxiv_id, repo_data):
-
-    arxiv_list = safe_dic(description_finder(repo_data), 'arxiv')
-    if arxiv_list is not None and arxiv_id in arxiv_list:
-        return "DESCRIPTION"
-    else:
-        return None
-
-
-def _arxiv_in_related(arxiv_id, repo_data, title):
-
+def _arxiv_in_related(pp_arxiv, repo_data):
     if arxivID_list := get_related_paper(repo_data):
         if arxivID_list is not None:
-            if arxiv_id in arxivID_list:
-                return "RELATED_PAPERS"
-            # ls_papers = get_paper_from_arxiv_id(arxivID_list)
-            # if ls_papers and title.lower() in get_title_from_arxiv_id(ls_papers):
-            #     return "TITLE ARXIV"
+            if pp_arxiv in arxivID_list:
+                return {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": pp_arxiv,
+                    "source": "SOMEF"
+                }
     return None
 
+def _arxiv_is_citation_bidir(pp_arxiv: str, repo_data: dict):
+    arxiv_cite = find_arxiv_citation(repo_data)
+    if not arxiv_cite:
+        return None
 
-def get_paper_from_arxiv_id(arxiv_id_list):
-    return None
-    # TODO assess viability
-    #ls_papers = []
-    # for id in arxiv_id_list:
-    #     search = arxiv.Search(id_list=[str(id)])
-    #     paper = next(search.results())
-    #     ls_papers.append(paper)
-    #     return ls_papers if len(ls_papers) > 0 else None
+    entries = _citation_bidir(pp_arxiv, arxiv_cite, "ARXIV")
 
+    return entries if entries else None
 
-def get_doi_from_arxiv_id(arxiv_paperList):
-    ls_dois = []
-    for paper in arxiv_paperList:
-        if paper.doi:
-            ls_dois.append(paper.doi)
-    return ls_dois
+# ======================================================================================================================
+# TITLE BIDIR
+# ======================================================================================================================
 
 
-def get_title_from_arxiv_id(arxiv_paperList):
-    ls_titles = []
-    for paper in arxiv_paperList:
-        if paper.title:
-            ls_titles.append(paper.title.lower())
-    return ls_titles
-
-
-# def get_paper_from_arxiv_id(arxiv_id_list):
-#     ls_papers = []
-#     for id in arxiv_id_list:
-#         search = arxiv.Search(id_list=[str(id)])
-#         paper = next(search.results())
-#         ls_papers.append(paper)
-#         return ls_papers if len(ls_papers) > 0 else False
-
-
-def is_title_bidir(pp_title, repo_data):
-
+def is_title_bidir(pp_title: str, repo_data: dict):
+    bidir = []
     # See if its within the citation
     results = safe_dic(repo_data, 'citation')
-    title_found = _iterate_results(results, pp_title)
-    if title_found:
-        return "CITATION"
+    citation_title = _citation_title(results, pp_title)
+    if citation_title:
+        bidir.append({
+            "location": "CITATION" + "_" + citation_title,
+            "id_type": "TITLE",
+            "identifier": pp_title,
+            "source": "SOMEF"
+        })
     # See if its within the Description
     results = safe_dic(repo_data, 'description')
     title_found = _iterate_results(results, pp_title)
     if title_found:
-        return "DESCRIPTION"
+        bidir.append({
+            "location": "DESCRIPTION",
+            "id_type": "TITLE",
+            "identifier": pp_title,
+            "source": "SOMEF"
+        })
 
     poss_found = safe_dic(repo_data, 'full_title')
     if poss_found and type(poss_found) == str:
         title_found = poss_found.lower() == pp_title.lower
     if title_found:
-        return "TITLE REPOSITORY"
+        bidir.append({
+            "location": "REPO_TITLE",
+            "id_type": "TITLE",
+            "identifier": pp_title,
+            "source": "SOMEF"
+        })
 
-    return "NOT_BIDIR"
+    return bidir
+
+def _convert_source(source:str) -> str:
+
+    return "README" if source and "readme" in source.lower() else "FILE"
 
 
-def is_substring_found(substring, larger_string):
+def _citation_title(citation_results, title):
+    if not citation_results:
+        return None
+    for citation in citation_results:
+        result = safe_dic(citation, "result")
+        value = safe_dic(result, 'value')
+        if is_substring_found(title, value) or is_substring_found(value, title):
+            source = safe_dic(citation, "source")
+            return _convert_source(source) if source else "SOMEF ERROR"
+    return None
+
+def _iterate_results(results: dict, string_2_find: str) -> bool:
+    if (not results) or (not string_2_find):
+        return False
+    for result in results:
+        value = safe_dic(safe_dic(result, "result"), 'value')
+        if value:
+            return is_substring_found(string_2_find, value) or is_substring_found(value, string_2_find)
+    return False
+
+
+def is_substring_found(substring, larger_string) -> bool:
     """
     :param substring: The string you want to find
     :param larger_string: The string where you will look for the substring
@@ -199,21 +283,6 @@ def is_substring_found(substring, larger_string):
         return True
     else:
         return False
-
-
-def _iterate_results(results, string_2_find):
-    if (not results) or (not string_2_find):
-        return False
-    for result in results:
-        value = safe_dic(safe_dic(result, "result"), 'value')
-        if value:
-            return is_substring_found(string_2_find, value) or is_substring_found(value, string_2_find)
-    return False
-
-def load_json(path):
-    with open(path, 'r') as f:
-        return json.load(f)
-
 
 def safe_dic(dic, key):
     try:

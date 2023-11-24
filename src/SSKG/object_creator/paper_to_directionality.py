@@ -78,9 +78,8 @@ def check_paper_directionality(paper, directionality, output_dir):
                     result[iden] = []
                     first_time = False
                 entry = {
-                    "Url": url,
-                    "Directional ID": is_bidir[0],
-                    "Location found": is_bidir[1]
+                    "url": url,
+                    "bidirectional": is_bidir
                 }
                 result[iden].append(entry)
                 print(entry)

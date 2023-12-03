@@ -1,7 +1,7 @@
 import json
 import logging
 import os
-from SSKG.extraction.pdf_extraction_tika import read_pdf_list, get_possible_abstract, ranked_git_url
+from SSKG.extraction.pdf_extraction_tika import read_pdf_list, get_possible_abstract, extract_urls, raw_read_pdf, raw_to_list
 from SSKG.extraction.paper_obj import PaperObj
 from SSKG.object_creator.create_downloadedObj import downloadedDic_to_downloadedObj
 
@@ -17,10 +17,11 @@ def downloaded_to_paperObj(downloadedObj):
     if not downloadedObj:
         return None
     try:
-        #pdf_data = read_pdf_list(downloadedObj.file_path)
-        pdf_data = read_pdf_list(downloadedObj.file_path)
-        urls = ranked_git_url(pdf_data)
-        abstract = get_possible_abstract(pdf_data)
+        # TODO optimise
+        raw_pdf_data = raw_read_pdf(pdf_path=downloadedObj.file_path)
+        pdf_data_list = raw_to_list(raw_pdf_data)
+        urls = extract_urls(raw_pdf_data, pdf_data_list)
+        abstract = get_possible_abstract(pdf_data_list)
         title = downloadedObj.title
         doi = downloadedObj.doi
         arxiv = downloadedObj.arxiv
@@ -30,9 +31,12 @@ def downloaded_to_paperObj(downloadedObj):
     except Exception as e:
         print(str(e))
         print("Error while trying to read from the pdf")
+
+
 def dwnldd_obj_to_paper_dic(downloaded_obj):
     paper = downloaded_to_paperObj(downloaded_obj)
     return paperObj_ppDict(paper=paper)
+
 
 def dwnldd_obj_to_paper_json(download_obj,output_dir):
     pp_dic = dwnldd_obj_to_paper_dic(download_obj)

@@ -1,5 +1,5 @@
 from SSKG.extraction.somef_extraction.somef_extractor import download_repo_metadata
-from SSKG.modelling.bidirectionality import is_it_bidir
+from SSKG.modelling.git_bidirectionality import is_it_bidir as git_is_it_bidir
 from SSKG.modelling.unidirectionality import is_repo_unidir
 import logging
 
@@ -23,8 +23,8 @@ def _get_identifier(paper):
     if not paper:
         logging.error("Paper Object is None")
         return None
-    if iden := paper.doi:
-        return iden
+    # if iden := paper.doi:
+    #     return iden
     elif iden := paper.arxiv:
         return iden
     else:
@@ -55,14 +55,15 @@ def check_paper_directionality(paper, directionality, output_dir):
     try:
         # runs through the list of extracted gitHub urls, starting with the most frequently mentioned
         first_time = True
-        if not paper.urls:
+        if not(pp_urls := paper.urls):
             logging.info(f"This paper {iden}, it does not have any urls")
             return None
-        for pair in paper.urls:
-            if not pair:
-                logging.error(f"Empty urls for {iden}")
+        git_urls = pp_urls.get("git", [])
+
+        for entry in git_urls:
+            url = safe_dic(entry, "url")
+            if not url:
                 continue
-            url = pair[0]
             # Download repository from SOMEF
             repo_file = download_repo_metadata(url, output_dir)
             if not repo_file:
@@ -70,7 +71,7 @@ def check_paper_directionality(paper, directionality, output_dir):
                 continue
             # assessment of bidirectionality
             if directionality:
-                is_bidir = is_it_bidir(paper, repo_file)
+                is_bidir = git_is_it_bidir(paper, repo_file)
             if not directionality:
                 is_unidir = is_repo_unidir(paper, repo_file)
             if is_bidir:
@@ -96,4 +97,11 @@ def check_paper_directionality(paper, directionality, output_dir):
     if len(result.keys()) > 0:
         return result
     else:
+        return None
+
+
+def safe_dic(dict, key):
+    try:
+        return dict[key]
+    except:
         return None

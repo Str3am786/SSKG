@@ -2,6 +2,14 @@ import re
 
 DOI_REGEX = r'\b(10[.][0-9]{4,}(?:[.][0-9]+)*/(?:(?!["&\'<>,])\S)+)\b'
 ARXIV_REGEX = r'.*(\d{4}\.\d{4,5}).*'
+# ZENODO
+ZENODO_DOI_REGEX = r'https?:\/\/doi\.org\/10.5281/zenodo.[0-9]+'
+ZENODO_RECORD_REGEX = r'https?://zenodo.org/records/[0-9]+'
+# GIT
+# GITHUB_REGEX = r'(https?://github.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)'
+# GITLAB_REGEX = r'(https?://gitlab.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)'
+GITHUB_REGEX = r'(?:https?://(?:www\.)?)?github\.com/[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+'
+GITLAB_REGEX = r'(?:https?://(?:www\.)?)?gitlab\.com/[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+'
 
 
 def str_to_doiID(string):

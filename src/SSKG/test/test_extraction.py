@@ -281,10 +281,10 @@ class test_pdf_extraction_tika(TestCase):
     def test_raw_pdf_file_not_found(self):
         made_up_path = "./jeremy/pdfs/widoco-iswc2017.pdf"
         ans = raw_read_pdf(made_up_path)
-        self.assertIsNone(ans)
+        self.assertEqual(ans, "")
 
     def test_raw_pdf_none(self):
-        self.assertIsNone(raw_read_pdf(None))
+        self.assertEqual(raw_read_pdf(None), "")
 
     #!-----------------------------------------------
     #Test read_list_pdf:
@@ -311,7 +311,7 @@ from ..extraction.pdf_title_extraction import extract_pdf_title, use_pdf_title, 
 class test_title_extraction_pdf(TestCase):
 
     def test_normal_case(self):
-        path_file = os.path.join(TEST_DIR,"pdfs/widoco-iswc2017.pdf")
+        path_file = os.path.join(TEST_DIR, "pdfs/widoco-iswc2017.pdf")
         title = use_pdf_title(path_file)
         self.assertEquals("WIDOCO: A Wizard for Documenting Ontologies", title)
     def test_no_pdf(self):
@@ -372,5 +372,5 @@ class test_github_url_extraction_pdf(TestCase):
 
     def test_process(self):
         path_file = os.path.join(TEST_DIR, "json/false_dowloaded.json")
-        cock = dwnlddJson_to_paperJson(dwnldd_json=path_file, output_dir=PIPELINE_FOLDER)
-        print(cock)
+        paper = dwnlddJson_to_paperJson(dwnldd_json=path_file, output_dir=PIPELINE_FOLDER)
+        print(paper)

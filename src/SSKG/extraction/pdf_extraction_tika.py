@@ -3,11 +3,20 @@ import logging
 import os
 import re
 from tika import parser
+# Import REGEXes
+from SSKG.utils.regex import ZENODO_DOI_REGEX, ZENODO_RECORD_REGEX, GITHUB_REGEX, GITLAB_REGEX
+
+logger = logging.getLogger("extraction")
 
 
-def raw_read_pdf(pdf_path):
+# ======================================================================================================================
+# READ THE PDF
+# ======================================================================================================================
+
+
+def raw_read_pdf(pdf_path) -> str:
     if not pdf_path:
-        return None
+        return ""
     try:
         path = os.path.expandvars(pdf_path)
         parsed = parser.from_file(path)
@@ -17,13 +26,23 @@ def raw_read_pdf(pdf_path):
         return content
     except FileNotFoundError:
         logging.error(f"PDF file not found at path: {pdf_path}")
-        return None
+        return ""
     except Exception as e:
         logging.error(f"An error occurred while reading the PDF: {str(e)}")
-        return None
+        return ""
 
 
-def read_pdf_list(pdf_path):
+def raw_to_list(raw_pdf_data: str) -> list:
+
+    if not raw_pdf_data:
+        logging.error(f"ERROR converting from raw pdf to list pdf, {raw_pdf_data}")
+        return []
+
+    list_pdf_data = raw_pdf_data.split('\n')
+    return [x for x in list_pdf_data if x != '']
+
+
+def read_pdf_list(pdf_path) -> list:
     try:
         raw = parser.from_file(pdf_path)
         list_pdf_data = raw['content'].split('\n')
@@ -38,16 +57,19 @@ def read_pdf_list(pdf_path):
     except Exception as e:
         logging.error(f"An error occurred while reading the PDF: {str(e)}")
         return []
+# ======================================================================================================================
+# TITLE EXTRACTION
+# ======================================================================================================================
 
 
-def get_possible_title(pdf):
-    pdf_raw = raw_read_pdf(pdf)
+def get_possible_title(pdf_path):
+    pdf_raw = raw_read_pdf(pdf_path)
     if not pdf_raw:
         return None
     return extract_possible_title(pdf_raw)
 
 
-def extract_possible_title(pdf_raw_data):
+def extract_possible_title(pdf_raw_data: str):
     """
     Given raw data, this function attempts to extract a possible title.
     ASSUMPTION: The title is assumed to be the first non-line break character and ends with two line breaks \n\n
@@ -76,75 +98,77 @@ def extract_possible_title(pdf_raw_data):
                 poss_title = poss_title + i
     return None
 
+# ======================================================================================================================
+# ABSTRACT EXTRACTION
+# ======================================================================================================================
 
-def find_abstract_index(pdf_data):
+
+def find_abstract_index(pdf_data: list) -> int:
     index = 0
     try:
         for line in pdf_data:
             if "abstract" in line.lower():
                 if index < len(pdf_data):
                     return index
-            index +=1
+            index += 1
     except Exception as e:
         logging.warning(f"Failed to Extract the abstract {str(e)}")
-        return None
+        return -1
 
 
-def get_possible_abstract(pdf_data):
+def get_possible_abstract(pdf_data: list) -> str:
     try:
         index = find_abstract_index(pdf_data)
-        if index:
+        if index > 0:
             return ''.join(pdf_data[index:index+50])
     except Exception as e:
-        print(e)
+        logging.error(f"get_possible_abstract: Issue while trying to extract the abstract: {e}")
 
 
-def find_github_in_abstract(pdf_data):
-    abstract = get_possible_abstract(pdf_data)
-    if abstract:
-        return look_for_github_urls(abstract)
+def find_github_in_abstract(pdf_data: list) -> list:
+    abstract_index = find_abstract_index(pdf_data)
+    if abstract_index > 0:
+        return look_for_github_urls(pdf_data[abstract_index:abstract_index:50])
 
+
+# ======================================================================================================================
+# EXTRACT GIT
+# ======================================================================================================================
 
 # regular expression to get all the urls, returned as a list
-def get_git_urls(text):
+def get_git_urls(text: str) -> list:
     """
     Returns
     -------
     List Strings (urls)
 
     """
-    urls_github = re.findall(r'(https?://github.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)', text)
-    urls_gitlab = re.findall(r'(https?://gitlab.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)', text)
-    # urls_zenodo = re.findall(r'(https?://zenodo.org/\S+)', text)
-    # urls_bitbucket = re.findall(r'(https?://bitbucket.org/\S+)', text)
-    # urls_sourceforge = re.findall(r'(https?://sourceforge.net/\S+)', text)
-    # create a list with all the urls found
+    urls_github = re.findall(GITHUB_REGEX, text)
+    urls_gitlab = re.findall(GITLAB_REGEX, text)
     urls = urls_github + urls_gitlab
     return urls
 
-def raw_get_git_urls(raw_pdf_text):
-    # TODO docstring
-    text = re.sub(r'\n(?=[A-Za-z0-9_.-])', '', raw_pdf_text)
-    urls_github = re.findall(r'(https?://github.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)', text)
-    urls_gitlab = re.findall(r'(https?://gitlab.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)', text)
-    urls = urls_github + urls_gitlab
-    return urls
 
-def clean_up_git_url(git_url_list):
+def clean_up_git_url(git_url_list: list) -> list:
     clean_urls = []
     for url in git_url_list:
+        # Remove 'www.' if it exists
+        url = url.replace("www.", "")
         # Strip the trailing period if it exists
         if url.endswith('.'):
             url = url[:-1]
         # Strip '.git' if it exists
-        elif url.endswith('.git'):
+        if url.endswith('.git'):
             url = url[:-4]
+        # Prepend 'https://' if the URL starts with 'github.com'
+        if url.startswith('github.com'):
+            url = 'https://' + url
         clean_urls.append(url)
-
     return clean_urls
 
 
-def look_for_github_urls(list_pdf_data):
+
+def look_for_github_urls(list_pdf_data: list) -> list:
     git_urls = []
     for value in list_pdf_data:
         results = get_git_urls(value)
@@ -154,35 +178,7 @@ def look_for_github_urls(list_pdf_data):
     return git_urls
 
 
-def raw_look_for_github_urls(raw_pdf_data):
-    # TODO clean up and fix
-    if not raw_pdf_data:
-        return []
-    urls = raw_get_git_urls(raw_pdf_data)
-    if not urls:
-        return []
-    git_urls = clean_up_git_url(urls)
-    return git_urls
-
-
-def rank_elements(url_list):
-    """
-    Takes a list of strings
-
-    Returns
-    --------
-    List of dictionary pairs. Key being the url (String) and the value the number of appearances
-    Ordered, High to Low, Number of appearances
-    """
-    counts = collections.defaultdict(int)
-    for url in url_list:
-        counts[url] += 1
-    return sorted(counts.items(),
-                 key=lambda k_v: (k_v[1], k_v[0]),
-                 reverse=True)
-
-
-def ranked_git_url(pdf_data):
+def ranked_git_url(pdf_data: list):
     """
     Creates  ranked list of GitHub urls and count pairs or false if none are available
     Returns
@@ -201,8 +197,26 @@ def ranked_git_url(pdf_data):
     except Exception as e:
         print(str(e))
 
+# ======================================================================================================================
+# EXTRACT ZENODO
+# ======================================================================================================================
 
-def raw_ranked_git_url(raw_pdf_data):
+
+def get_zenodo_urls(text: str) -> list:
+    """
+    Returns
+    -------
+    List Strings (urls)
+
+    """
+    urls_doi = re.findall(ZENODO_DOI_REGEX, text)
+    urls_records = re.findall(ZENODO_RECORD_REGEX, text)
+    zenodo_urls = urls_doi + urls_records
+
+    return zenodo_urls
+
+
+def ranked_zenodo_url(raw_pdf_data: str):
     """
     Creates  ranked list of GitHub urls and count pairs or false if none are available
     Returns
@@ -213,13 +227,58 @@ def raw_ranked_git_url(raw_pdf_data):
         False
     """
     try:
-        github_urls = raw_look_for_github_urls(raw_pdf_data)
-        if github_urls:
-            return rank_elements(github_urls)
+        zenodo_urls = get_zenodo_urls(raw_pdf_data)
+        if zenodo_urls:
+            return rank_elements(zenodo_urls)
         else:
             return None
     except Exception as e:
         print(str(e))
+
+# ======================================================================================================================
+# EXTRACT URLs
+# ======================================================================================================================
+
+
+def extract_urls(raw_pdf_data: str, list_pdf_data: list) -> dict:
+    # TODO optimise
+    #list_pdf_data = raw_to_list(raw_pdf_data)
+    urls = {}
+    if not raw_pdf_data:
+        logging.error("Extract Urls: raw_pdf_data is None or Empty")
+        return urls
+    if not list_pdf_data:
+        logging.error("Extract Urls: list_pdf_data is None or Empty")
+        return urls
+
+    list_git_urls = ranked_git_url(list_pdf_data)
+    list_zenodo_urls = ranked_zenodo_url(raw_pdf_data)
+
+    if list_git_urls:
+        urls['git'] = list_git_urls
+    if list_zenodo_urls:
+        urls['zenodo'] = list_zenodo_urls
+
+    return urls
+
+
+def rank_elements(url_list: list) -> list:
+    """
+    Takes a list of strings (URLs)
+
+    Returns
+    --------
+    List of dictionaries. Each dictionary contains 'url' (String) as key and the number of appearances as value.
+    Ordered, High to Low, based on the number of appearances.
+    """
+    counts = collections.defaultdict(int)
+    for url in url_list:
+        counts[url] += 1
+
+    ranked_list = [{'url': url, '#_appearances': count} for url, count in counts.items()]
+    ranked_list.sort(key=lambda x: (x['#_appearances'], x['url']), reverse=True)
+
+    return ranked_list
 
 
 

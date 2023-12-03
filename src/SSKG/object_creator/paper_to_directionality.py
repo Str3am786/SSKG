@@ -23,8 +23,8 @@ def _get_identifier(paper):
     if not paper:
         logging.error("Paper Object is None")
         return None
-    # if iden := paper.doi:
-    #     return iden
+    if iden := paper.doi:
+        return iden
     elif iden := paper.arxiv:
         return iden
     else:

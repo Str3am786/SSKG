@@ -17,7 +17,6 @@ def load_json(path):
         return None
 
 
-
 def is_it_bidir(paper_obj, repo_json):
     """
     Checks if the paper relationship with the repository is bidirectional.

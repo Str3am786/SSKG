@@ -4,6 +4,7 @@ from pathlib import Path
 from shutil import rmtree
 from unittest import TestCase
 from SSKG.metadata.api.openAlex_api_queries import pdf_title_to_meta, convert_to_doi_url, query_openalex_api
+from SSKG.metadata.api.zenodo_api import get_redirect_url, get_record, get_github_from_zenodo
 
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
 PIPELINE_FOLDER = os.path.join(TEST_DIR, "pipeline_folder")
@@ -20,12 +21,11 @@ def load_json(path):
     with open(path,'r') as f:
         return json.load(f)
 
-
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #-------------------------------------------------Metadata Testing------------------------------------------------------
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-class test_open_alex_query(TestCase):
+class TestOpenAlexQuery(TestCase):
     #!-----------------------------------------------
     #convert_to_doi_url:
     def test_convert_to_doi_url(self):
@@ -117,3 +117,71 @@ class test_open_alex_query(TestCase):
         doi = resp_json["doi"]
         expected = "https://doi.org/10.21428/58320208.e46b7b81"
         self.assertIsNone(doi)
+
+
+class TestZenodoApi(TestCase):
+
+    def test_get_redirect(self):
+        doi_url = 'https://doi.org/10.5281/zenodo.591294'
+        expected = "https://zenodo.org/record/591294"
+        ans = get_redirect_url(doi_url)
+        self.assertEquals(expected, ans)
+
+    def test_get_redirect_invalid_doi(self):
+        doi_url = 'https://doi.org/10,5281/made_up.591294'
+        with self.assertRaises(ValueError):
+            get_redirect_url(doi_url)
+
+
+    def test_get_redirect_made_up_doi(self):
+        doi_url = 'https://doi.org/10.5281/made_up.591294'
+        with self.assertRaises(RuntimeError):
+            get_redirect_url(doi_url)
+
+    def test_get_redirect_none(self):
+        with self.assertRaises(ValueError):
+            get_redirect_url(None)
+
+
+    # ------------------------------------------------
+    # Test Zenodo get record:
+    #
+
+    def test_get_record_doi(self):
+        doi_url = 'https://doi.org/10.5281/zenodo.591294'
+        ans = get_record(doi_url)
+        self.assertIsNotNone(ans)
+
+    def test_get_record_record_url(self):
+        record_url = 'https://zenodo.org/record/591294'
+        ans = get_record(record_url)
+        self.assertIsNotNone(ans)
+
+    def test_get_record_empty_url(self):
+        with self.assertRaises(ValueError):
+            get_redirect_url("")
+
+    def test_get_record_None(self):
+        with self.assertRaises(ValueError):
+            get_redirect_url(None)
+
+    # ------------------------------------------------
+    # Test Zenodo get github from zenodo:
+    #
+
+    def test_get_github_zenodo(self):
+        doi_url = 'https://doi.org/10.5281/zenodo.591294'
+        record = get_record(doi_url)
+        ans = get_github_from_zenodo(record[0])
+        expected = ['https://github.com/dgarijo/Widoco']
+        self.assertEquals(ans, expected)
+
+    def test_get_github_zenodo_empty_text(self):
+        empty_text = ""
+        ans = get_github_from_zenodo(empty_text)
+        self.assertEquals(ans, [])
+
+    def test_get_github_zenodo_None(self):
+        ans = get_github_from_zenodo(None)
+        self.assertEquals(ans, [])
+

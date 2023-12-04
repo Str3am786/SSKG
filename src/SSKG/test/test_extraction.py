@@ -369,7 +369,6 @@ class test_github_url_extraction_pdf(TestCase):
         print(git_urls)
 
 
-
     def test_process(self):
         path_file = os.path.join(TEST_DIR, "json/false_dowloaded.json")
         paper = dwnlddJson_to_paperJson(dwnldd_json=path_file, output_dir=PIPELINE_FOLDER)

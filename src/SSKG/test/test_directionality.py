@@ -38,7 +38,8 @@ class test_bidir(TestCase):
             "title": "Software Metadata Extraction Framework (SOMEF)",
             "file_name": "",
             "file_path": "",
-            "urls": [("https://github.com/KnowledgeCaptureAndDiscovery/somef", 1)]
+            "urls": {"git": [{"url": "https://github.com/KnowledgeCaptureAndDiscovery/somef", "#_appearances": 1}]}
+
         }
         paper = paperDict_to_paperObj(pp_dict)
         result = check_paper_directionality(paper, True, PIPELINE_FOLDER)
@@ -53,7 +54,7 @@ class test_bidir(TestCase):
             "title": "WIDOCO: a wizard for documenting ontologies",
             "file_name": "",
             "file_path": "",
-            "urls": [("https://github.com/dgarijo/Widoco",1)]
+            "urls": {"git": [{"url": "https://github.com/dgarijo/Widoco", "#_appearances": 1}]}
         }
         paper = paperDict_to_paperObj(pp_dict)
         result = check_paper_directionality(paper, True, PIPELINE_FOLDER)
@@ -253,12 +254,128 @@ class test_bidir(TestCase):
             "title": "WIDOCO: a wizard for documenting ontologies",
             "file_name": "",
             "file_path": "",
-            "urls": [("https://github.com/dgarijo/Widoco",1)]
+            "urls": {"git": [{"url": "https://github.com/dgarijo/Widoco", "#_appearances": 1}]}
         }
         paper = paperDict_to_paperObj(pp_dict)
         result = check_paper_directionality(paper, True, PIPELINE_FOLDER)
         expected_result = "https://github.com/dgarijo/Widoco"
         self.assertEquals(expected_result, result["1234.56789"][0]["url"])
 
+    def test_zenodo_bidir(self):
+        wipe_directory(PIPELINE_FOLDER)
+        pp_dict = {
+            "doi": "",
+            "arxiv": "1234.56789",
+            "title": "WIDOCO: a wizard for documenting ontologies",
+            "file_name": "",
+            "file_path": "",
+            "urls": {"zenodo": [{"url": "https://zenodo.org/records/7867989", "#_appearances": 1}]}
+        }
+        paper = paperDict_to_paperObj(pp_dict)
+        result = check_paper_directionality(paper, True, PIPELINE_FOLDER)
+        expected_result = "https://zenodo.org/records/7867989"
+        self.assertEquals(expected_result, result["1234.56789"][0]["url"])
+
+
+    def test_zenodo_bidir_wrong_url(self):
+        wipe_directory(PIPELINE_FOLDER)
+        pp_dict = {
+            "doi": "",
+            "arxiv": "1234.56789",
+            "title": "WIDOCO: a wizard for documenting ontologies",
+            "file_name": "",
+            "file_path": "",
+            "urls": {"zenodo": [{"url": "https://zenodo.org/records/77989", "#_appearances": 1}]}
+        }
+        paper = paperDict_to_paperObj(pp_dict)
+        result = check_paper_directionality(paper, True, PIPELINE_FOLDER)
+        self.assertIsNone(result)
+
+
+    def test_zenodo_bidir_no_url(self):
+        wipe_directory(PIPELINE_FOLDER)
+        pp_dict = {
+            "doi": "",
+            "arxiv": "1234.56789",
+            "title": "WIDOCO: a wizard for documenting ontologies",
+            "file_name": "",
+            "file_path": "",
+            "urls": {"zenodo": [{"url": "", "#_appearances": 1}]}
+        }
+        paper = paperDict_to_paperObj(pp_dict)
+        result = check_paper_directionality(paper, True, PIPELINE_FOLDER)
+
+        self.assertIsNone(result)
+
+    def test_zenodo_bidir_broken_url(self):
+        wipe_directory(PIPELINE_FOLDER)
+        pp_dict = {
+            "doi": "",
+            "arxiv": "1234.56789",
+            "title": "WIDOCO: a wizard for documenting ontologies",
+            "file_name": "",
+            "file_path": "",
+            "urls": {"zenodo": []}
+        }
+        paper = paperDict_to_paperObj(pp_dict)
+        result = check_paper_directionality(paper, True, PIPELINE_FOLDER)
+        self.assertIsNone(result)
+
+
+    def test_zenodo_bidir_broken_url_1(self):
+        wipe_directory(PIPELINE_FOLDER)
+        pp_dict = {
+            "doi": "",
+            "arxiv": "1234.56789",
+            "title": "WIDOCO: a wizard for documenting ontologies",
+            "file_name": "",
+            "file_path": "",
+            "urls": {"zenodo": []}
+        }
+        paper = paperDict_to_paperObj(pp_dict)
+        result = check_paper_directionality(paper, True, PIPELINE_FOLDER)
+        self.assertIsNone(result)
+
+    def test_zenodo_bidir_broken_url_2(self):
+        wipe_directory(PIPELINE_FOLDER)
+        pp_dict = {
+            "doi": "",
+            "arxiv": "1234.56789",
+            "title": "WIDOCO: a wizard for documenting ontologies",
+            "file_name": "",
+            "file_path": "",
+            "urls": {}
+        }
+        paper = paperDict_to_paperObj(pp_dict)
+        result = check_paper_directionality(paper, True, PIPELINE_FOLDER)
+
+        self.assertIsNone(result)
+
+    def test_prob_(self):
+        wipe_directory(PIPELINE_FOLDER)
+        paper = {
+            "abstract": "ABSTRACTKMOS (K-Band Multi Object Spectrograph) is a novel integral field spectrograph installedin the VLT’s ANTU unit. The instrument offers an ability to observe 24 2.8′′×2.8′′ sub$",
+            "arxiv": "1508.02911",
+            "doi": None,
+            "file_name": "1508.02911.pdf",
+            "file_path": "./output_files/1508.02911/1508.02911.pdf",
+            "title": "Exoplanet Transmission Spectroscopy using KMOS",
+            "urls": {
+                    "git": [
+                            {
+                                "#_appearances": 1,
+                                "url": "https://github.com/hpparvi/PyTransit"
+                            },
+                            {
+                                "#_appearances": 1,
+                                "url": "https://github.com/hpparvi/PyDE"
+                            }
+                    ]
+                    }
+        }
+        pp = paperDict_to_paperObj(paper)
+        result = check_paper_directionality(pp, True, PIPELINE_FOLDER)
+        print(result)
     def test_related_4(self):
         wipe_directory(PIPELINE_FOLDER)
+

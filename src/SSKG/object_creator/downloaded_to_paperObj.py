@@ -6,7 +6,6 @@ from SSKG.extraction.paper_obj import PaperObj
 from SSKG.object_creator.create_downloadedObj import downloadedDic_to_downloadedObj
 
 
-
 def downloaded_to_paperObj(downloadedObj):
     """
     :param: downloadedObj

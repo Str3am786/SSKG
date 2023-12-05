@@ -5,9 +5,9 @@ from shutil import rmtree
 from unittest import TestCase
 
 #from ..modelling.bidirectionality import *
-from ..object_creator.paper_to_directionality import check_paper_directionality
-from ..object_creator.pipeline import doi_to_paper
-from ..object_creator.paper_obj_utils import paperDict_to_paperObj
+from SSKG.object_creator.paper_to_directionality import check_paper_directionality
+from SSKG.object_creator.pipeline import doi_to_paper
+from SSKG.object_creator.paper_obj_utils import paperDict_to_paperObj
 
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
 PIPELINE_FOLDER = os.path.join(TEST_DIR, "pipeline_folder")
@@ -94,9 +94,9 @@ class test_bidir(TestCase):
         self.assertEquals(result[doi][0]["url"], expected_result)
 
     def test_doi_pipeline_no_ids(self):
-        wipe_directory("./pipeline_folder")
+        wipe_directory("pipeline_folder")
         doi = "10.1109/iwis56333.2022.9920762"
-        paper = doi_to_paper(doi, "./pipeline_folder")
+        paper = doi_to_paper(doi, "pipeline_folder")
         result = check_paper_directionality(paper, True, PIPELINE_FOLDER)
         #self.assertIsNone(result)
 
@@ -129,9 +129,9 @@ class test_bidir(TestCase):
 
     def test_arxiv_related2(self):
         '''It is not mentioned within the paper'''
-        wipe_directory("./pipeline_folder")
+        wipe_directory("pipeline_folder")
         doi = "10.18653/v1/2021.naacl-main.458"
-        paper = doi_to_paper(doi, "./pipeline_folder")
+        paper = doi_to_paper(doi, "pipeline_folder")
         result = check_paper_directionality(paper, True, PIPELINE_FOLDER)
         expected_result = None
         self.assertEquals(result, expected_result)

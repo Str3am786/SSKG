@@ -4,7 +4,7 @@ from pathlib import Path
 from shutil import rmtree
 from unittest import TestCase
 
-from ..extraction.somef_extraction.somef_extractor import is_github_repo_url, download_repo_metadata, get_related_paper, \
+from SSKG.extraction.somef_extraction.somef_extractor import is_github_repo_url, download_repo_metadata, get_related_paper, \
     description_finder, find_doi_citation, find_arxiv_citation
 
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -54,7 +54,7 @@ class test_somef_extraction(TestCase):
 
     def test_already_dwnldd_repo_meta(self):
         real_url = "https://github.com/SoftwareUnderstanding/SSKG"
-        output_dir = os.path.join(TEST_DIR,"json")
+        output_dir = os.path.join(TEST_DIR, "json")
         expected = os.path.join(output_dir, "JSONs/SoftwareUnderstanding_SSKG.json")
         ans = download_repo_metadata(url=real_url, output_folder_path=output_dir)
         self.assertEquals(ans,str(expected))
@@ -269,7 +269,7 @@ class test_somef_extraction(TestCase):
         self.assertTrue(len(ans) > 0)
 
 
-from ..extraction.pdf_extraction_tika import raw_read_pdf, read_pdf_list
+from SSKG.extraction.pdf_extraction_tika import raw_read_pdf, read_pdf_list
 
 class test_pdf_extraction_tika(TestCase):
     def test_raw_pdf(self):
@@ -307,7 +307,7 @@ class test_pdf_extraction_tika(TestCase):
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-from ..extraction.pdf_title_extraction import extract_pdf_title, use_pdf_title, use_tika_title
+from SSKG.extraction.pdf_title_extraction import extract_pdf_title, use_pdf_title, use_tika_title
 class test_title_extraction_pdf(TestCase):
 
     def test_normal_case(self):
@@ -356,9 +356,9 @@ class test_title_extraction_pdf(TestCase):
         self.assertEquals(title, expected)
 
 
-from ..extraction.pdf_extraction_tika import ranked_git_url
+from SSKG.extraction.pdf_extraction_tika import ranked_git_url
 
-from ..object_creator.downloaded_to_paperObj import dwnlddJson_to_paperJson
+from SSKG.object_creator.downloaded_to_paperObj import dwnlddJson_to_paperJson
 
 class test_github_url_extraction_pdf(TestCase):
 

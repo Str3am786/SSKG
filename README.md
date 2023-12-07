@@ -167,6 +167,7 @@ Pertains to all the downloading of pdfs.
 Downloaded_obj is a representation of downloaded papers which have not been processed yet. 
 
 Contains:
+
 	- Title 
 	- DOI
 	- ArXiv

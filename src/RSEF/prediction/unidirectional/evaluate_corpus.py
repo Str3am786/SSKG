@@ -11,7 +11,7 @@ def evalutate_corpus():
     FalsePositive = 0
 
     fails = {"FalseNeg": [], "FalsePos":[] }
-    csv_file = "./corpus.csv"
+    csv_file = "../corpus.csv"
     json_bidirs = "./bidir.json"
     csv = pd.read_csv(csv_file)
     print(csv)
@@ -48,7 +48,7 @@ def evalutate_corpus():
     FalsePositive = 0
 
     fails = {"FalseNeg": [], "FalsePos":[] }
-    csv_file = "./corpus.csv"
+    csv_file = "../corpus.csv"
     json_bidirs = "./bidir.json"
     csv = pd.read_csv(csv_file)
     print(csv)
@@ -86,7 +86,7 @@ def evalutate_corpus_uni():
     FalsePositive = 0
 
     fails = {"FalseNeg": [], "FalsePos":[] }
-    csv_file = "./corpus_unidir.csv"
+    csv_file = "corpus_unidir.csv"
     json_bidirs = "./unidir.json"
     csv = pd.read_csv(csv_file)
     print(csv)

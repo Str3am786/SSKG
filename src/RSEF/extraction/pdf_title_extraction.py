@@ -1,7 +1,7 @@
 import os.path
 import subprocess
 import logging
-from SSKG.extraction.pdf_extraction_tika import get_possible_title as use_tika_title
+from ..extraction.pdf_extraction_tika import get_possible_title as use_tika_title
 
 
 

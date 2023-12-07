@@ -1,9 +1,9 @@
 import logging
 import os
 # TODO fix imports
-from SSKG.download_pdf.unpaywall_pdf_url_extractor import create_unpaywall_url_from_string as paywall_url
-from SSKG.download_pdf.arxiv_downloader import download_pdf as download_arxiv_pdf
-from SSKG.download_pdf.unpaywall_pdf_downloader import doi_to_downloaded_pdf
+from .unpaywall_pdf_url_extractor import create_unpaywall_url_from_string as paywall_url
+from .arxiv_downloader import download_pdf as download_arxiv_pdf
+from .unpaywall_pdf_downloader import doi_to_downloaded_pdf
 
 
 

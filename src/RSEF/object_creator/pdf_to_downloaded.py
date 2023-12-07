@@ -1,10 +1,10 @@
 
-from SSKG.utils.regex import adrian_is_filename_doi, adrian_filename_to_doi_convert
-from SSKG.metadata.api.openAlex_api_queries import query_openalex_api
-from SSKG.utils.regex import str_to_arxivID,str_to_doiID
-from SSKG.download_pdf.downloaded_obj import DownloadedObj
+from ..utils.regex import adrian_is_filename_doi, adrian_filename_to_doi_convert
+from ..metadata.api.openAlex_api_queries import query_openalex_api
+from ..utils.regex import str_to_arxivID, str_to_doiID
+from ..download_pdf.downloaded_obj import DownloadedObj
 #TODO CHANGE NAME OF CREATE_DOWNLOADED_OBJ
-from SSKG.object_creator.create_downloadedObj import downloaded_dictionary
+from ..object_creator.create_downloadedObj import downloaded_dictionary
 import os.path
 import json
 

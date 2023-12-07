@@ -3,9 +3,9 @@ import os.path
 from pathlib import Path
 from shutil import rmtree
 from unittest import TestCase
-from SSKG.download_pdf.download_pipeline import pdf_download_pipeline
-from SSKG.download_pdf.arxiv_downloader import download_pdf, convert_to_arxiv_url
-from SSKG.download_pdf.unpaywall_pdf_url_extractor import (
+from src.RSEF.download_pdf.download_pipeline import pdf_download_pipeline
+from src.RSEF.download_pdf.arxiv_downloader import download_pdf, convert_to_arxiv_url
+from src.RSEF.download_pdf.unpaywall_pdf_url_extractor import (
     create_unpaywall_url_from_string,
     create_unpaywall_url,
     get_unpaywall_pdf_url
@@ -87,7 +87,7 @@ class test_arxiv_downloader(TestCase):
 class test_open_alex_url_extractor(TestCase):
     pass
 
-from SSKG.download_pdf.unpaywall_pdf_downloader import doi_to_downloaded_pdf
+from src.RSEF.download_pdf.unpaywall_pdf_downloader import doi_to_downloaded_pdf
 class test_oa_downloader(TestCase):
 
     def test_download_html_response(self):

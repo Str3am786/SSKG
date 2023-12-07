@@ -1,9 +1,9 @@
 import json
 import logging
 import os
-from SSKG.extraction.pdf_extraction_tika import read_pdf_list, get_possible_abstract, extract_urls, raw_read_pdf, raw_to_list
-from SSKG.extraction.paper_obj import PaperObj
-from SSKG.object_creator.create_downloadedObj import downloadedDic_to_downloadedObj
+from ..extraction.pdf_extraction_tika import read_pdf_list, get_possible_abstract, extract_urls, raw_read_pdf, raw_to_list
+from ..extraction.paper_obj import PaperObj
+from ..object_creator.create_downloadedObj import downloadedDic_to_downloadedObj
 
 
 def downloaded_to_paperObj(downloadedObj):
@@ -102,8 +102,11 @@ def pp_dic_to_json(pp_dic, output_dir):
                   ensure_ascii=False)
     return output_path
 
+
 # TODO cleanup all
 BACKUP_ID = 0
+
+
 def paperObj_ppDict(paper):
     # TODO find a cleaner way
     global BACKUP_ID

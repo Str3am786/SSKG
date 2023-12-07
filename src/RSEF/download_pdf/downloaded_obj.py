@@ -1,5 +1,5 @@
 
-from SSKG.utils.regex import (
+from ..utils.regex import (
     str_to_arxivID,
     str_to_doiID
 )

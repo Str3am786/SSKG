@@ -1,8 +1,9 @@
-from SSKG.object_creator.create_metadata_obj import doi_to_metadataObj
-from SSKG.object_creator.create_downloadedObj import meta_to_dwnldd, pdf_to_downloaded_obj
-from SSKG.object_creator.downloaded_to_paperObj import downloaded_to_paperObj
-from SSKG.object_creator.paper_to_directionality import check_bidir, check_unidir
-from SSKG.object_creator.paper_obj_utils import paperDict_to_paperObj
+# TODO
+from .create_metadata_obj import doi_to_metadataObj
+from .create_downloadedObj import meta_to_dwnldd, pdf_to_downloaded_obj
+from .downloaded_to_paperObj import downloaded_to_paperObj
+from .paper_to_directionality import check_bidir, check_unidir
+from .paper_obj_utils import paperDict_to_paperObj
 import json
 import os
 

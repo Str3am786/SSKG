@@ -11,13 +11,15 @@ VALID_EXTENSIONS = ['.txt', '.json']
 @click.version_option(__version__)
 def cli():
     """
-    ███████  ███████  ██   ██   ██████  \n
-    ██       ██       ██  ██   ██       \n
-    ███████  ███████  █████    ██   ███ \n
-         ██       ██  ██  ██   ██    ██ \n
-    ███████  ███████  ██   ██   ██████  \n
+    RRRRRRRRR   SSSSSSSSS  EEEEEEEEE   FFFFFFFFF\n
+    RRR   RRR  SSS    SSS  EEE         FFF\n
+    RRR   RRR  SSS         EEE         FFF\n
+    RRRRRRRRR  SSSSSSSSS   EEEEEEE     FFFFFFF\n
+    RRR RRR         SSSS   EEE         FFF\n
+    RRR  RRR  SSS    SSS   EEE         FFF\n
+    RRR   RRR  SSSSSSSSS   EEEEEEEEE   FFF\n
 
-    Scientific Software Knowledge Graphs (SSKG)\n
+    Research Software Extraction Framework (RSEF)\n
     Find and assess Research Software within Research papers.\n
 
     Usage:\n
@@ -50,7 +52,8 @@ def cli():
 #         exit(1)
 
 @cli.command()
-@click.option('--input', '-i', required=True, help="DOI or path to .txt list of DOIs", metavar='<name>')
+@click.option('--input', '-i', required=True, help="DOI, path to .txt list of DOIs or path to processed_metadata.json",
+              metavar='<name>')
 @click.option('--output', '-o', default="output", show_default=True, help="Output csv file", metavar='<path>')
 @click.option('--unidir', '-U', is_flag=True, default = False, help="Unidirectionality")
 @click.option('--bidir', '-B', is_flag=True, default = False, help="Bidirectionality")
@@ -98,7 +101,8 @@ def download(input, output):
             print(e)
         return
 @cli.command()
-@click.option('--input','-i', required=True, help="DOI or path to .txt list of DOIs", metavar='<name>')
+@click.option('--input', '-i', required=True, help="DOI, path to .txt list of DOIs or path to downloaded_metadata.json",
+              metavar='<name>')
 @click.option('--output','-o', default="./", show_default=True, help="Output Directory ", metavar='<path>')
 def process(input, output):
     from .object_creator.downloaded_to_paperObj import dwnlddJson_to_paperJson, dwnldd_obj_to_paper_json

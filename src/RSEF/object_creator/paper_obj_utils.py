@@ -1,4 +1,4 @@
-from SSKG.extraction.paper_obj import PaperObj
+from ..extraction.paper_obj import PaperObj
 
 #TODO get rid of (find a cleaner solution)
 

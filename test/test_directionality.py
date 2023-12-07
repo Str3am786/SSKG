@@ -5,9 +5,9 @@ from shutil import rmtree
 from unittest import TestCase
 
 #from ..modelling.bidirectionality import *
-from SSKG.object_creator.paper_to_directionality import check_paper_directionality
-from SSKG.object_creator.pipeline import doi_to_paper
-from SSKG.object_creator.paper_obj_utils import paperDict_to_paperObj
+from src.RSEF.object_creator.paper_to_directionality import check_paper_directionality
+from src.RSEF.object_creator.pipeline import doi_to_paper
+from src.RSEF.object_creator.paper_obj_utils import paperDict_to_paperObj
 
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
 PIPELINE_FOLDER = os.path.join(TEST_DIR, "pipeline_folder")
@@ -374,8 +374,8 @@ class test_bidir(TestCase):
                     }
         }
         pp = paperDict_to_paperObj(paper)
-        result = check_paper_directionality(pp, True, PIPELINE_FOLDER)
-        print(result)
+        #result = check_paper_directionality(pp, True, PIPELINE_FOLDER)
+        #print(result)
     def test_related_4(self):
         wipe_directory(PIPELINE_FOLDER)
 

@@ -1,12 +1,11 @@
 import json
-from SSKG.metadata.api.openAlex_api_queries import query_openalex_api
-from SSKG.metadata.metadata_obj import MetadataObj
-from SSKG.metadata.api.openAlex_api_queries import pdf_title_to_meta
-from SSKG.utils.regex import (
+from ..metadata.api.openAlex_api_queries import query_openalex_api
+from ..metadata.metadata_obj import MetadataObj
+from RSEF.metadata.api.openAlex_api_queries import pdf_title_to_meta
+from ..utils.regex import (
     str_to_arxivID,
     str_to_doiID
 )
-
 
 
 def extract_arxivID (openAlexJson):
@@ -18,6 +17,7 @@ def extract_arxivID (openAlexJson):
             if safe_dic(locat, "pdf_url") and "arxiv" in safe_dic(locat, "pdf_url"):
                 return str_to_arxivID(safe_dic(locat,"pdf_url"))
 
+
 def doi_to_metadataObj(doi):
     """
     Input doi
@@ -26,7 +26,7 @@ def doi_to_metadataObj(doi):
     :returns
     metadata Object
     """
-    if not (doi:=str_to_doiID(doi)):
+    if not (doi := str_to_doiID(doi)):
         print("Not a doi")
         return None
     try:
@@ -52,6 +52,8 @@ def doi_to_metadataObj(doi):
 #     arxiv = extract_arxivID(oa_meta)
 #     metadata = MetadataObj(title=titL, doi=doi, arxiv=arxiv)
 #     return metadata
+
+
 def doi_to_metaDict(doi):
     """
     Input doi
@@ -99,7 +101,7 @@ def doi_to_metaJson(doi,output_folder):
     return create_meta_json(meta_dict,output_folder)
 
 
-def dois_to_metaJson(doi,output_folder):
+def dois_to_metaJson(doi, output_folder):
     """
     Input
     multiple dois
@@ -109,7 +111,7 @@ def dois_to_metaJson(doi,output_folder):
     path to JSON
     """
     meta_dict = dois_to_metaDicts(doi)
-    return create_meta_json(meta_dict,output_folder)
+    return create_meta_json(meta_dict, output_folder)
 
 
 def create_meta_json(meta_dict,output_folder):
@@ -119,8 +121,10 @@ def create_meta_json(meta_dict,output_folder):
                   ensure_ascii=False)
     return output_path
 
+
 def metadataObj_to_metadataDict(metaObj):
     return {metaObj.doi: metaObj.to_dict()}
+
 
 def metaDict_to_metaObj(meta_dict):
     if not meta_dict:

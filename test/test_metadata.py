@@ -3,8 +3,8 @@ import os.path
 from pathlib import Path
 from shutil import rmtree
 from unittest import TestCase
-from SSKG.metadata.api.openAlex_api_queries import pdf_title_to_meta, convert_to_doi_url, query_openalex_api
-from SSKG.metadata.api.zenodo_api import get_redirect_url, get_record, get_github_from_zenodo
+from src.RSEF.metadata.api.openAlex_api_queries import pdf_title_to_meta, convert_to_doi_url, query_openalex_api
+from src.RSEF.metadata.api.zenodo_api import get_redirect_url, get_record, get_github_from_zenodo
 
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
 PIPELINE_FOLDER = os.path.join(TEST_DIR, "pipeline_folder")

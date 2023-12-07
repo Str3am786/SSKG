@@ -4,7 +4,7 @@ import os
 import re
 from tika import parser
 # Import REGEXes
-from SSKG.utils.regex import ZENODO_DOI_REGEX, ZENODO_RECORD_REGEX, GITHUB_REGEX, GITLAB_REGEX
+from ..utils.regex import ZENODO_DOI_REGEX, ZENODO_RECORD_REGEX, GITHUB_REGEX, GITLAB_REGEX
 
 logger = logging.getLogger("extraction")
 

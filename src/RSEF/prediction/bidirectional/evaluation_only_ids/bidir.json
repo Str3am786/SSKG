@@ -1,0 +1,1370 @@
+{
+    "1602.08793": [
+        {
+            "url": "https://github.com/xylimeng/fQR-testing",
+            "bidirectional": [
+                {
+                    "location": "README_TEXT",
+                    "id_type": "ARXIV",
+                    "identifier": "1602.08793",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1602.08793",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1605.00361": [
+        {
+            "url": "https://github.com/rbardenet/dppmc",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1605.00361",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1704.05840": [
+        {
+            "url": "https://github.com/fvnts/squeezing",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "1704.05840",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1704.05840",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1707.06588": [
+        {
+            "url": "https://github.com/facebookresearch/loop",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "1707.06588",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1707.06588",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1708.07747": [
+        {
+            "url": "https://github.com/zalandoresearch/fashion-mnist",
+            "bidirectional": [
+                {
+                    "location": "README_BIBTEX",
+                    "id_type": "ARXIV",
+                    "identifier": "1708.07747",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "README_TEXT",
+                    "id_type": "ARXIV",
+                    "identifier": "1708.07747",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1708.07747",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1711.05101": [
+        {
+            "url": "https://github.com/loshchil/AdamW-and-SGDW",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1711.05101",
+                    "source": "SOMEF"
+                }
+            ]
+        },
+        {
+            "url": "https://github.com/Yagami123/Caffe-AdamW-AdamWR",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "1711.05101",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1711.05101",
+                    "source": "SOMEF"
+                }
+            ]
+        },
+        {
+            "url": "https://github.com/GLambard/AdamW_Keras",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "1711.05101",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1711.05101",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1711.08200": [
+        {
+            "url": "https://github.com/MohsenFayyaz89/T3D",
+            "bidirectional": [
+                {
+                    "location": "README_BIBTEX",
+                    "id_type": "ARXIV",
+                    "identifier": "1711.08200",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "1711.08200",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1711.08200",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1712.05976": [
+        {
+            "url": "https://github.com/borisbolliet/class_eos_fr_public",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1712.05976",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1803.07268": [
+        {
+            "url": "https://github.com/skyoung/MemTrack",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "1803.07268",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1803.07268",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1803.07870": [
+        {
+            "url": "https://github.com/FilippoMB/Reservoir-Computing-framework-for-multivariate-time-series-classification",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "1803.07870",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1803.07870",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1804.00247": [
+        {
+            "url": "https://github.com/tensorflow/tensor2tensor",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1804.00247",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1806.02199": [
+        {
+            "url": "https://github.com/ratschlab/SOM-VAE",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "1806.02199",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1806.02199",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1901.05674": [
+        {
+            "url": "https://github.com/sola-da/Chameleon",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "1901.05674",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1901.05674",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1902.03110": [
+        {
+            "url": "https://github.com/Mehrnoom/Cryptocurrency-Pump-Dump",
+            "bidirectional": [
+                {
+                    "location": "README_TEXT",
+                    "id_type": "ARXIV",
+                    "identifier": "1902.03110",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "1902.03110",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1902.03110",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1902.07153": [
+        {
+            "url": "https://github.com/Tiiiger/SGC",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "1902.07153",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1902.07153",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1903.01899": [
+        {
+            "url": "https://github.com/antoineBarbez/SMAD",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "1903.01899",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1903.01899",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1903.10583": [
+        {
+            "url": "https://github.com/felipelouza/bwsd",
+            "bidirectional": [
+                {
+                    "location": "README_TEXT",
+                    "id_type": "DOI",
+                    "identifier": "10.1016/j.tcs.2019.03.012",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1903.11991": [
+        {
+            "url": "https://github.com/cogsys-tuebingen/PAL",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "1903.11991",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1903.11991",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1904.04174": [
+        {
+            "url": "https://github.com/CodeplaySoftware/SYCL-DNN",
+            "bidirectional": [
+                {
+                    "location": "README_BIBTEX",
+                    "id_type": "DOI",
+                    "identifier": "10.1145/3318170.3318183",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "README_TEXT",
+                    "id_type": "DOI",
+                    "identifier": "10.1145/3318170.3318183",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1904.08129": [
+        {
+            "url": "https://github.com/kngwyu/rogue-gym-agents-cog19",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "1904.08129",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1904.08129",
+                    "source": "SOMEF"
+                }
+            ]
+        },
+        {
+            "url": "https://github.com/kngwyu/rogue-gym",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1904.08129",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1905.06982": [
+        {
+            "url": "https://github.com/IssamLaradji/GP_DRF",
+            "bidirectional": [
+                {
+                    "location": "README_BIBTEX",
+                    "id_type": "ARXIV",
+                    "identifier": "1905.06982",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "README_TEXT",
+                    "id_type": "ARXIV",
+                    "identifier": "1905.06982",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1905.06982",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1906.02152": [
+        {
+            "url": "https://github.com/makerdao/awesome-makerdao",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1906.02152",
+                    "source": "SOMEF"
+                }
+            ]
+        },
+        {
+            "url": "https://github.com/aklamun/Stablecoin_Deleveraging",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1906.02152",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1906.03720": [
+        {
+            "url": "https://github.com/mateuszbuda/brain-segmentation",
+            "bidirectional": [
+                {
+                    "location": "README_BIBTEX",
+                    "id_type": "DOI",
+                    "identifier": "10.1016/j.compbiomed.2019.05.002",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "DOI",
+                    "identifier": "10.1016/j.compbiomed.2019.05.002",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1907.11111": [
+        {
+            "url": "https://github.com/lukasliebel/MultiDepth",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1907.11111",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1907.13316": [
+        {
+            "url": "https://github.com/ryosuke-akashi/AtomREM",
+            "bidirectional": [
+                {
+                    "location": "README_TEXT",
+                    "id_type": "ARXIV",
+                    "identifier": "1907.13316",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "1907.13316",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1907.13316",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1909.04965": [
+        {
+            "url": "https://github.com/astro-alexis/magnotron-tts",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "1909.04965",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1909.04965",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1910.02369": [
+        {
+            "url": "https://github.com/ajholanda/k-nobel",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "1910.02369",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1910.02369",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "1912.10375": [
+        {
+            "url": "https://github.com/AI-secure/T3",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "1912.10375",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "1912.10375",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2003.03033": [
+        {
+            "url": "https://github.com/jjgo/shrinkbench",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "2003.03033",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2003.03033",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2003.08361": [
+        {
+            "url": "https://github.com/rbccps-iisc/iudx-resource-server",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "2003.08361",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2003.08361",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2004.14302": [
+        {
+            "url": "https://github.com/cl-tohoku/eval-via-selection",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2004.14302",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2006.09916": [
+        {
+            "url": "https://github.com/ElementAI/baal",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2006.09916",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2007.13505": [
+        {
+            "url": "https://github.com/ml-jku/DeepRC",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2007.13505",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2008.11880": [
+        {
+            "url": "https://github.com/azazel7/paper-benchmark",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2008.11880",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2008.11894": [
+        {
+            "url": "https://github.com/bigvideoresearch/SCC",
+            "bidirectional": [
+                {
+                    "location": "README_TEXT",
+                    "id_type": "ARXIV",
+                    "identifier": "2008.11894",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "2008.11894",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2008.11894",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2010.02793": [
+        {
+            "url": "http://github.com/mianbreton/RR_code",
+            "bidirectional": [
+                {
+                    "location": "README_TEXT",
+                    "id_type": "ARXIV",
+                    "identifier": "2010.02793",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2010.02793",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2102.04010": [
+        {
+            "url": "https://github.com/anonymous-NM-sparsity/NM-sparsity",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2102.04010",
+                    "source": "SOMEF"
+                }
+            ]
+        },
+        {
+            "url": "https://github.com/NM-sparsity/NM-sparsity",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2102.04010",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2102.07359": [
+        {
+            "url": "https://github.com/Vvrep/MASTER-electric_vehicle_charging_recommendation",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "2102.07359",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2102.07359",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2103.04388": [
+        {
+            "url": "https://github.com/vasumv/bonsai-fuzzing",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "DOI",
+                    "identifier": "10.1109/ICSE43902.2021.00072",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2105.04459": [
+        {
+            "url": "https://github.com/uncbiag/ICON",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2105.04459",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2105.12108": [
+        {
+            "url": "https://github.com/xC-ell/growth-history",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "2105.12108",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2105.12108",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2105.13649": [
+        {
+            "url": "https://github.com/vbcrlf/redy",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "2105.13649",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2105.13649",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2106.02713": [
+        {
+            "url": "https://github.com/Pehlevan-Group/sgd_structured_features",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "2106.02713",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2106.02713",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2106.06158": [
+        {
+            "url": "https://github.com/ahmedfgad/GeneticAlgorithmPython",
+            "bidirectional": [
+                {
+                    "location": "README_BIBTEX",
+                    "id_type": "ARXIV",
+                    "identifier": "2106.06158",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "README_TEXT",
+                    "id_type": "ARXIV",
+                    "identifier": "2106.06158",
+                    "source": "SOMEF"
+                }
+            ]
+        },
+        {
+            "url": "https://github.com/ahmedfgad/GARI",
+            "bidirectional": [
+                {
+                    "location": "README_BIBTEX",
+                    "id_type": "ARXIV",
+                    "identifier": "2106.06158",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "README_TEXT",
+                    "id_type": "ARXIV",
+                    "identifier": "2106.06158",
+                    "source": "SOMEF"
+                }
+            ]
+        },
+        {
+            "url": "https://github.com/ahmedfgad/8QueensGenetic",
+            "bidirectional": [
+                {
+                    "location": "README_BIBTEX",
+                    "id_type": "ARXIV",
+                    "identifier": "2106.06158",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "README_TEXT",
+                    "id_type": "ARXIV",
+                    "identifier": "2106.06158",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2106.10955": [
+        {
+            "url": "https://github.com/tot98git/text-summ",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2106.10955",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2108.00580": [
+        {
+            "url": "https://github.com/GangmingZhao/GraphFPN-Graph-Feature-Pyramid-Network-for-Object-Detection",
+            "bidirectional": [
+                {
+                    "location": "README_TEXT",
+                    "id_type": "ARXIV",
+                    "identifier": "2108.00580",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2108.00580",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2109.01100": [
+        {
+            "url": "https://github.com/ZurichNLP/segtest",
+            "bidirectional": [
+                {
+                    "location": "README_TEXT",
+                    "id_type": "DOI",
+                    "identifier": "10.18653/v1/2021.findings-emnlp.60",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2109.03939": [
+        {
+            "url": "https://github.com/sIncerass/one_layer_lottery_ticket",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "2109.03939",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2109.03939",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2109.09968": [
+        {
+            "url": "https://github.com/YunqiuXu/H-KGA",
+            "bidirectional": [
+                {
+                    "location": "README_BIBTEX",
+                    "id_type": "ARXIV",
+                    "identifier": "2109.09968",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "README_TEXT",
+                    "id_type": "ARXIV",
+                    "identifier": "2109.09968",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2109.09968",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2110.05966": [
+        {
+            "url": "https://github.com/Audio-WestlakeU/NBSS",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2110.05966",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2111.12460": [
+        {
+            "url": "https://github.com/robin-karlsson0/vice",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2111.12460",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2111.15150": [
+        {
+            "url": "https://github.com/Nik-V9/AirObject",
+            "bidirectional": [
+                {
+                    "location": "README_TEXT",
+                    "id_type": "ARXIV",
+                    "identifier": "2111.15150",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "2111.15150",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2111.15150",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2112.08777": [
+        {
+            "url": "https://github.com/aviclu/long-context-qa-contrast",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2112.08777",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2112.08866": [
+        {
+            "url": "https://github.com/marvinschmitt/ModelMisspecificationBF",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2112.08866",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2201.01357": [
+        {
+            "url": "https://github.com/mgoplerud/FactorHet",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "2201.01357",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2201.01357",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2201.04768": [
+        {
+            "url": "https://github.com/noveens/sampling_cf",
+            "bidirectional": [
+                {
+                    "location": "README_BIBTEX",
+                    "id_type": "DOI",
+                    "identifier": "10.1145/3488560.3498439",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "DOI",
+                    "identifier": "10.1145/3488560.3498439",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2201.05757": [
+        {
+            "url": "https://github.com/wuzhy1ng/BlockchainSpider",
+            "bidirectional": [
+                {
+                    "location": "README_BIBTEX",
+                    "id_type": "ARXIV",
+                    "identifier": "2201.05757",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "2201.05757",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2201.05757",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2201.12195": [
+        {
+            "url": "https://github.com/MattWerenski/BCM",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2201.12195",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2204.09680": [
+        {
+            "url": "https://github.com/Takeshi-Ishida/Emergence-simulation-of-biological-cell-like-shapes",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "2204.09680",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2204.09680",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2204.12201": [
+        {
+            "url": "https://github.com/momalab/e3",
+            "bidirectional": [
+                {
+                    "location": "README_BIBTEX",
+                    "id_type": "DOI",
+                    "identifier": "10.1145/3508352.3549415",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "README_TEXT",
+                    "id_type": "DOI",
+                    "identifier": "10.1145/3508352.3549415",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2205.10986": [
+        {
+            "url": "https://github.com/Robbie-Xu/CPSD",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "2205.10986",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2205.10986",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2206.11038": [
+        {
+            "url": "https://github.com/flexi-framework/relexi",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "2206.11038",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2206.11038",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2206.14504": [
+        {
+            "url": "https://github.com/frankkramer-lab/GERNERMED-pp",
+            "bidirectional": [
+                {
+                    "location": "README_BIBTEX",
+                    "id_type": "ARXIV",
+                    "identifier": "2206.14504",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "README_TEXT",
+                    "id_type": "ARXIV",
+                    "identifier": "2206.14504",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2206.14504",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2207.00921": [
+        {
+            "url": "https://github.com/rasheedja/PropaFP",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "2207.00921",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2207.00921",
+                    "source": "SOMEF"
+                }
+            ]
+        },
+        {
+            "url": "https://github.com/rasheedja/LPPaver",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2207.00921",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2207.03414": [
+        {
+            "url": "https://github.com/nadeemlab/DoseRTX",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2207.03414",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2207.12086": [
+        {
+            "url": "https://github.com/nphdang/CCRAL",
+            "bidirectional": [
+                {
+                    "location": "README_TEXT",
+                    "id_type": "ARXIV",
+                    "identifier": "2207.12086",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "2207.12086",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2207.12086",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2207.12783": [
+        {
+            "url": "https://github.com/yl3800/EIGV",
+            "bidirectional": [
+                {
+                    "location": "README_BIBTEX",
+                    "id_type": "ARXIV",
+                    "identifier": "2207.12783",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "README_TEXT",
+                    "id_type": "ARXIV",
+                    "identifier": "2207.12783",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2207.12783",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2211.08278": [
+        {
+            "url": "https://github.com/ika-rwth-aachen/DEviLOG",
+            "bidirectional": [
+                {
+                    "location": "DESCRIPTION",
+                    "id_type": "ARXIV",
+                    "identifier": "2211.08278",
+                    "source": "SOMEF"
+                },
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2211.08278",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ],
+    "2212.12678": [
+        {
+            "url": "https://github.com/rmpku/CIN",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2212.12678",
+                    "source": "SOMEF"
+                }
+            ]
+        },
+        {
+            "url": "https://github.com/RM1110/CIN",
+            "bidirectional": [
+                {
+                    "location": "RELATED_PAPERS",
+                    "id_type": "ARXIV",
+                    "identifier": "2212.12678",
+                    "source": "SOMEF"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,17 @@
+title: "Research Software Extraction Framework (RSEF)"
+license: MIT
+authors:
+  - family-names: Arroyo
+    given-names: Miguel
+  - family-names: Garijo
+    given-names: Daniel
+    orcid: "https://orcid.org/0000-0003-0454-7145"
+  - family-names: Gonzalez
+    given-names: Esteban
+    orcid: "https://orcid.org/0000-0003-4112-6825"
+cff-version: 1.2.0
+message: "If you use this software, please cite"
+identifiers:
+  - description: "This tool verifies the link between a scientific paper and a software repository."
+    type: doi
+    value: 10.5281/zenodo.10306762

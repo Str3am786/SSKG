@@ -15,6 +15,11 @@ logger = logging.getLogger("extraction")
 
 
 def raw_read_pdf(pdf_path) -> str:
+    """
+    :param pdf_path: PDF path
+    :returns:
+    Content of pdf as a single string. "Raw"
+    """
     if not pdf_path:
         return ""
     try:
@@ -33,7 +38,11 @@ def raw_read_pdf(pdf_path) -> str:
 
 
 def raw_to_list(raw_pdf_data: str) -> list:
-
+    """
+    :param raw_pdf_data: full pdf as a string.
+    :returns:
+    Content of pdf as a list, each list entry being a sentence. Sentences divided by \n
+    """
     if not raw_pdf_data:
         logging.error(f"ERROR converting from raw pdf to list pdf, {raw_pdf_data}")
         return []
@@ -43,6 +52,11 @@ def raw_to_list(raw_pdf_data: str) -> list:
 
 
 def read_pdf_list(pdf_path) -> list:
+    """
+    :param pdf_path: Path to the pdf file
+    :returns:
+    Content of pdf as a list, each list entry being a sentence. Sentences divided by \n
+    """
     try:
         raw = parser.from_file(pdf_path)
         list_pdf_data = raw['content'].split('\n')
@@ -57,12 +71,19 @@ def read_pdf_list(pdf_path) -> list:
     except Exception as e:
         logging.error(f"An error occurred while reading the PDF: {str(e)}")
         return []
+
 # ======================================================================================================================
 # TITLE EXTRACTION
 # ======================================================================================================================
 
 
 def get_possible_title(pdf_path):
+    """
+    reads pdf and returns a title
+    :param pdf_path: Path to pdf
+    :returns:
+    Title (string) or None
+    """
     pdf_raw = raw_read_pdf(pdf_path)
     if not pdf_raw:
         return None
@@ -75,7 +96,8 @@ def extract_possible_title(pdf_raw_data: str):
     ASSUMPTION: The title is assumed to be the first non-line break character and ends with two line breaks \n\n
     :param pdf_raw_data: String of raw PDF data
     --
-    :return: Possible title (String), or None if not found
+    :returns:
+    Possible title (String), or None if not found
     """
     poss_title = ""
     found_first_char = False
@@ -104,6 +126,12 @@ def extract_possible_title(pdf_raw_data: str):
 
 
 def find_abstract_index(pdf_data: list) -> int:
+    """
+    Within a list of sentences finds where the string abstract has been mentioned
+    :param pdf_data: Pdf content broken into list of sentences
+    :returns:
+    Index Int for the sentences where the abstract is
+    """
     index = 0
     try:
         for line in pdf_data:
@@ -117,6 +145,11 @@ def find_abstract_index(pdf_data: list) -> int:
 
 
 def get_possible_abstract(pdf_data: list) -> str:
+    """
+    :param pdf_data: Pdf content broken into list of sentences
+    :returns:
+    String of possible abstract
+    """
     try:
         index = find_abstract_index(pdf_data)
         if index > 0:
@@ -126,6 +159,12 @@ def get_possible_abstract(pdf_data: list) -> str:
 
 
 def find_github_in_abstract(pdf_data: list) -> list:
+    """
+    reads pdf and returns a title
+    :param pdf_data: Pdf content broken into list of sentences
+    :returns:
+    String of possible abstract
+    """
     abstract_index = find_abstract_index(pdf_data)
     if abstract_index > 0:
         return look_for_github_urls(pdf_data[abstract_index:abstract_index:50])
@@ -138,10 +177,10 @@ def find_github_in_abstract(pdf_data: list) -> list:
 # regular expression to get all the urls, returned as a list
 def get_git_urls(text: str) -> list:
     """
-    Returns
+    :param text: raw pdf file as a string
     -------
+    :returns:
     List Strings (urls)
-
     """
     urls_github = re.findall(GITHUB_REGEX, text)
     urls_gitlab = re.findall(GITLAB_REGEX, text)
@@ -167,8 +206,13 @@ def clean_up_git_url(git_url_list: list) -> list:
     return clean_urls
 
 
-
 def look_for_github_urls(list_pdf_data: list) -> list:
+    """
+    Extracts GitHub URLs from a list of PDF data and denoises the urls
+    :param list_pdf_data: List of sentences which form the pdf file
+    :returns:
+    Clean List of GitHub urls
+    """
     git_urls = []
     for value in list_pdf_data:
         results = get_git_urls(value)
@@ -180,9 +224,10 @@ def look_for_github_urls(list_pdf_data: list) -> list:
 
 def ranked_git_url(pdf_data: list):
     """
+    :param pdf_data: PDF file broken into a list of sentences delimited by: "\n"
     Creates  ranked list of GitHub urls and count pairs or false if none are available
-    Returns
     -------
+    :returns:
     List Strings (urls)
     --
     Else (none are found)
@@ -204,10 +249,9 @@ def ranked_git_url(pdf_data: list):
 
 def get_zenodo_urls(text: str) -> list:
     """
-    Returns
-    -------
-    List Strings (urls)
-
+    :param text: String
+    :returns:
+    List of urls (Strings)
     """
     urls_doi = re.findall(ZENODO_DOI_REGEX, text)
     urls_records = re.findall(ZENODO_RECORD_REGEX, text)
@@ -218,11 +262,12 @@ def get_zenodo_urls(text: str) -> list:
 
 def ranked_zenodo_url(raw_pdf_data: str):
     """
+    :param raw_pdf_data: String of "raw" pdf content
     Creates  ranked list of GitHub urls and count pairs or false if none are available
-    Returns
     -------
+    :returns:
     List Strings (urls)
-    --
+
     Else (none are found)
         False
     """
@@ -241,8 +286,14 @@ def ranked_zenodo_url(raw_pdf_data: str):
 
 
 def extract_urls(raw_pdf_data: str, list_pdf_data: list) -> dict:
+    """
+    :param raw_pdf_data: All contents within pdf as a single string "RAW"
+    :param list_pdf_data: PDF contents broken down into a list of sentences delimiter: \n
+    :returns:
+    List of urls
+    """
     # TODO optimise
-    #list_pdf_data = raw_to_list(raw_pdf_data)
+    # list_pdf_data = raw_to_list(raw_pdf_data)
     urls = {}
     if not raw_pdf_data:
         logging.error("Extract Urls: raw_pdf_data is None or Empty")
@@ -264,10 +315,9 @@ def extract_urls(raw_pdf_data: str, list_pdf_data: list) -> dict:
 
 def rank_elements(url_list: list) -> list:
     """
-    Takes a list of strings (URLs)
-
-    Returns
-    --------
+    :param url_list: Takes a list of strings (URLs)
+    ---------
+    :returns:
     List of dictionaries. Each dictionary contains 'url' (String) as key and the number of appearances as value.
     Ordered, High to Low, based on the number of appearances.
     """

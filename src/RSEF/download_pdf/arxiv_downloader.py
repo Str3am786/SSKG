@@ -25,10 +25,10 @@ from ..utils.regex import str_to_arxivID
 
 def download_pdf(url, output_dir):
     """
-    @param url: arxiv url
-    @param output_dir: path to output, existence checked by download_pipeline
+    :param url: arxiv url
+    :param output_dir: path to output, existence checked by download_pipeline
     ------
-    :returns path to the pdf file
+    :returns: path to the pdf file
     """
     if(url := convert_to_arxiv_url(input_string=url)) is None:
         return None
@@ -49,8 +49,8 @@ def download_pdf(url, output_dir):
 
 def convert_to_arxiv_url(input_string):
     """
-    @Param input_string: possible ID to be converted to arxiv URL
-    :returns String: arxiv URL or None
+    :param input_string: possible ID to be converted to arxiv URL
+    :returns: String arxiv URL or None
     """
     arxiv = str_to_arxivID(input_string)
     if arxiv is not None:

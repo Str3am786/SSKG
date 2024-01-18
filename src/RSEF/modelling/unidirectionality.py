@@ -77,11 +77,13 @@ def is_repo_unidir(paperObj, repo_json):
         unidir = _iterate_results(results, paperObj.title)
     return unidir
 
+
 def safe_dic(dic, key):
     try:
         return dic[key]
     except:
         return None
+
 
 def safe_list(list, i):
     try:

@@ -1,5 +1,6 @@
 from ..utils.regex import str_to_doiID, str_to_arxivID
 
+
 class PaperObj:
     def __init__(self, title, urls, doi, arxiv, abstract, file_name, file_path):
         self._title = title

@@ -24,7 +24,7 @@ def create_unpaywall_url_from_string(doi: str):
     :return
     unpaywall  url (String)
     """
-    doi  = str_to_doiID(doi) #Ensure we have a doi without the https://
+    doi = str_to_doiID(doi) # Ensure we have a doi without the https://
     if not doi:
         return None
     if 'figshare' in doi or 'zenodo' in doi:
@@ -37,6 +37,11 @@ def create_unpaywall_url_from_string(doi: str):
 
 
 def get_unpaywall_pdf_url(data):
+    """
+    :param data: JSON response from unpaywall
+    :returns:
+    List of urls if found
+    """
     pdf_url_list = []
     total_urls = len(data)
     for i in range(total_urls):

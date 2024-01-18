@@ -18,7 +18,7 @@ def wipe_directory(directory_path):
             rmtree(path)
 
 def load_json(path):
-    with open(path,'r') as f:
+    with open(path, "r") as f:
         return json.load(f)
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -26,40 +26,46 @@ def load_json(path):
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class TestOpenAlexQuery(TestCase):
+
     #!-----------------------------------------------
     #convert_to_doi_url:
+
     def test_convert_to_doi_url(self):
         test_doi = "10.21428/58320208.e46b7b81"
         expected = "https://doi.org/10.21428/58320208.e46b7b81"
         ans = convert_to_doi_url(test_doi)
-        self.assertEquals(ans,expected)
+        self.assertEquals(ans, expected)
 
     def test_convert_to_doi_url_already(self):
         test_doi = "https://doi.org/10.21428/58320208.e46b7b81"
         expected = "https://doi.org/10.21428/58320208.e46b7b81"
         ans = convert_to_doi_url(test_doi)
-        self.assertEquals(ans,expected)
+        self.assertEquals(ans, expected)
 
-    def test_convert_to_doi_url_notdoi(self):
+    def test_convert_to_doi_url_not_doi(self):
         test_doi = "https://doi.org/1021428/58320208.e46b7b81"
         ans = convert_to_doi_url(test_doi)
         self.assertIsNone(ans)
+
     def test_convert_to_doi_None(self):
         ans = convert_to_doi_url(None)
         self.assertIsNone(ans)
     #!-----------------------------------------------
     #DOI queries:
     #
+
     def test_oa_doi_query(self):
         doi = "10.1007/978-3-319-68204-4_9"
         expected = "WIDOCO: A Wizard for Documenting Ontologies"
         ans = query_openalex_api(doi)
         title = ans['title']
         self.assertEquals(title,expected)
+
     def test_oa_doi_query_none(self):
         ans = query_openalex_api(None)
         self.assertIsNone(ans)
         pass
+
     def test_oa_doi_query_not_doi(self):
         doi = "1231/12039-1"
         ans = query_openalex_api(doi)
@@ -74,6 +80,7 @@ class TestOpenAlexQuery(TestCase):
     #PDF name to doi:
     #
     #TODO
+
     def test_pdf_name_to_doi(self):
         pass
 

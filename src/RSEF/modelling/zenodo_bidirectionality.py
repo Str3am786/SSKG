@@ -54,18 +54,27 @@ def is_it_bidir(paper_obj, zenodo_url: str, output_dir):
             })
         return result
 
-
     except Exception as e:
         logger.error(f"Error while trying to get the record from Zenodo: {e}")
 
 
 def arxiv_in_zenodo(paper_obj, zen_rec_text):
+    """
+    Checks if there is an arxivID within the zenodo record
+    :returns:
+    True if found
+    """
     if arxiv := paper_obj.arxiv:
         return arxiv in zen_rec_text
     return False
 
 
 def doi_in_zenodo(paper_obj, zen_rec_text):
+    """
+    Checks if there is an DOI ID within the zenodo record
+    :returns:
+    True if found
+    """
     if doi := paper_obj.doi:
         if not ("zenodo" in doi):
             return doi in zen_rec_text
@@ -73,12 +82,22 @@ def doi_in_zenodo(paper_obj, zen_rec_text):
 
 
 def title_in_zenodo(paper_obj, zen_rec_text):
+    """
+    Checks if the title of the paper is within the zenodo record
+    :returns:
+    True if found
+    """
     if title := paper_obj.title:
         return title.lower() in zen_rec_text.lower()
     return False
 
-def _github_zenodo_bidirectional(paper_obj, list_githubs, output_dir):
 
+def _github_zenodo_bidirectional(paper_obj, list_githubs, output_dir):
+    """
+    Finds github URL within the Zenodo record and checks for that repository's bidirectionality
+    :returns:
+    Dict With metadata if found
+    """
     if not list_githubs:
         return None
     bidir_git_zenodo = []

@@ -6,15 +6,13 @@ from .arxiv_downloader import download_pdf as download_arxiv_pdf
 from .unpaywall_pdf_downloader import doi_to_downloaded_pdf
 
 
-
-
-
 def pdf_download_pipeline(id, output_directory):
     """
     Verifies whether the input is an arXiv DOI or another DOI.
     If it's an arXiv DOI, it uses arXiv to download the paper; otherwise, it uses Unpaywall.
-    :param: id (str): Identifier for the paper, which can be an arXiv DOI or another type of DOI.
-    :param: output_dir (str): The directory where the downloaded paper will be saved.
+
+    :param id: (str) Identifier for the paper, which can be an arXiv DOI or another type of DOI.
+    :param output_directory: (str) The directory where the downloaded paper will be saved.
     ------
     :returns: The path to the downloaded PDF.
     """
@@ -33,7 +31,7 @@ def pdf_download_pipeline(id, output_directory):
         print(str(e))
 
     print(f"Attempting to download pdf for {str(id)}")
-    if (file_path := download_arxiv_pdf(id, pdf_output_directory)):
+    if file_path := download_arxiv_pdf(id, pdf_output_directory):
         return file_path
     else:
         url = paywall_url(id)

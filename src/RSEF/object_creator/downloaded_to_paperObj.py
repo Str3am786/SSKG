@@ -8,7 +8,7 @@ from ..object_creator.create_downloadedObj import downloadedDic_to_downloadedObj
 
 def downloaded_to_paperObj(downloadedObj):
     """
-    :param: downloadedObj
+    :param downloadedObj:
     ---
     :returns:
     Paper Obj (will have processed the paper within the downloaded Obj to look for github urls)

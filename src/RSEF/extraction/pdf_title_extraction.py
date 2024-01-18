@@ -4,10 +4,13 @@ import logging
 from ..extraction.pdf_extraction_tika import get_possible_title as use_tika_title
 
 
-
 def extract_pdf_title(pdf_path):
-
-    if (title:= use_pdf_title(pdf_path)):
+    """
+    :param pdf_path: Path to the pdf
+    :returns:
+    Title of the PDF as a String
+    """
+    if title := use_pdf_title(pdf_path):
         print("This is the extracted title " + title)
         return title
     else:
@@ -17,11 +20,10 @@ def extract_pdf_title(pdf_path):
     return title
 
 
-
 def use_pdf_title(pdf):
     """
-    @Param pdf: Name of the pdf file for the title to be found
-    :returns
+    :param pdf: Name of the pdf file for the title to be found
+    :returns:
     Title as string if found. Else None
     """
     pdf = os.path.abspath(pdf)

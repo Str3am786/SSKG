@@ -10,12 +10,14 @@ from src.RSEF.extraction.somef_extraction.somef_extractor import is_github_repo_
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
 PIPELINE_FOLDER = os.path.join(TEST_DIR, "pipeline_folder")
 
+
 def wipe_directory(directory_path):
     for path in Path(directory_path).glob("**/*"):
         if path.is_file():
             path.unlink()
         elif path.is_dir():
             rmtree(path)
+
 
 def load_json(path):
     with open(path,'r') as f:
@@ -75,6 +77,7 @@ class test_somef_extraction(TestCase):
         non_existent_dir = os.path.join(PIPELINE_FOLDER,"non_existent")
         ans = download_repo_metadata(url=real_url, output_folder_path=non_existent_dir)
         self.assertTrue(os.path.exists(ans))
+
     def test_d_r_m_output_path_none(self):
         real_url = "https://github.com/SoftwareUnderstanding/SSKG"
         ans = download_repo_metadata(url=real_url, output_folder_path=None)
@@ -157,10 +160,12 @@ class test_somef_extraction(TestCase):
         false_dict = {"related_papers": [{"result": {"value": ""}}]}
         ans = description_finder(false_dict)
         self.assertTrue(len(ans['doi']) == 0)
+
     def test_empty_description_2(self):
         false_dict = {"related_papers": [{"result": {}}]}
         ans = description_finder(false_dict)
         self.assertTrue(len(ans['doi']) == 0)
+
     def test_empty_description_3(self):
         false_dict = {"related_papers": []}
         ans = description_finder(false_dict)

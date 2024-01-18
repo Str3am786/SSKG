@@ -3,6 +3,7 @@ from ..utils.regex import (
     str_to_doiID
 )
 
+
 class MetadataObj:
     def __init__(self, title, doi, arxiv):
         self._title = title

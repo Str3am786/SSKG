@@ -8,11 +8,11 @@ from urllib.parse import urlparse, urljoin
 
 
 def doi_to_downloaded_pdf(url, doi, output_dir):
-    '''
-    @Param url: unpaywall url, we will get a json where we can find where to freely access the paper
-    @Param doi: DOI for the paper
-    @Param output_dir: output directory to where the pdf will be saved
-    '''
+    """
+    :param url: unpaywall url, we will get a json where we can find where to freely access the paper
+    :param doi: DOI for the paper
+    :param output_dir: output directory to where the pdf will be saved
+    """
     # Input verification
     if not os.path.exists(output_dir):
         return None
@@ -54,7 +54,7 @@ def doi_to_downloaded_pdf(url, doi, output_dir):
 def try_other_locations(jayson: json):
     """
     Used if the best_oa fails will attempt to get the first OA
-    @Param Jayson: unpaywall response json
+    :param jayson: unpaywall response json
     :returns:
     list of urls if response status code is 200
     """
@@ -74,11 +74,11 @@ def try_other_locations(jayson: json):
 
 
 def _try_all_location_urls(location: dict):
-    '''
-    @Param location: receives location from unpaywall url
+    """
+    :param location: receives location from unpaywall url
     :returns:
     response if status code == 200
-    '''
+    """
     if url := safe_dic(location,"url_for_pdf"):
         response = requests.get(url)
         if response.status_code == 200:
@@ -91,6 +91,11 @@ def _try_all_location_urls(location: dict):
 
 
 def response_to_pdf_binary(response: requests):
+    """
+    :param response: request from the webpage
+    :returns:
+    PDF binary if found or NONE
+    """
     if not response:
         return None
     if response.status_code != 200:
@@ -108,6 +113,12 @@ def response_to_pdf_binary(response: requests):
 
 
 def _html_resp_to_pdf_binary(response, html_url):
+    """
+    :param response: request from the webpage
+    :param html_url: String, url of the webpage
+    :returns:
+    PDF binary if found or NONE
+    """
     try:
         soup = BeautifulSoup(response.content, 'html.parser')
         if pdf := _html_resp_to_binary_from_form(soup_obj=soup, html_url=html_url):
@@ -127,7 +138,8 @@ def _html_resp_to_binary_from_form(soup_obj, html_url):
 
 def _html_resp_to_pdf_binary_from_direct_link(soup_obj, html_url):
     """
-    @Param soup_obj: soup object from _html_resp_to_pdf_binary
+    :param soup_obj: soup object from _html_resp_to_pdf_binary
+    :param html_url:
     ----------
     :returns:
     PDF binary
@@ -160,7 +172,7 @@ def _html_resp_to_pdf_binary_from_direct_link(soup_obj, html_url):
 
 def _doi_to_pdf_name(doi: str):
     """
-    @Param doi: string of doi ID
+    :param doi: string of doi ID
     ----------
     :returns:
     String that works within UNIX/macOS filesystems. Windows(NTFS) not tested
@@ -198,7 +210,7 @@ def _unpaywall_response_to_json(url: str):
         return None
 
 
-def detect_content_type(response):
+def detect_content_type(response) -> str:
     """
     Receives response and determines if it is a PDF or HTML
     :returns:

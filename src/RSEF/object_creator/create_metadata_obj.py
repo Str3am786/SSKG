@@ -20,10 +20,10 @@ def extract_arxivID (openAlexJson):
 
 def doi_to_metadataObj(doi):
     """
-    Input doi
+    :param doi: String, DOI ID
     ------
     output
-    :returns
+    :returns:
     metadata Object
     """
     if not (doi := str_to_doiID(doi)):
@@ -37,10 +37,10 @@ def doi_to_metadataObj(doi):
             return None
         if oa_meta is None:
             print("No meta")
-        titL = safe_dic(oa_meta, "title")
+        title = safe_dic(oa_meta, "title")
         doi = str_to_doiID(safe_dic(oa_meta, "doi"))
         arxiv = extract_arxivID(oa_meta)
-        metadata = MetadataObj(title=titL, doi=doi, arxiv=arxiv)
+        metadata = MetadataObj(title=title, doi=doi, arxiv=arxiv)
         return metadata
     except Exception as e:
         print(str(e))
@@ -56,28 +56,28 @@ def doi_to_metadataObj(doi):
 
 def doi_to_metaDict(doi):
     """
-    Input doi
+    :param doi: String, DOI ID
     ------
     output
-    :returns
+    :returns:
     Dictionary:
         K: doi
         V: metadataObj.to_dict
     """
-    if not (doi:=str_to_doiID(doi)):
+    if not (doi := str_to_doiID(doi)):
         print("Not a doi")
         return None
     mt_dict = doi_to_metadataObj(doi).to_dict()
     result = {mt_dict["doi"]: mt_dict}
     return result
 
+
 def dois_to_metaDicts(list_of_dois):
     """
-    Input
-    List of doisdoi
+    :param list_of_dois: List of strings DOI
     ------
     output
-    :returns
+    :returns:
     Dictionary:
         K: doi
         V: metadataObj.to_dict
@@ -88,7 +88,7 @@ def dois_to_metaDicts(list_of_dois):
     return result
 
 
-def doi_to_metaJson(doi,output_folder):
+def doi_to_metaJson(doi, output_folder):
     """
     Input
     single doi
@@ -98,7 +98,7 @@ def doi_to_metaJson(doi,output_folder):
     path to JSON
     """
     meta_dict = doi_to_metaDict(doi)
-    return create_meta_json(meta_dict,output_folder)
+    return create_meta_json(meta_dict, output_folder)
 
 
 def dois_to_metaJson(doi, output_folder):

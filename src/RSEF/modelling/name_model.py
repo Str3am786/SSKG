@@ -4,10 +4,13 @@ import arxiv
 import requests
 import jaro
 import json
+from fuzzywuzzy import fuzz
+
 
 def load_json(path):
     with open(path,'r') as f:
         return json.load(f)
+
 
 def get_title_somef(path):
     # get description and full title
@@ -16,6 +19,7 @@ def get_title_somef(path):
         return data['description']+data['full_title']
     except:
         return []
+
 
 def get_title(doi):
     try:
@@ -32,6 +36,8 @@ def get_title(doi):
             return reponse_json['message']['title'][0]
         except:
             return None
+
+
 def get_best_jaro(title1, list_strings):
     best_jaro = 0
     solution = None
@@ -63,11 +69,6 @@ def get_best_jaro(path):
                     best_jaro = metric_jaro
                     solucion = file_path [index]
     return solucion, best_jaro
-
-
-
-
-from fuzzywuzzy import fuzz
 
 
 def calculate_similarity_score(str1, str2):

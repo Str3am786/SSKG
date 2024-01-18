@@ -39,10 +39,10 @@ def is_it_bidir(paper_obj, repo_json):
         found_bidir = is_arxiv_bidir(arxiv, repo_data)
         if found_bidir:
             bidir_locations.extend(found_bidir)
-    # if title := paper_obj.title:
-    #     found_bidir = is_title_bidir(title, repo_data)
-    #     if found_bidir:
-    #         bidir_locations.extend(found_bidir)
+    if title := paper_obj.title:
+        found_bidir = is_title_bidir(title, repo_data)
+        if found_bidir:
+            bidir_locations.extend(found_bidir)
     return bidir_locations
 
 # ======================================================================================================================
@@ -245,8 +245,8 @@ def is_title_bidir(pp_title: str, repo_data: dict):
 
     return bidir
 
-def _convert_source(source:str) -> str:
 
+def _convert_source(source: str) -> str:
     return "README" if source and "readme" in source.lower() else "FILE"
 
 
@@ -260,6 +260,7 @@ def _citation_title(citation_results, title):
             source = safe_dic(citation, "source")
             return _convert_source(source) if source else "SOMEF ERROR"
     return None
+
 
 def _iterate_results(results: dict, string_2_find: str) -> bool:
     if (not results) or (not string_2_find):
@@ -283,6 +284,7 @@ def is_substring_found(substring, larger_string) -> bool:
     else:
         return False
 
+
 def safe_dic(dic, key):
     try:
         return dic[key]
@@ -290,8 +292,8 @@ def safe_dic(dic, key):
         return None
 
 
-def safe_list(list, i):
+def safe_list(lst, i):
     try:
-        return list[i]
+        return lst[i]
     except:
         return None

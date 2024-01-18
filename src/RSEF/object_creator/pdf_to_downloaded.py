@@ -14,15 +14,21 @@ from .create_metadata_obj import doi_to_metadataObj
 #WARNING this is for adrians pdfs
 #if you dont know who adrian is this script is not of interest
 
-def extract_arxivID (openAlexJson):
-    location = safe_dic(openAlexJson, "locations")
+
+def extract_arxivID (open_alex_json: dict):
+    """
+    :param open_alex_json: Dictionary of openalex json
+    :returns:
+    arxiv ID as string or None if not found
+    """
+    location = safe_dic(open_alex_json, "locations")
     for locat in location:
         if safe_dic(locat, "is_oa") == True:
             if safe_dic(locat, "pdf_url") and "arxiv" in safe_dic(locat, "pdf_url"):
-                return str_to_arxivID(safe_dic(locat,"pdf_url"))
+                return str_to_arxivID(safe_dic(locat, "pdf_url"))
 
 
-def pdfDoi_to_downloaded(doi,file_path):
+def pdfDoi_to_downloaded(doi, file_path):
     try:
         try:
             oa_meta = query_openalex_api(doi)
@@ -40,11 +46,11 @@ def pdfDoi_to_downloaded(doi,file_path):
 
 
 def adrian_to_downloaded(file_path):
-    '''
+    """
     Uses Adrians File naming system.
     arxiv are as is
     doi's have the following replaced: "/" for a "_"
-    '''
+    """
     file_name = os.path.basename(file_path)
     possible_ID = file_name.replace(".pdf", "")
     if str_to_arxivID(possible_ID):
@@ -53,6 +59,7 @@ def adrian_to_downloaded(file_path):
     possible_ID = possible_ID.replace("_","/")
     if (doi:= adrian_is_filename_doi(possible_ID)):
         return pdfDoi_to_downloaded(doi,file_path)
+
 
 def adrian_pdfs_2dictionary(directory):
     result = {}
@@ -71,6 +78,7 @@ def adrian_pdfs_2dictionary(directory):
             print("Number of pdfs/downloaded Objects made = " + str(num_pdfs))
     return result
 
+
 def adrian_pdfs_2Json(directory):
     dictJson = adrian_pdfs_2dictionary(directory)
     if not dictJson:
@@ -80,6 +88,8 @@ def adrian_pdfs_2Json(directory):
         json.dump(dictJson, out_file, sort_keys=True, indent=4,
                   ensure_ascii=False)
     return output_path
+
+
 def pdfs_to_downloaded_Json(directory):
     dictJson = pdfs_to_downloaded_dics(directory)
     if not dictJson:
@@ -89,6 +99,8 @@ def pdfs_to_downloaded_Json(directory):
         json.dump(dictJson, out_file, sort_keys=True, indent=4,
                   ensure_ascii=False)
     return output_path
+
+
 def pdfs_to_downloaded_dics(directory):
     result = {}
     num_pdfs = 0
@@ -106,13 +118,14 @@ def pdfs_to_downloaded_dics(directory):
             print("Number of pdfs/downloaded Objects made = " + str(num_pdfs))
     return result
 
+
 def pdf_to_downloaded_dic(file_path):
     file_name = os.path.basename(file_path)
     doi = adrian_filename_to_doi_convert(file_name)
     meta = doi_to_metadataObj(doi)
     if not meta:
         return None
-    return {doi:{
+    return {doi: {
     'title': meta.title,
     'doi': meta.doi,
     'arxiv': meta.arxiv,

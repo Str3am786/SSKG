@@ -17,11 +17,13 @@ def create_arxiv_doi(arxiv):
         return base_doi + arxiv_id
     return None
 
+
 def query_openalex_api(doi):
     """
-    @Param String doi: DOI Identifier\
+    :param doi: String DOI Identifier
     -----
-    returns JSON of Open Alex response
+    :returns:
+    JSON of Open Alex response
     """
     doi_url = convert_to_doi_url(doi)
     if doi_url is None:
@@ -43,8 +45,9 @@ def query_openalex_api(doi):
 
 def convert_to_doi_url(input_string):
     """
-    @Param input_string: possible DOI to be converted to DOI URL
-    :returns String: DOI URL or None
+    :param input_string: possible DOI to be converted to DOI URL
+    :returns:
+    String DOI URL or None
     """
     doi = str_to_doiID(input_string)
     if doi is not None:
@@ -53,7 +56,7 @@ def convert_to_doi_url(input_string):
     return None
 
 
-#TODO change the pdf naming system and this function
+# TODO change the pdf naming system and this function
 # def pdf_name_to_meta(pdf_folder,path_out):
 #
 #     list_datas = []
@@ -65,16 +68,18 @@ def convert_to_doi_url(input_string):
 #     with open(path_out, 'w') as json_file:
 #         json.dump(list_datas, json_file, indent=4)
 
-#TODO need to create a way to double check the pdf title vs the one extracted
-#TODO ensure that the first option in the returned list is the one I want
+# TODO need to create a way to double check the pdf title vs the one extracted
+# TODO ensure that the first option in the returned list is the one I want
 
 def _verify_title(response_json, og_title):
     """
     Give the correct result by comparing titles based on a fuzzy matching ratio.
 
     :param response_json: JSON response from the search.
-    :param original_title: PDF title to match against.
-    :return: Metadata of result if the titles match.
+    :param og_title: PDF title to match against.
+    --------------------------------------------
+    :return:
+    Metadata of result if the titles match.
     """
     fuzzy_threshold = 85
     try:
@@ -90,6 +95,7 @@ def _verify_title(response_json, og_title):
             return result
     print("Work not found within OpenAlex")
     return None
+
 
 def pdf_title_to_meta(title):
     """
@@ -109,9 +115,3 @@ def pdf_title_to_meta(title):
             raise requests.RequestException(f"Error: {response.status_code}")
     except requests.RequestException as e:
         raise RuntimeError(f"Request failed: {str(e)}")
-
-
-#input = '../../corpus_papers_w_code/papers_with_code'
-#pdf_name_to_meta(input,'./penis.json')
-
-#txt_to_meta('./dois.txt','./pls.json')

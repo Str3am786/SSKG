@@ -1,6 +1,5 @@
-
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10306762.svg)](https://doi.org/10.5281/zenodo.10306762)
   
-
 # Research Software Extraction Framework (RSEF)
 
   
